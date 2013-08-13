@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/Users/mangumc/www/creative/scss'
+let g:netrw_dirhist_2='/Users/mangumc/www/autocareexperts/scss'
+let g:netrw_dirhist_3='/Users/mangumc/www/developer-garage-v3/includes'
+let g:netrw_dirhist_4='/Users/mangumc/www'
+let g:netrw_dirhist_5='/Users/mangumc/Library/Thunderbird/Profiles/m0mcaug4.default/ImapMail/imap.googlemail-3.com'
+let g:netrw_dirhist_6='/Users/mangumc/www/developer-garage-v3/includes'
