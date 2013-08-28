@@ -12,5 +12,6 @@ set hlsearch
 set incsearch
 set pastetoggle=<F3>
 set ignorecase
+set nofoldenable
 filetype plugin on
 colorscheme mac_classic
