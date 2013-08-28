@@ -4,9 +4,9 @@ set autoread
 set ruler
 set t_Co=256
 set smartindent
-set ts=2
-set sts=2
-set sw=2
+set ts=4
+set sts=4
+set sw=4
 set expandtab
 set hlsearch
 set incsearch
