@@ -1,0 +1,38 @@
+! test comment
+
+xterm*faceName: Terminus:style=Regular:size=12
+xterm*background: #111111
+xterm*foreground: #babdb6
+xterm*saveLines: 512
+xterm*scrollKey: true
+xterm*scrollTtyOutput: false
+xterm*scrollBar: true
+xterm*rightScrollBar: true
+xterm*multiScroll: true
+xterm*visualBell: false
+
+!blk
+xterm*color0: #000d18
+xterm*color8: #000d18
+!red
+xterm*color1: #e89393
+xterm*color9: #e89393
+!grn
+xterm*color2: #9ece9e
+xterm*color10: #9ece9e
+!yel
+xterm*color3: #f0dfaf
+xterm*color11: #f0dfaf
+!blu
+xterm*color4: #8cd0d3
+xterm*color12: #8cd0d3
+!mag
+xterm*color5: #c0bed1
+xterm*color13: #c0bed1
+!cyn
+xterm*color6: #dfaf8f
+xterm*color14: #dfaf8f
+!wht
+xterm*color7: #efefef
+xterm*color15: #efefef
+
