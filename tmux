@@ -25,7 +25,7 @@ set-window-option -g clock-mode-style 12
 
 # # pane borders
 set-option -g pane-border-fg white
-set-option -g pane-active-border-fg magenta
+set-option -g pane-active-border-fg green
 
 
 # Rather than constraining window size to the maximum size of any client 
