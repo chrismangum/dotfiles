@@ -1,3 +1,4 @@
+call pathogen#infect()
 syntax on
 set number
 set autoread
