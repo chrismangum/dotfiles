@@ -5,6 +5,16 @@ alias ls="ls --color"
 alias find="gfind"
 alias tar="gtar"
 
+#git aliases
+alias ga='git add'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gd='git diff'
+alias gl='git pull'
+alias gp='git push'
+alias gst='git status'
+alias gss='git status -s'
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
@@ -32,7 +42,7 @@ ZSH_THEME="robbyrussell"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment following line if you want to disable command autocorrection
-# DISABLE_CORRECTION="true"
+DISABLE_CORRECTION="true"
 
 # Uncomment following line if you want red dots to be displayed while waiting for completion
 # COMPLETION_WAITING_DOTS="true"
@@ -48,7 +58,6 @@ ZSH_THEME="robbyrussell"
 plugins=(git osx web-search)
 
 source $ZSH/oh-my-zsh.sh
-unsetopt correct_all
 
 # Customize to your needs...
 export PATH="/usr/local/bin:/usr/local/Cellar/coreutils/8.21/libexec/gnubin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin"
