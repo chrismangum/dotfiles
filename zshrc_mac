@@ -7,11 +7,16 @@ alias tar="gtar"
 
 #git aliases
 alias ga='git add'
+alias gau='git add -u'
+alias gaa='git add -A'
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gd='git diff'
-alias gl='git pull'
-alias gp='git push'
+alias gf='git fetch; git status'
+alias gl='git log'
+alias glg='git log --stat --max-count=10'
+alias gpl='git pull'
+alias gp='git push origin master'
 alias gst='git status'
 alias gss='git status -s'
 
@@ -55,7 +60,7 @@ DISABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git osx web-search)
+plugins=(osx web-search)
 
 source $ZSH/oh-my-zsh.sh
 
