@@ -1,8 +1,14 @@
 alias term="TERM=xterm-256color"
-alias pgstart="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
-alias pgstop="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop"
-alias find="gfind"
-alias tar="gtar"
+
+if [[ $(uname) == 'Darwin' ]]; then
+  alias pgstart="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
+  alias pgstop="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop"
+  alias find="gfind"
+  alias tar="gtar"
+else
+  alias weechat="weechat-curses"
+  alias xlock="xscreensaver-command -lock"
+fi
 
 #git aliases
 alias ga='git add'
@@ -11,7 +17,7 @@ alias gaa='git add -A'
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gd='git diff'
-alias gd='git diff --cached'
+alias gdc='git diff --cached'
 alias gf='git fetch; git status'
 alias gl='git log'
 alias glg='git log --stat'
@@ -27,7 +33,11 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
+if [[ $(uname) == 'Darwin' ]]; then
+  ZSH_THEME="robbyrussell"
+else
+  ZSH_THEME="custom"
+fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
@@ -66,5 +76,11 @@ source $ZSH/oh-my-zsh.sh
 alias ls="ls --color"
 
 # Customize to your needs...
-export PATH="/usr/local/bin:/usr/local/Cellar/coreutils/8.21/libexec/gnubin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin"
-eval "$(rbenv init -)"
+if [[ $(uname) == 'Darwin' ]]; then
+  export PATH="/usr/local/bin:/usr/local/Cellar/coreutils/8.21/libexec/gnubin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin"
+  eval "$(rbenv init -)"
+else
+  export PATH=/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
+fi
+
+
