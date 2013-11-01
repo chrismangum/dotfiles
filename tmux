@@ -7,6 +7,7 @@ set -s escape-time 0
 # random options
 setw -g automatic-rename
 set-option -g default-terminal "screen-256color"
+set-option -g allow-rename off
 
 # # status bar
 set-option -g status-utf8 on
