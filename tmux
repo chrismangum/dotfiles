@@ -1,3 +1,5 @@
+set -g prefix C-a
+
 # Start numbering at 1
 set -g base-index 1
 
