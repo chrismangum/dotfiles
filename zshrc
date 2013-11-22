@@ -78,7 +78,7 @@ alias ls="ls --color"
 
 # Customize to your needs...
 if [[ $(uname) == 'Darwin' ]]; then
-  export PATH="/usr/local/bin:/usr/local/Cellar/coreutils/8.21/libexec/gnubin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin"
+  export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/Cellar/coreutils/8.21/libexec/gnubin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin"
   eval "$(rbenv init -)"
 else
   export PATH=/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
