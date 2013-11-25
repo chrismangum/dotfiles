@@ -16,5 +16,3 @@ set ignorecase
 set nofoldenable
 filetype plugin on
 colorscheme xoria256
-nnoremap <C-C> <ESC>
-nnoremap <ESC> <C-C>
