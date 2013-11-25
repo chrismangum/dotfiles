@@ -27,6 +27,11 @@ alias gp='git push origin master'
 alias gst='git status'
 alias gss='git status -s'
 
+#disable bell
+if [[ $(uname) == 'Linux' ]]; then
+  xset -b
+fi
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 
