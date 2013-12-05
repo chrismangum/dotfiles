@@ -26,6 +26,7 @@ set sort_aux = 'reverse-date-received'
 set imap_check_subscribed
 
 set editor = "/usr/bin/vim"
+set pager_stop
 ignore "Authentication-Results:"
 ignore "DomainKey-Signature:"
 ignore "DKIM-Signature:"
@@ -33,4 +34,23 @@ hdr_order Date From To Cc
 
 #key bindings
 bind index "^" imap-fetch-mail
+
+# View URLs inside Mutt
+macro index \cb   "|urlview\n"
+macro pager \cb   "|urlview\n"
+
+#colors
+color   attachment  brightmagenta       default
+color   error       brightred           default
+color   hdrdefault  red                 default
+color   indicator   brightyellow        red
+color   markers     brightcyan          default
+color   message     brightcyan          default
+color   normal      default             default
+color   quoted      brightblue          default
+color   search      default             green
+color   signature   red                 default
+color   status      yellow              blue
+color   tilde       magenta             default
+color   tree        magenta             default
 
