@@ -1,4 +1,4 @@
-set my_tmpsecret=`gpg2 -o ~/.sec/.tmp -d ~/.sec/pass.gpg`
+set my_tmpsecret=`gpg -o ~/.sec/.tmp -d ~/.sec/pass.gpg`
 set my_gacct=`awk '/acct/ {print $2}' ~/.sec/.tmp`
 set my_gpass=`awk '/pass/ {print $2}' ~/.sec/.tmp`
 set my_gurl=`awk '/url/ {print $2}' ~/.sec/.tmp`
