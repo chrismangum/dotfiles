@@ -33,6 +33,9 @@ if [[ $(uname) == 'Linux' ]]; then
   xset -b
 fi
 
+#set apollo base dir
+export APOLLO_BASE_DIR="/home/chris/www/Apollo"
+
 # Path to your oh-my-zsh configuration.
 ZSH=$HOME/.oh-my-zsh
 

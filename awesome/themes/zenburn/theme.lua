@@ -11,8 +11,8 @@ themedir = themesdir .. "/zenburn"
 
 -- {{{ Main
 theme = {}
---theme.wallpaper_cmd = { "awsetbg " .. themedir .. "/zenburn-background.png" }
-theme.wallpaper_cmd = { "awsetbg /home/chris/Pictures/future_office.jpg" }
+theme.wallpaper_cmd = { "awsetbg " .. themedir .. "/zenburn-background.png" }
+--theme.wallpaper_cmd = { "awsetbg /home/chris/Pictures/future_office.jpg" }
 -- }}}
 
 -- {{{ Styles

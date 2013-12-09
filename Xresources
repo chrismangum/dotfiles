@@ -1,5 +1,5 @@
 
-xterm*faceName: Terminus:style=Regular:size=12
+xterm*faceName: MonacoB2:style=Regular:size=10
 xterm*background: #111111
 xterm*foreground: #babdb6
 xterm*saveLines: 512
