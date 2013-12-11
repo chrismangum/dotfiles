@@ -25,6 +25,7 @@ alias glg='git log --stat'
 alias glp='git log -p'
 alias gpl='git pull'
 alias gp='git push origin master'
+alias gpd='git push origin develop'
 alias gst='git status'
 alias gss='git status -s'
 
