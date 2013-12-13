@@ -4,6 +4,7 @@ sudo iptables -F
 sudo /etc/init.d/openvpn stop
 
 pia_ip=$(host us-east.privateinternetaccess.com | head -n 1 | cut -d " " -f 4)
+def_int=$(ip link | grep "state UP" | sed -r "s/[0-9]: (.*): .*/\1/g")
 
 echo "up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf
@@ -29,6 +30,6 @@ sudo /etc/init.d/openvpn start
 sudo iptables -A OUTPUT -o lo -j ACCEPT
 sudo iptables -A OUTPUT -o tun0 -j ACCEPT
 #allow traffic on local network
-sudo iptables -A OUTPUT -o eth0 -d $(ip route | grep $(ip link | grep "state UP" | sed -r "s/[0-9]: (.*): .*/\1/g" | xargs ifconfig | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" | head -n 1) | cut -d " " -f 1) -j ACCEPT
-sudo iptables -A OUTPUT -o eth0 -d $pia_ip -j ACCEPT
+sudo iptables -A OUTPUT -o $def_int -d $(ip route | grep $($def_int | xargs ifconfig | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" | head -n 1) | cut -d " " -f 1) -j ACCEPT
+sudo iptables -A OUTPUT -o $def_int -d $pia_ip -j ACCEPT
 sudo iptables -A OUTPUT -j DROP
