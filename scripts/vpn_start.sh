@@ -4,7 +4,7 @@ sudo iptables -F
 sudo /etc/init.d/openvpn stop
 
 pia_ip=$(host us-east.privateinternetaccess.com | head -n 1 | cut -d " " -f 4)
-def_int=$(ip link | grep "state UP" | sed -r "s/[0-9]: (.*): .*/\1/g")
+def_int=$(ip link | grep "state UP" | sed -r "s/[0-9]: (.*): .*/\1/")
 my_ip=$(ifconfig $def_int | grep -Eo "([0-9]{1,3}\.){3}[0-9]{1,3}" | head -n 1)
 
 echo "up /etc/openvpn/update-resolv-conf
