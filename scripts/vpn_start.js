@@ -5,11 +5,11 @@ var os = require('os'),
   dns = require('dns'),
   exec = require('child_process').exec;
 
-var iface, my_ip, pia_ip
+var iface, pia_ip,
   ifaces = os.networkInterfaces();
 
 function getIface() {
-  for (i in ifaces) {
+  for (var i in ifaces) {
     if (i.indexOf('eth') !== -1) {
       return i;
     }
@@ -77,7 +77,7 @@ function writeIpRules(net_addr) {
 }
 
 function getNetAddress(callback) {
-  var my_ip = ifaces[iface][0].address 
+  var my_ip = ifaces[iface][0].address;
   exec('ip route | grep ' + my_ip, function (err, stdout) {
     callback(stdout.toString().split(' ')[0]);
   });
