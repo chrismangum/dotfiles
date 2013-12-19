@@ -5,7 +5,7 @@ var os = require('os'),
   dns = require('dns'),
   exec = require('child_process').exec;
 
-var iface, pia_ip,
+var iface, pia_ip, net_addr,
   ifaces = os.networkInterfaces();
 
 function getIface() {
@@ -18,23 +18,18 @@ function getIface() {
 
 function run(command) {
   exec(command, function (error, stdout, stderr) {
-    if (stdout.length) log(stdout);
-    if (stderr.length) log(stderr);
+    process.stdout.write(stdout + stderr);
   });
 }
 
-function log(string) {
-  process.stdout.write(string);
-}
-
-function writeFile(filename, string_arr, callback) {
-  fs.writeFile(filename, string_arr.join(os.EOL), function (err) {
+function writeFile(filename, string, callback) {
+  fs.writeFile(filename, string, function (err) {
     if (err) throw err;
     callback();
   });
 }
 
-function writeVpnConfig() {
+function writeVpnConfig(callback) {
   writeFile('/etc/openvpn/client.conf', [
     'up /etc/openvpn/update-resolv-conf',
     'down /etc/openvpn/update-resolv-conf',
@@ -54,12 +49,10 @@ function writeVpnConfig() {
     'comp-lzo',
     'verb 1',
     'reneg-sec 0' + os.EOL
-  ], function () {
-    run('/etc/init.d/openvpn restart');
-  });
+  ].join(os.EOL), callback);
 }
 
-function writeIpRules(net_addr) {
+function writeIpRules(callback) {
   writeFile('/etc/iptables.up.rules', [
     '*filter',
     ':INPUT ACCEPT [0:0]',
@@ -71,28 +64,31 @@ function writeIpRules(net_addr) {
     '-A OUTPUT -o ' + iface + ' -d ' + pia_ip + ' -j ACCEPT',
     '-A OUTPUT -j DROP',
     'COMMIT' + os.EOL
-  ], function () {
-    run('iptables-restore < /etc/iptables.up.rules');
-  });
+  ].join(os.EOL), callback);
 }
 
 function getNetAddress(callback) {
   var my_ip = ifaces[iface][0].address;
   exec('ip route | grep ' + my_ip, function (err, stdout) {
-    callback(stdout.toString().split(' ')[0]);
+    net_addr = stdout.toString().split(' ')[0];
+    callback();
   });
 }
 
 if (process.getuid() !== 0) {
-  console.log('This script must be run as root.');
-  process.exit(1);
+  run('sudo ./vpn_start.js');
 } else {
   dns.resolve4('us-east.privateinternetaccess.com', function (err, addresses) {
     if (err) throw err;
     pia_ip = addresses[0];
     iface = getIface();
-    writeVpnConfig();
-    getNetAddress(writeIpRules);
+    writeVpnConfig(function () {
+      run('/etc/init.d/openvpn restart');
+    });
+    getNetAddress(function () {
+      writeIpRules(function () {
+        run('iptables-restore < /etc/iptables.up.rules');
+      });
+    });
   });
 }
-
