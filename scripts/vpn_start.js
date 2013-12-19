@@ -16,9 +16,14 @@ function getIface() {
   }
 }
 
-function run(command) {
-  exec(command, function (error, stdout, stderr) {
-    process.stdout.write(stdout + stderr);
+function run(command, callback) {
+  exec(command, function (err, stdout, stderr) {
+    if (callback) {
+      if (err) throw err;
+      callback(stdout);
+    } else {
+      process.stdout.write(stdout + stderr);
+    }
   });
 }
 
@@ -68,9 +73,16 @@ function writeIpRules(callback) {
 }
 
 function getNetAddress(callback) {
-  var my_ip = ifaces[iface][0].address;
-  exec('ip route | grep ' + my_ip, function (err, stdout) {
-    net_addr = stdout.toString().split(' ')[0];
+  run('ip route | grep ' + ifaces[iface][0].address, function (output) {
+    net_addr = output.toString().split(' ')[0];
+    callback();
+  });
+}
+
+function getVpnIP(callback) {
+  dns.resolve4('us-east.privateinternetaccess.com', function (err, addresses) {
+    if (err) throw err;
+    pia_ip = addresses[0];
     callback();
   });
 }
@@ -78,10 +90,8 @@ function getNetAddress(callback) {
 if (process.getuid() !== 0) {
   run('sudo ./vpn_start.js');
 } else {
-  dns.resolve4('us-east.privateinternetaccess.com', function (err, addresses) {
-    if (err) throw err;
-    pia_ip = addresses[0];
-    iface = getIface();
+  iface = getIface();
+  getVpnIP(function () {
     writeVpnConfig(function () {
       run('/etc/init.d/openvpn restart');
     });
@@ -92,3 +102,5 @@ if (process.getuid() !== 0) {
     });
   });
 }
+
+
