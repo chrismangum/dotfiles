@@ -9,8 +9,6 @@ if [[ $(uname) == 'Darwin' ]]; then
 else
   alias weechat="weechat-curses"
   alias xlock="xscreensaver-command -lock"
-  alias tp="trash-put"
-  alias tl="trash-list"
 fi
 
 #git aliases
@@ -34,11 +32,6 @@ alias gss='git status -s'
 if [[ $(uname) == 'Linux' ]]; then
   #disable bell
   xset -b
-
-  #linux only functions:
-  function rm() {
-    echo "Do not use rm. Use \"trash-put $@\" instead.."
-  }
 fi
 
 #set apollo base dir
