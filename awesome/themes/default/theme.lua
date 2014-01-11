@@ -3,7 +3,7 @@
 ---------------------------
 
 theme = {}
-themedir = "~/.config/awesome/themes/default"
+themedir = "/home/chris/.config/awesome/themes/default"
 
 theme.font          = "sans 8"
 

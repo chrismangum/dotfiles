@@ -4,7 +4,7 @@
 -------------------------------
 -- If you want SVGs and extras, get them from garoth.com/awesome/sky-theme
 
-themesdir = "~/.config/awesome/themes"
+themesdir = "/home/chris/.config/awesome/themes"
 themedir = themesdir .. "/sky"
 
 -- BASICS
