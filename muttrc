@@ -25,6 +25,9 @@ set sort = 'threads'
 set sort_aux = 'reverse-date-received'
 set imap_check_subscribed
 
+set alias_file=~/.mutt/aliases
+source $alias_file
+set signature=~/.mutt/signature
 set editor = "/usr/bin/vim"
 set pager_stop
 ignore "Authentication-Results:"
