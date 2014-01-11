@@ -34,7 +34,7 @@ if [[ $(uname) == 'Linux' ]]; then
   xset -b
 
   function mail() {
-    cp ~/.sec/$1.gpg ~/.sec/pass.gpg
+    cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
     mutt
   }
 fi
