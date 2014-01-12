@@ -1,8 +1,8 @@
-set my_tmpsecret=`gpg -o ~/.sec/.tmp -d ~/.sec/pass.gpg`
-set my_gacct=`awk '/acct/ {print $2}' ~/.sec/.tmp`
-set my_gpass=`awk '/pass/ {print $2}' ~/.sec/.tmp`
-set my_gurl=`awk '/url/ {print $2}' ~/.sec/.tmp`
-set my_del=`rm ~/.sec/.tmp`
+set my_tmpsecret=`gpg -o ~/.tmp -d ~/.mutt/gpg/pass.gpg`
+set my_gacct=`awk '/acct/ {print $2}' ~/.tmp`
+set my_gpass=`awk '/pass/ {print $2}' ~/.tmp`
+set my_gurl=`awk '/url/ {print $2}' ~/.tmp`
+set my_del=`rm ~/.tmp`
 
 set imap_user = "$my_gacct"
 set imap_pass = "$my_gpass"
@@ -25,6 +25,9 @@ set sort = 'threads'
 set sort_aux = 'reverse-date-received'
 set imap_check_subscribed
 
+set alias_file=~/.mutt/aliases
+source $alias_file
+set signature=~/.mutt/signature
 set editor = "/usr/bin/vim"
 set pager_stop
 ignore "Authentication-Results:"

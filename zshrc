@@ -32,6 +32,11 @@ alias gss='git status -s'
 if [[ $(uname) == 'Linux' ]]; then
   #disable bell
   xset -b
+
+  function mail() {
+    cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
+    mutt
+  }
 fi
 
 #set apollo base dir

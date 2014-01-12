@@ -1,0 +1,8 @@
+[color]
+	ui = true
+[user]
+	name = Chris Mangum
+	email = mtdbass5@gmail.com
+[core]
+	editor = vim
+	excludesfile = ~/.gitignore_global
