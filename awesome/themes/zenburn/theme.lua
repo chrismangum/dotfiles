@@ -11,7 +11,7 @@ themedir = themesdir .. "/zenburn"
 
 -- {{{ Main
 theme = {}
-theme.wallpaper_cmd = { "awsetbg /home/chris/Photos/beach_rocks.jpg" }
+theme.wallpaper_cmd = { "awsetbg /home/chris/Photos/city_clean.jpg" }
 -- }}}
 
 -- {{{ Styles

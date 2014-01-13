@@ -42,6 +42,15 @@ if [[ $(uname) == 'Linux' ]]; then
     cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
     mutt
   }
+  function gen_flac_tags() {
+    for i in *.flac; do
+      metaflac --set-tag="TRACKNUMBER=$(echo $i | cut -d " " -f 1)" "$i"
+      metaflac --set-tag="TITLE=$(echo $(basename "$i" .flac) | sed -r 's/[0-9]{2} //')" "$i"
+    done
+
+    metaflac --set-tag="ALBUM=$(basename "$(pwd)")" *.flac
+    metaflac --set-tag="ARTIST=$(basename "$(dirname "$(pwd)")")" *.flac
+  }
 fi
 
 #set apollo base dir

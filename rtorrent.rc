@@ -1,2 +1,2 @@
-directory = ./tv
-session = ./.session
+directory = ~/tv
+session = ~/.session
