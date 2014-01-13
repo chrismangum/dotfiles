@@ -9,6 +9,11 @@ if [[ $(uname) == 'Darwin' ]]; then
 else
   alias weechat="weechat-curses"
   alias xlock="xscreensaver-command -lock"
+  #safety nets:
+  alias rm='rm -I --preserve-root'
+  alias chown='chown --preserve-root'
+  alias chmod='chmod --preserve-root'
+  alias chgrp='chgrp --preserve-root'
 fi
 
 #git aliases
