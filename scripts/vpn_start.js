@@ -41,8 +41,8 @@ function writeVpnConfig(addresses, callback) {
   ].join(os.EOL), callback);
 }
 
-function writeIpRules(net_addr, stderr, callback) {
-  net_addr = net_addr.toString().split(' ')[0];
+function writeIpRules(stdout, stderr, callback) {
+  var net_addr = stdout.toString().split(' ')[0];
   fs.writeFile('/etc/iptables.up.rules', [
     '*filter',
     ':INPUT ACCEPT [0:0]',
