@@ -14,7 +14,6 @@ set realname = "Chris Mangum"
 
 set folder = "imaps://imap.gmail.com:993"
 set spoolfile = "+INBOX"
-set record = "+[Gmail]/Sent Mail"
 set postponed = "+[Gmail]/Drafts"
 
 set header_cache=~/.mutt/cache/headers
