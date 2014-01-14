@@ -14,6 +14,7 @@ else
   alias chown='chown --preserve-root'
   alias chmod='chmod --preserve-root'
   alias chgrp='chgrp --preserve-root'
+  alias pyserver='python -m SimpleHTTPServer 3000'
 fi
 
 #git aliases
