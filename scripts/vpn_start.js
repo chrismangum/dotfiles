@@ -2,6 +2,7 @@
 
 var os = require('os'),
   async = require('async'),
+  _ = require('underscore'),
   fs = require('fs'),
   dns = require('dns'),
   exec = require('child_process').exec;
@@ -10,11 +11,9 @@ var iface, pia_ip,
   ifaces = os.networkInterfaces();
 
 function getIface() {
-  for (var i in ifaces) {
-    if (i.indexOf('eth') !== -1) {
-      return i;
-    }
-  }
+  return _.find(_.keys(ifaces), function (iface) {
+    return iface.indexOf('eth') !== -1;
+  });
 }
 
 function writeVpnConfig(addresses, callback) {
