@@ -89,7 +89,7 @@ if (process.getuid() !== 0) {
       exec('iptables-restore < /etc/iptables.up.rules', callback);
     }
   ], function (err, result) {
-      console.log(err ? 'Failed.' : 'Done.');
+      console.log(err ? 'Failed.\n' + err : 'Done.');
     }
   );
 }
