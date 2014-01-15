@@ -18,6 +18,7 @@ function getIface() {
 }
 
 function writeVpnConfig(addresses, callback) {
+  log('Done.\nWriting VPN config file: ');
   pia_ip = addresses[0];
   fs.writeFile('/etc/openvpn/client.conf', [
     'up /etc/openvpn/update-resolv-conf',
@@ -43,6 +44,7 @@ function writeVpnConfig(addresses, callback) {
 
 function writeIpRules(stdout, stderr, callback) {
   var net_addr = stdout.toString().split(' ')[0];
+  log('Done.\nWriting iptables rule file: ');
   fs.writeFile('/etc/iptables.up.rules', [
     '*filter',
     ':INPUT ACCEPT [0:0]',
@@ -57,16 +59,24 @@ function writeIpRules(stdout, stderr, callback) {
   ].join(os.EOL), callback);
 }
 
+function log(msg) {
+  process.stdout.write(msg);
+}
+
 if (process.getuid() !== 0) {
-  console.log('run as sudo');
+  exec('sudo ./vpn_start.js', function (err, stdout, stderr) {
+    log(stdout + stderr);
+  });
 } else {
   iface = getIface();
   async.waterfall([
     function (callback) {
+      log('Getting VPN IP: ');
       dns.resolve4('us-east.privateinternetaccess.com', callback);
     },
     writeVpnConfig,
     function (callback) {
+      log('Done.\nStarting OpenVPN: ');
       exec('/etc/init.d/openvpn restart', callback);
     },
     //get network address:
@@ -75,11 +85,11 @@ if (process.getuid() !== 0) {
     },
     writeIpRules,
     function (callback) {
+      log('Done.\nApplying iptables rules: ');
       exec('iptables-restore < /etc/iptables.up.rules', callback);
     }
   ], function (err, result) {
-      if (err) throw err;
-      console.log('Done.');
+      console.log(err ? 'Failed.' : 'Done.');
     }
   );
 }
