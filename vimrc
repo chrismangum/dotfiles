@@ -1,18 +1,18 @@
 call pathogen#infect()
 syntax on
+filetype plugin on
 set number
 set autoread
 set ruler
 set t_Co=256
 set smartindent
-set ts=2
-set sts=2
-set sw=2
 set expandtab
 set hlsearch
 set incsearch
 set pastetoggle=<F3>
 set ignorecase
 set nofoldenable
-filetype plugin on
+autocmd BufEnter * set sw=2 sts=2 ts=2
+"set tabs to 4 spaces for specific projects
+autocmd BufEnter ~/www/Apollo/*,~/www/ApolloHubUser,~/www/ApolloHubAdmin set sw=4 sts=4 ts=4
 colorscheme xoria256
