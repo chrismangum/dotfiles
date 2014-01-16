@@ -7,13 +7,17 @@ var os = require('os'),
   dns = require('dns'),
   exec = require('child_process').exec;
 
-var iface, pia_ip,
+var pia_ip,
   ifaces = os.networkInterfaces();
 
-function getIface() {
-  return _.find(_.keys(ifaces), function (iface) {
-    return iface.indexOf('eth') !== -1;
-  });
+function getDefaultIface() {
+  return _.find(_.keys(ifaces), arrStrIndexOf('eth'));
+}
+
+function arrStrIndexOf(string) {
+  return function (item) {
+    return item.indexOf(string) !== -1;
+  }
 }
 
 function writeVpnConfig(addresses, callback) {
@@ -41,8 +45,7 @@ function writeVpnConfig(addresses, callback) {
   ].join(os.EOL), callback);
 }
 
-function writeIpRules(stdout, stderr, callback) {
-  var net_addr = stdout.toString().split(' ')[0];
+function writeIpRules(net_addr, callback) {
   log('Done.\nWriting iptables rule file: ');
   fs.writeFile('/etc/iptables.up.rules', [
     '*filter',
@@ -51,8 +54,8 @@ function writeIpRules(stdout, stderr, callback) {
     ':OUTPUT ACCEPT [0:0]',
     '-A OUTPUT -o lo -j ACCEPT',
     '-A OUTPUT -o tun0 -j ACCEPT',
-    '-A OUTPUT -o ' + iface + ' -d ' + net_addr + ' -j ACCEPT',
-    '-A OUTPUT -o ' + iface + ' -d ' + pia_ip + ' -j ACCEPT',
+    '-A OUTPUT -d ' + net_addr + ' -j ACCEPT',
+    '-A OUTPUT -d ' + pia_ip + ' -j ACCEPT',
     '-A OUTPUT -j DROP',
     'COMMIT' + os.EOL
   ].join(os.EOL), callback);
@@ -67,7 +70,6 @@ if (process.getuid() !== 0) {
     log(stdout + stderr);
   });
 } else {
-  iface = getIface();
   async.waterfall([
     function (callback) {
       log('Getting VPN IP: ');
@@ -78,9 +80,17 @@ if (process.getuid() !== 0) {
       log('Done.\nStarting OpenVPN: ');
       exec('/etc/init.d/openvpn restart', callback);
     },
-    //get network address:
+    //get routes:
     function (stdout, stderr, callback) {
-      exec('ip route | grep ' + ifaces[iface][0].address, callback);
+      exec('ip route', callback);
+    },
+    //isolate net addr:
+    function (stdout, stderr, callback) {
+      var routes, my_ip, net_addr;
+      routes = stdout.toString().split('\n'),
+      my_ip = ifaces[getDefaultIface()][0].address,
+      net_addr = _.find(routes, arrStrIndexOf(my_ip)).split(' ')[0];
+      callback(null, net_addr);
     },
     writeIpRules,
     function (callback) {
