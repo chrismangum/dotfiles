@@ -11,10 +11,10 @@ var pia_ip,
   ifaces = os.networkInterfaces();
 
 function getDefaultIface() {
-  return _.find(_.keys(ifaces), arrStrIndexOf('eth'));
+  return _.find(_.keys(ifaces), arrStrFind('eth'));
 }
 
-function arrStrIndexOf(string) {
+function arrStrFind(string) {
   return function (item) {
     return item.indexOf(string) !== -1;
   }
@@ -65,6 +65,10 @@ function log(msg) {
   process.stdout.write(msg);
 }
 
+function grepOne(needle, haystack) {
+  return _.find(haystack.split('\n'), arrStrFind(needle));
+}
+
 if (process.getuid() !== 0) {
   exec('sudo ./vpn_start.js', function (err, stdout, stderr) {
     log(stdout + stderr);
@@ -86,10 +90,9 @@ if (process.getuid() !== 0) {
     },
     //isolate net addr:
     function (stdout, stderr, callback) {
-      var routes, my_ip, net_addr;
-      routes = stdout.toString().split('\n'),
+      var my_ip, net_addr;
       my_ip = ifaces[getDefaultIface()][0].address,
-      net_addr = _.find(routes, arrStrIndexOf(my_ip)).split(' ')[0];
+      net_addr = grepOne(my_ip, stdout.toString()).split(' ')[0];
       callback(null, net_addr);
     },
     writeIpRules,
