@@ -7,17 +7,18 @@ var os = require('os'),
   dns = require('dns'),
   exec = require('child_process').exec;
 
-var pia_ip,
-  ifaces = os.networkInterfaces();
+var pia_ip;
 
-function getDefaultIface() {
-  return _.find(_.keys(ifaces), arrStrFind('eth'));
+function getIP() {
+  var ifaces = os.networkInterfaces(),
+    iface = arrStrFind(_.keys(ifaces), 'eth');
+  return ifaces[iface][0].address;
 }
 
-function arrStrFind(string) {
-  return function (item) {
-    return item.indexOf(string) !== -1;
-  }
+function arrStrFind(arr, string) {
+  return _.find(arr, function (i) {
+    return i.indexOf(string) !== -1;
+  });
 }
 
 function writeVpnConfig(addresses, callback) {
@@ -66,7 +67,7 @@ function log(msg) {
 }
 
 function grepOne(needle, haystack) {
-  return _.find(haystack.split('\n'), arrStrFind(needle));
+  return arrStrFind(haystack.split('\n'), needle);
 }
 
 if (process.getuid() !== 0) {
@@ -90,9 +91,7 @@ if (process.getuid() !== 0) {
     },
     //isolate net addr:
     function (stdout, stderr, callback) {
-      var my_ip, net_addr;
-      my_ip = ifaces[getDefaultIface()][0].address,
-      net_addr = grepOne(my_ip, stdout.toString()).split(' ')[0];
+      var net_addr = grepOne(getIP(), stdout.toString()).split(' ')[0];
       callback(null, net_addr);
     },
     writeIpRules,
