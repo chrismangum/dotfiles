@@ -1,5 +1,9 @@
 alias tmux="TERM=xterm-256color; tmux"
 
+bindkey "^?" backward-delete-char
+bindkey "^W" backward-kill-word 
+bindkey "^H" backward-delete-char
+
 if [[ $(uname) == 'Darwin' ]]; then
   alias pgstart="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
   alias pgstop="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop"
@@ -9,12 +13,12 @@ if [[ $(uname) == 'Darwin' ]]; then
 else
   alias weechat="weechat-curses"
   alias xlock="xscreensaver-command -lock"
+  alias pyserver='python -m SimpleHTTPServer 3000'
   #safety nets:
   alias rm='rm -I --preserve-root'
   alias chown='chown --preserve-root'
   alias chmod='chmod --preserve-root'
   alias chgrp='chgrp --preserve-root'
-  alias pyserver='python -m SimpleHTTPServer 3000'
 fi
 
 #git aliases
@@ -101,7 +105,7 @@ DISABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(osx web-search)
+plugins=(vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 alias ls="ls --color"
