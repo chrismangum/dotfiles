@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 var  _ = require('underscore'),
+  fs = require('fs'),
+  os = require('os'),
   util = require('util'),
   async = require('async'),
   request = require('request'),
@@ -54,6 +56,21 @@ function parseAlbumLookup(body) {
   return _.pick(album, 'name', 'artist', 'released', 'tracks');
 }
 
+function getCommandText(album) {
+  var commands, folder;
+  album = parseAlbumLookup(album);
+  folder = '/media/external/music/iTunes/Music/"' +
+    album.artist + '"/"' + album.name + '"';
+  commands = ['mkdir -p ' + folder];
+  commands = commands.concat(_.map(album.tracks, function (item, i) {
+    i += 1;
+    i = i < 10 ? '0' + i : i;
+    return 'mv track' + i + '.flac ' +
+     folder + '/"' + i + ' ' + item + '.flac"';
+  }));
+  return commands.join(os.EOL) + os.EOL;
+}
+
 function insertNull(callback) {
   return function (res) {
     var args = _.toArray(arguments);
@@ -74,10 +91,11 @@ async.waterfall([
   },
   function (res, callback) {
     request('http://ws.spotify.com/lookup/1/.json?extras=track&uri=spotify:album:' + res.id, callback);
+  },
+  function (res, body, callback) {
+    fs.writeFile('./command', getCommandText(body), callback);
   }
-], function (err, result, body) {
-    console.log(err || parseAlbumLookup(body));
+], function (err, result) {
+    console.log(err || 'Done');
   }
 );
-
-
