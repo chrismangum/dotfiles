@@ -72,7 +72,7 @@ function getCommandText(album) {
 }
 
 function insertNullArg(callback) {
-  return function (res) {
+  return function () {
     var args = _.toArray(arguments);
     args.unshift(null);
     callback.apply(this, args);
