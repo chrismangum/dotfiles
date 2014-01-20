@@ -18,23 +18,19 @@ function logAlbumInfo(album) {
   );
 }
 
-function albumStepPrompt(albums, callback) {
-  async.detectSeries(albums,
+function stepPrompt(arr, logger, callback) {
+  async.detectSeries(arr,
     function (item, callback) {
-      logAlbumInfo(item);
-      yesNoPrompt(callback);
+      logger(item);
+      rl.question('Is this correct? (y, n): ', function (res) {
+        callback(/y/i.test(res));
+      });
     },
     function (result) {
       rl.close();
       callback(result);
     }
   );
-}
-
-function yesNoPrompt(callback) {
-  rl.question('Is this correct? (y, n): ', function (res) {
-    callback(/y/i.test(res));
-  });
 }
 
 function parseAlbumQuery(err, res, body) {
@@ -44,12 +40,12 @@ function parseAlbumQuery(err, res, body) {
     i.artist = i.artists[0].name;
     return _.pick(i, 'name', 'id', 'artist');
   });
-  albumStepPrompt(items, function (sel) {
+  stepPrompt(items, logAlbumInfo, function (sel) {
     console.log(sel ? 'The selected item was: ' + util.inspect(sel) : 'No more items.');
   });
 }
 
-rl.question('Enter Album Query: ', function(res) {
+rl.question('Enter Album Query: ', function (res) {
   request('http://ws.spotify.com/search/1/album.json?q=' + res, parseAlbumQuery);
 });
 
