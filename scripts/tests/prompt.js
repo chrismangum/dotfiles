@@ -11,32 +11,30 @@ var rl = readline.createInterface({
   output: process.stdout
 });
 
-function albumInfo(album) {
-  var string = 'Album: ' + album.name + '\n';
-  return string + 'Artist: ' + album.artist;
+function logAlbumInfo(album) {
+  console.log(
+    'Album: ' + album.name + '\n' +
+    'Artist: ' + album.artist
+  );
 }
 
 function albumStepPrompt(albums, callback) {
   async.detectSeries(albums,
     function (item, callback) {
-      console.log(albumInfo(item));
-      yesNoPrompt(function (res) {
-        callback(/y/i.test(res));
-      });
+      logAlbumInfo(item);
+      yesNoPrompt(callback);
     },
     function (result) {
       rl.close();
-      if (result) {
-        callback(result);
-      } else {
-        console.log('No more items.');
-      }
+      callback(result);
     }
   );
 }
 
 function yesNoPrompt(callback) {
-  rl.question('Is this correct? (y, n): ', callback);
+  rl.question('Is this correct? (y, n): ', function (res) {
+    callback(/y/i.test(res));
+  });
 }
 
 function parseAlbumQuery(err, res, body) {
@@ -47,9 +45,11 @@ function parseAlbumQuery(err, res, body) {
     return _.pick(i, 'name', 'id', 'artist');
   });
   albumStepPrompt(items, function (sel) {
-    console.log('The selected item was: ' + util.inspect(sel));
+    console.log(sel ? 'The selected item was: ' + util.inspect(sel) : 'No more items.');
   });
 }
 
-request('http://ws.spotify.com/search/1/album.json?q=OK Computer', parseAlbumQuery);
+rl.question('Enter Album Query: ', function(res) {
+  request('http://ws.spotify.com/search/1/album.json?q=' + res, parseAlbumQuery);
+});
 
