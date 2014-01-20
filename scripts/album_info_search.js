@@ -71,7 +71,7 @@ function getCommandText(album) {
   return commands.join(os.EOL) + os.EOL;
 }
 
-function insertNull(callback) {
+function insertNullArg(callback) {
   return function (res) {
     var args = _.toArray(arguments);
     args.unshift(null);
@@ -81,7 +81,7 @@ function insertNull(callback) {
 
 async.waterfall([
   function (callback) {
-    rl.question('Enter Album Query: ', insertNull(callback));
+    rl.question('Enter Album Query: ', insertNullArg(callback));
   },
   function (res, callback) {
     request('http://ws.spotify.com/search/1/album.json?q=' + res, callback);
