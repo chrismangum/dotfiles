@@ -61,7 +61,10 @@ function getCommandText(album) {
   album = parseAlbumLookup(album);
   folder = '/media/external/music/iTunes/Music/"' +
     album.artist + '"/"' + album.name + '"';
-  commands = ['mkdir -p ' + folder];
+  commands = [
+    'metaflac --set-tag="DATE=' + album.released + '" *.flac',
+    'mkdir -p ' + folder
+  ];
   commands = commands.concat(_.map(album.tracks, function (item, i) {
     i += 1;
     i = i < 10 ? '0' + i : i;
