@@ -33,19 +33,35 @@ function stepPrompt(arr, logger, callback) {
   );
 }
 
-function parseAlbumQuery(err, res, body) {
+function parseAlbumQuery(body) {
   var items = JSON.parse(body).albums.slice(0, 10);
-  items = _.map(items, function (i) {
-    i.id = i.href.split(':')[2]
+  return _.map(items, function (i) {
+    i.id = i.href.split(':')[2];
     i.artist = i.artists[0].name;
     return _.pick(i, 'name', 'id', 'artist');
   });
-  stepPrompt(items, logAlbumInfo, function (sel) {
-    console.log(sel ? 'The selected item was: ' + util.inspect(sel) : 'No more items.');
-  });
 }
 
-rl.question('Enter Album Query: ', function (res) {
-  request('http://ws.spotify.com/search/1/album.json?q=' + res, parseAlbumQuery);
+function insertNull(callback) {
+  return function (res) {
+    var args = _.toArray(arguments);
+    args.unshift(null);
+    callback.apply(this, args);
+  };
+}
+
+async.waterfall([
+  function (callback) {
+    rl.question('Enter Album Query: ', insertNull(callback));
+  },
+  function (res, callback) {
+    request('http://ws.spotify.com/search/1/album.json?q=' + res, callback);
+  },
+  function (res, body, callback) {
+    stepPrompt(parseAlbumQuery(body), logAlbumInfo, insertNull(callback));
+  }
+], function (err, sel) {
+  console.log(err || sel ? 'The selected item was: ' + util.inspect(sel) : 'No more items.');
 });
+
 
