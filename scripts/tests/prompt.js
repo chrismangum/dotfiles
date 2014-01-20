@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-var request = require('request'),
-  _ = require('underscore'),
+var  _ = require('underscore'),
   util = require('util'),
-  readline = require('readline'),
-  async = require('async');
+  async = require('async'),
+  request = require('request'),
+  readline = require('readline');
 
 var rl = readline.createInterface({
   input: process.stdin,
