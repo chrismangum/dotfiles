@@ -27,7 +27,7 @@ function stepPrompt(arr, logger, callback) {
       });
     },
     function (result) {
-      rl.close();
+      rl.pause();
       callback(result);
     }
   );
