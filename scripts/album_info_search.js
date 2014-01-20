@@ -95,7 +95,7 @@ async.waterfall([
   function (res, body, callback) {
     fs.writeFile('./command', getCommandText(body), callback);
   }
-], function (err, result) {
+], function (err) {
     console.log(err || 'Done');
   }
 );
