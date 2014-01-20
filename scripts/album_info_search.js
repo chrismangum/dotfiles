@@ -57,14 +57,12 @@ function parseAlbumLookup(body) {
 }
 
 function getCommandText(album) {
-  var commands, folder;
-  album = parseAlbumLookup(album);
-  folder = '/media/external/music/iTunes/Music/"' +
-    album.artist + '"/"' + album.name + '"';
-  commands = [
-    'metaflac --set-tag="DATE=' + album.released + '" *.flac',
-    'mkdir -p ' + folder
-  ];
+  var folder = '/media/external/music/iTunes/Music/"' +
+    album.artist + '"/"' + album.name + '"',
+    commands = [
+      'metaflac --set-tag="DATE=' + album.released + '" *.flac',
+      'mkdir -p ' + folder
+    ];
   commands = commands.concat(_.map(album.tracks, function (item, i) {
     i += 1;
     i = i < 10 ? '0' + i : i;
@@ -96,7 +94,7 @@ async.waterfall([
     request('http://ws.spotify.com/lookup/1/.json?extras=track&uri=spotify:album:' + res.id, callback);
   },
   function (res, body, callback) {
-    fs.writeFile('./command', getCommandText(body), callback);
+    fs.writeFile('./command', getCommandText(parseAlbumLookup(body)), callback);
   }
 ], function (err) {
     console.log(err || 'Done');
