@@ -100,7 +100,6 @@ function getCommandText(album) {
   ]).join(os.EOL) + os.EOL;
 }
 
-
 function insertNullArg(callback) {
   return function () {
     var args = _.toArray(arguments);
