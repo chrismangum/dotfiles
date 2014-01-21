@@ -56,21 +56,50 @@ function parseAlbumLookup(body) {
   return _.pick(album, 'name', 'artist', 'released', 'tracks');
 }
 
+function genTagCmds(album) {
+  return [
+    genTagCmd('DATE', album.released, '*.flac'),
+    genTagCmd('ALBUM', album.name, '*.flac'),
+    genTagCmd('ARTIST', album.artist, '*.flac'),
+    _.map(album.tracks, function (track, i) {
+      var oldName;
+      i = getTrackNum(i);
+      oldName = genOldName(i);
+      return [
+        genTagCmd('TRACKNUMBER', i, oldName),
+        genTagCmd('TITLE', track, oldName),
+      ];
+    })
+  ];
+}
+
+function getTrackNum(i) {
+  i += 1;
+  return i < 10 ? '0' + i : i;
+}
+
+function genTagCmd(tagname, value, filename) {
+  return 'metaflac --set-tag="' + tagname + '=' + value + '" ' + filename;
+}
+
+function genOldName(i) {
+  return 'track' + i + '.cdda.flac';
+}
+
 function getCommandText(album) {
   var folder = '/media/external/music/iTunes/Music/"' +
-    album.artist + '"/"' + album.name + '"',
-    commands = [
-      'metaflac --set-tag="DATE=' + album.released + '" *.flac',
-      'mkdir -p ' + folder
-    ];
-  commands = commands.concat(_.map(album.tracks, function (item, i) {
-    i += 1;
-    i = i < 10 ? '0' + i : i;
-    return 'mv track' + i + '.cdda.flac ' +
-     folder + '/"' + i + ' ' + item + '.flac"';
-  }));
-  return commands.join(os.EOL) + os.EOL;
+    album.artist + '"/"' + album.name + '"';
+  return _.flatten([
+    genTagCmds(album),
+    _.map(album.tracks, function (track, i) {
+      i = getTrackNum(i);
+      return 'mv ' + genOldName(i) + ' "' + i + ' ' + track + '.flac"';
+    }),
+    'mkdir -p ' + folder,
+    'mv *.flac ' + folder
+  ]).join(os.EOL) + os.EOL;
 }
+
 
 function insertNullArg(callback) {
   return function () {
