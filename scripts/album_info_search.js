@@ -61,10 +61,7 @@ function genTagCmds(album) {
     genTagCmd('DATE', album.released, '*.flac'),
     genTagCmd('ALBUM', album.name, '*.flac'),
     genTagCmd('ARTIST', album.artist, '*.flac'),
-    _.map(album.tracks, function (track, i) {
-      var oldName;
-      i = getTrackNum(i);
-      oldName = genOldName(i);
+    iterateTracks(album.tracks, function (i, track, oldName) {
       return [
         genTagCmd('TRACKNUMBER', i, oldName),
         genTagCmd('TITLE', track, oldName),
@@ -73,17 +70,19 @@ function genTagCmds(album) {
   ];
 }
 
-function getTrackNum(i) {
-  i += 1;
-  return i < 10 ? '0' + i : i;
-}
-
 function genTagCmd(tagname, value, filename) {
   return 'metaflac --set-tag="' + tagname + '=' + value + '" ' + filename;
 }
 
-function genOldName(i) {
-  return 'track' + i + '.cdda.flac';
+function iterateTracks(tracks, iterator) {
+  return _.map(tracks, function (track, i) {
+    var oldName, newName;
+    i += 1;
+    i = i < 10 ? '0' + i : i;
+    oldName = 'track' + i + '.cdda.flac';
+    newName = '"' + i + ' ' + track + '.flac"';
+    return iterator(i, track, oldName, newName);
+  });
 }
 
 function getCommandText(album) {
@@ -91,9 +90,8 @@ function getCommandText(album) {
     album.artist + '"/"' + album.name + '"';
   return _.flatten([
     genTagCmds(album),
-    _.map(album.tracks, function (track, i) {
-      i = getTrackNum(i);
-      return 'mv ' + genOldName(i) + ' "' + i + ' ' + track + '.flac"';
+    iterateTracks(album.tracks, function (i, track, oldName, newName) {
+      return 'mv ' + oldName + ' ' + newName;
     }),
     'mkdir -p ' + folder,
     'mv *.flac ' + folder
