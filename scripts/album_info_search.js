@@ -66,7 +66,7 @@ function getCommandText(album) {
   commands = commands.concat(_.map(album.tracks, function (item, i) {
     i += 1;
     i = i < 10 ? '0' + i : i;
-    return 'mv track' + i + '.flac ' +
+    return 'mv track' + i + '.cdda.flac ' +
      folder + '/"' + i + ' ' + item + '.flac"';
   }));
   return commands.join(os.EOL) + os.EOL;
