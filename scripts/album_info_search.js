@@ -64,7 +64,7 @@ function genTagCmds(album) {
     iterateTracks(album.tracks, function (i, track, oldName) {
       return [
         genTagCmd('TRACKNUMBER', i, oldName),
-        genTagCmd('TITLE', track, oldName),
+        genTagCmd('TITLE', track, oldName)
       ];
     })
   ];
