@@ -47,6 +47,11 @@ if [[ $(uname) == 'Linux' ]]; then
     cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
     mutt
   }
+  function ls_test() {
+    for i in *; do
+      echo $(ls -dl $i | cut -d ' ' -f 1)'\t'$(du -sh $i | cut -d $'\t' -f 1)'\t'$(ls -dl $i | tr -s ' ' | cut -d ' ' -f 9-)
+    done
+  }
 fi
 
 #set apollo base dir
