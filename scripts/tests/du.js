@@ -2,6 +2,7 @@
 
 var fs = require('fs'),
   exec = require('child_process').exec,
+  colors = require('colors'),
   _ = require('underscore');
 
 var permissions = {
@@ -39,16 +40,28 @@ function getHumanSize(size) {
   return size + sizes[i];
 }
 
+function colorize(name, mode) {
+  if (mode.slice(0,1) === 'd') {
+    name = name.bold.blue;
+  } else if (mode.slice(0,1) === 'l') {
+    name = name.bold.cyan;
+  } else if (mode.indexOf('x') !== -1) {
+    name = name.bold.green;
+  }
+  return name;
+}
+
 function parse(output) {
   output = output.split('\n').slice(0, -1);
   return _.map(output, function (item) {
-    var info;
-    item = item.replace(/\t/g, ' ').split(' ');
-    info = fs.lstatSync('./' + item[1]);
+    var mode, name;
+    item = item.replace(/\t/g, '/').split('/');
+    name = item[1];
+    mode = getPermissions(fs.lstatSync(name).mode);
     return {
-      mode: getPermissions(info.mode),
+      mode: mode,
       size: parseInt(item[0]),
-      name: item[1]
+      name: colorize(name, mode)
     }
   });
 }
@@ -71,7 +84,7 @@ function sortByKey(arr, key, desc) {
 function convertSizes(files) {
   return _.map(files, function (file) {
     file.size = getHumanSize(file.size);
-    return file
+    return file;
   });
 }
 
