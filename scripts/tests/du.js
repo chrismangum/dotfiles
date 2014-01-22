@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-var fs = require('fs'),
+var _ = require('underscore'),
+  fs = require('fs'),
   exec = require('child_process').exec,
-  colors = require('colors'),
-  _ = require('underscore');
+  colors = require('colors');
 
 var permissions = {
     '0': '---',
