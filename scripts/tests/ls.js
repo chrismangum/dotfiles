@@ -32,11 +32,11 @@ function getPermissions(mode) {
   }).join('');
 }
 
-function humanReadableSize(size) {
+function getHumanSize(size) {
   for (var i = 0; size / 1024 > 1; i += 1) {
     size /= 1024;
   }
-  size = n % 1 === 0 ? size : size.toFixed(1);
+  size = size % 1 === 0 ? size : size.toFixed(1);
   return size + sizes[i];
 }
 
@@ -56,7 +56,7 @@ if (sort) {
 
 files = _.map(files, function (file) {
   file.mode = getPermissions(file.mode);
-  file.size = humanReadableSize(file.size);
+  file.size = getHumanSize(file.size);
   file = _.pick(file, 'mode', 'size', 'name');
   return _.toArray(file).join('\t');
 });
