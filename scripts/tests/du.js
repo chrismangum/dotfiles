@@ -67,10 +67,9 @@ function parse(output) {
 }
 
 function logFormatted(files) {
-  var output = _.map(files, function (item) {
+  console.log(_.map(files, function (item) {
     return _.values(item).join('\t');
-  }).join('\n');
-  console.log(output);
+  }).join('\n'));
 }
 
 function sortByKey(arr, key, desc) {
