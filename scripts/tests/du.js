@@ -55,7 +55,7 @@ function parse(output) {
   output = output.split('\n').slice(0, -1);
   return _.map(output, function (item) {
     var mode, name;
-    item = item.replace(/\t/g, '/').split('/');
+    item = item.split('\t');
     name = item[1];
     mode = getPermissions(fs.lstatSync(name).mode);
     return {
