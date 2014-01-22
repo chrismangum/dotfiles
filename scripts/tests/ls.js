@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
 var fs = require('fs'),
+  exec = require('child_process').exec,
   _ = require('underscore');
 
-var files,
-  sort = false,
-  permissions = {
+var permissions = {
     '0': '---',
     '4': 'r--',
     '5': 'r-x',
@@ -16,7 +15,7 @@ var files,
     '120': 'l',
     '100': '-'
   },
-  sizes = ['B', 'K', 'M', 'G', 'T'];
+  sizes = ['K', 'M', 'G', 'T'];
 
 function getPermissions(mode) {
   var filetype;
@@ -40,26 +39,46 @@ function getHumanSize(size) {
   return size + sizes[i];
 }
 
-files = fs.readdirSync(process.cwd());
-
-files = _.map(files, function (fileName) {
-  var file = fs.lstatSync('./' + fileName);
-  file.name = fileName;
-  return file;
-});
-
-if (sort) {
-  files = _(files).sortBy(function (file) {
-    return file.size * -1;
+function parse(output) {
+  output = output.split('\n').slice(0, -1);
+  return _.map(output, function (item) {
+    var info;
+    item = item.replace(/\t/g, ' ').split(' ');
+    info = fs.lstatSync('./' + item[1]);
+    return {
+      mode: getPermissions(info.mode),
+      size: parseInt(item[0]),
+      name: item[1]
+    }
   });
 }
 
-files = _.map(files, function (file) {
-  file.mode = getPermissions(file.mode);
-  file.size = getHumanSize(file.size);
-  file = _.pick(file, 'mode', 'size', 'name');
-  return _.toArray(file).join('\t');
-});
+function logFormatted(files) {
+  var output = _.map(files, function (item) {
+    return _.values(item).join('\t');
+  }).join('\n');
+  console.log(output);
+}
 
-console.log(files.join('\n'));
+function sortByKey(arr, key, desc) {
+  var direction = desc ? -1 : 1;
+  return arr.sort(function (a, b) {
+    var result = (a[key] < b[key]) ? -1 : (a[key] > b[key]) ? 1 : 0;
+    return result * direction;
+  });
+}
+
+function convertSizes(files) {
+  return _.map(files, function (file) {
+    file.size = getHumanSize(file.size);
+    return file
+  });
+}
+
+exec('du -s *', function (err, stdout, stderr) {
+  var files = parse(stdout.toString());
+  files = sortByKey(files, 'size', true);
+  files = convertSizes(files);
+  logFormatted(files);
+});
 
