@@ -75,7 +75,7 @@ function logFormatted(files) {
 function sortByKey(arr, key, desc) {
   var direction = desc ? -1 : 1;
   return arr.sort(function (a, b) {
-    var result = (a[key] < b[key]) ? -1 : (a[key] > b[key]) ? 1 : 0;
+    var result = a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0;
     return result * direction;
   });
 }
