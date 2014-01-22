@@ -15,7 +15,8 @@ var files,
   filetypes = {
     '120': 'l',
     '100': '-'
-  };
+  },
+  sizes = ['B', 'K', 'M', 'G', 'T'];
 
 function getPermissions(mode) {
   var filetype;
@@ -32,18 +33,11 @@ function getPermissions(mode) {
 }
 
 function humanReadableSize(size) {
-  var count = 0,
-    sizes = ['B', 'K', 'M', 'G', 'T'];
-  while (size / 1024 > 1) {
+  for (var i = 0; size / 1024 > 1; i += 1) {
     size /= 1024;
-    count += 1;
   }
-  size = isInt(size) ? size : size.toFixed(1);
-  return size + sizes[count];
-}
-
-function isInt(n) {
-  return n % 1 === 0;
+  size = n % 1 === 0 ? size : size.toFixed(1);
+  return size + sizes[i];
 }
 
 files = fs.readdirSync(process.cwd());
