@@ -50,9 +50,7 @@ function parseAlbumSearch(body) {
 
 function parseAlbumLookup(body) {
   var album = JSON.parse(body).album;
-  album.tracks = _.map(album.tracks, function (i) {
-    return i.name;
-  });
+  album.tracks = _.pluck(album.tracks, 'name');
   return _.pick(album, 'name', 'artist', 'released', 'tracks');
 }
 
