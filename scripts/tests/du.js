@@ -12,22 +12,19 @@ var permissions = {
     '6': 'rw-',
     '7': 'rwx'
   },
-  filetypes = {
-    '120': 'l',
-    '100': '-'
+  ftypes = {
+    '40': 'd',
+    '12': 'l',
+    '10': '-'
   },
   sizes = ['K', 'M', 'G', 'T'];
 
 function getPermissions(mode) {
-  var filetype;
+  var ftype;
   mode = mode.toString(8);
-  if (mode.length === 5) {
-    filetype = 'd'
-  } else {
-    filetype = filetypes[mode.slice(0,3)];
-  }
+  ftype = ftypes[mode.slice(0, 2)];
   mode = mode.slice(-3).split('');
-  return filetype + _.map(mode, function (item) {
+  return ftype + _.map(mode, function (item) {
     return permissions[item];
   }).join('');
 }
