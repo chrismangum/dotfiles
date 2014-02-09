@@ -1,9 +1,5 @@
 alias tmux="TERM=xterm-256color; tmux"
 
-bindkey "^?" backward-delete-char
-bindkey "^W" backward-kill-word 
-bindkey "^H" backward-delete-char
-
 if [[ $(uname) == 'Darwin' ]]; then
   alias pgstart="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
   alias pgstop="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop"
@@ -11,6 +7,9 @@ if [[ $(uname) == 'Darwin' ]]; then
   alias bower="noglob bower"
   alias tar="gtar"
 else
+  bindkey "^?" backward-delete-char
+  bindkey "^W" backward-kill-word 
+  bindkey "^H" backward-delete-char
   alias weechat="weechat-curses"
   alias xlock="xscreensaver-command -lock"
   alias pyserver='python -m SimpleHTTPServer 3000'
@@ -63,6 +62,7 @@ ZSH=$HOME/.oh-my-zsh
 if [[ $(uname) == 'Darwin' ]]; then
   ZSH_THEME="robbyrussell"
 else
+  plugins=(vi-mode)
   ZSH_THEME="custom"
 fi
 # alias zshconfig="mate ~/.zshrc"
@@ -97,14 +97,12 @@ DISABLE_CORRECTION="true"
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(vi-mode)
 
 source $ZSH/oh-my-zsh.sh
-alias ls="ls --color"
 
 # Customize to your needs...
 if [[ $(uname) == 'Darwin' ]]; then
-  export PATH="/usr/local/bin:/usr/local/sbin:/usr/local/Cellar/coreutils/8.21/libexec/gnubin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin"
+  export PATH="/usr/local/bin:/usr/local/sbin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin"
   eval "$(rbenv init -)"
 else
   export PATH=/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
