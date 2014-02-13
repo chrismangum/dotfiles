@@ -36,7 +36,7 @@ alias glp='git log -p'
 alias gpl='git pull'
 alias gpm='git push origin master'
 alias gpd='git push origin develop'
-alias gpc='git push origin chris-branch'
+alias gpc='git push origin develop-chris'
 alias gst='git status'
 alias gss='git status -s'
 
