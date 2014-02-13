@@ -6,12 +6,12 @@
 -- Alternative icon sets and widget icons:
 --  * http://awesome.naquadah.org/wiki/Nice_Icons
 --
-themesdir = "/home/chris/.config/awesome/themes"
+themesdir = "/home/chris/.config/awesome/themes/arch"
 themedir = themesdir .. "/zenburn"
 
 -- {{{ Main
 theme = {}
-theme.wallpaper_cmd = { "awsetbg /home/chris/Photos/city_clean.jpg" }
+theme.wallpaper = themedir .. "/zenburn-background.png"
 -- }}}
 
 -- {{{ Styles

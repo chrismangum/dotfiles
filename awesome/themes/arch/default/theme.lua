@@ -3,7 +3,7 @@
 ---------------------------
 
 theme = {}
-themedir = "/home/chris/.config/awesome/themes/default"
+themedir = "/home/chris/.config/awesome/themes/arch/default"
 
 theme.font          = "sans 8"
 
@@ -42,8 +42,8 @@ theme.tasklist_floating_icon = themedir .. "/tasklist/floatingw.png"
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
 theme.menu_submenu_icon = themedir .. "/submenu.png"
-theme.menu_height = "15"
-theme.menu_width  = "100"
+theme.menu_height = 15
+theme.menu_width  = 100
 
 -- You can add as many variables as
 -- you wish and access them by using
@@ -75,7 +75,7 @@ theme.titlebar_maximized_button_normal_active = themedir .. "/titlebar/maximized
 theme.titlebar_maximized_button_focus_active  = themedir .. "/titlebar/maximized_focus_active.png"
 
 -- You can use your own command to set your wallpaper
-theme.wallpaper_cmd = { "awsetbg " .. themedir .. "/background.png" }
+theme.wallpaper = themedir .. "/background.png"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themedir .. "/layouts/fairhw.png"
