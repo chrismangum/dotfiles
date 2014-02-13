@@ -4,7 +4,7 @@
 -------------------------------
 -- If you want SVGs and extras, get them from garoth.com/awesome/sky-theme
 
-themesdir = "/home/chris/.config/awesome/themes"
+themesdir = "/home/chris/.config/awesome/themes/arch"
 themedir = themesdir .. "/sky"
 
 -- BASICS
@@ -49,11 +49,11 @@ theme.taglist_squares_sel   = themesdir .. "/default/taglist/squarefw.png"
 theme.taglist_squares_unsel = themesdir .. "/default/taglist/squarew.png"
 
 -- MISC
-theme.wallpaper_cmd         = { "awsetbg /usr/share/awesome/themes/sky/sky-background.png" }
+theme.wallpaper             = themedir .. "/sky-background.png"
 theme.taglist_squares       = "true"
 theme.titlebar_close_button = "true"
-theme.menu_height           = "15"
-theme.menu_width            = "100"
+theme.menu_height           = 15
+theme.menu_width            = 100
 
 -- Define the image to load
 theme.titlebar_close_button_normal = themesdir .. "/default/titlebar/close_normal.png"
