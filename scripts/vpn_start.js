@@ -25,7 +25,7 @@ function grepOne(needle, haystack) {
 
 function getIP() {
   var ifaces = os.networkInterfaces(),
-    iface = arrStrFind(_.keys(ifaces), 'eth');
+    iface = arrStrFind(_.keys(ifaces), 'enp0s');
   return ifaces[iface][0].address;
 }
 
@@ -87,7 +87,8 @@ if (process.getuid() !== 0) {
     writeVpnConfig,
     function (callback) {
       log('Done.\nStarting OpenVPN: ');
-      exec('/etc/init.d/openvpn restart', callback);
+      //exec('/etc/init.d/openvpn restart', callback);
+      exec('systemctl restart openvpn@client.service', callback);
     },
     //get routes:
     function (stdout, stderr, callback) {
