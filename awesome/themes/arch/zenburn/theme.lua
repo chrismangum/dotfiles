@@ -11,7 +11,7 @@ themedir = themesdir .. "/zenburn"
 
 -- {{{ Main
 theme = {}
-theme.wallpaper = themedir .. "/zenburn-background.png"
+theme.wallpaper = "/home/chris/Photos/city_dirty.jpg"
 -- }}}
 
 -- {{{ Styles
