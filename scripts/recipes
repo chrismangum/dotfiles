@@ -1,0 +1,33 @@
+------ RIP DVD --------
+mencoder dvd://40 -sid 1000 -ovc copy -oac mp3lame -o test.avi
+mplayer test.avi -vf cropdetect
+avconv -i test.avi -vf crop=704:480:10:0 -strict experimental test.mp4
+
+----- RIP BLU RAY -----
+mencoder br://55 -bluray-device /media/br -ovc copy -oac mp3lame -o test.avi
+mplayer test.avi -vf cropdetect
+avconv -i test.avi -vf crop=1920:800:0:140 -strict experimental test.mp4
+-----------------------
+
+---- BURN AUDIO CD ----
+for i in *.m4a; do avconv -i $i "$(basename $i .m4a)".wav; done
+wodim -dummy -v -pad dev=/dev/sr0 -dao -swab *.wav
+wodim -v -pad dev=/dev/sr0 -dao -swab *.wav
+-----------------------
+
+---- RIP AUDIO CD -----
+cdparanoia -B
+flac --best *.wav
+rename 's/track([0-9]{2}).*/$1/' *.flac
+#after files are name + moved:
+gen_flac_tags
+metaflac --set-tag="DATE=2013" *.flac
+-----------------------
+
+---- ALAC -> FLAC -----
+for i in *; ffmpeg -i $i -c:a flac "$(echo $i | sed -r 's/m4a/flac/g')"
+-----------------------
+
+-- SYNC MEDIA DRIVES --
+rsync -vr --delete --progress --ignore-existing /media/external2/* /media/external
+-----------------------
