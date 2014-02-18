@@ -18,10 +18,7 @@ wodim -v -pad dev=/dev/sr0 -dao -swab *.wav
 ---- RIP AUDIO CD -----
 cdparanoia -B
 flac --best *.wav
-rename 's/track([0-9]{2}).*/$1/' *.flac
-#after files are name + moved:
-gen_flac_tags
-metaflac --set-tag="DATE=2013" *.flac
+~/scripts/album_info_search.js
 -----------------------
 
 ---- ALAC -> FLAC -----
