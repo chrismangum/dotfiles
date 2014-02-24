@@ -25,7 +25,7 @@ function grepOne(needle, haystack) {
 
 function getIP() {
   var ifaces = os.networkInterfaces(),
-    iface = arrStrFind(_.keys(ifaces), 'enp0s');
+    iface = arrStrFind(_.keys(ifaces), 'en');
   return ifaces[iface][0].address;
 }
 
