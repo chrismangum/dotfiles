@@ -50,7 +50,7 @@ var watchers = [
         path: process.env.APOLLO_BASE_DIR + '/common/client/css/',
         remotePath: 'css/',
         excludes: [],
-    },
+    }
 ]
 
 _.each(watchers, function (watcher) {
