@@ -44,7 +44,6 @@ function syncFile(source, destination) {
         if (err) {
             console.log('Error:');
             log(stdout + stderr);
-            watcher.close();
         } else {
             console.log('Done.');
         }
