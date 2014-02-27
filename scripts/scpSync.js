@@ -1,10 +1,30 @@
 #!/usr/bin/env node
 
-var chokidar = require('chokidar');
-var exec = require('child_process').exec;
-var fs = require('fs');
-var moment = require('moment');
-var _ = require('underscore');
+var chokidar = require('chokidar'),
+    exec = require('child_process').exec,
+    fs = require('fs'),
+    moment = require('moment'),
+    _ = require('underscore');
+
+var appId,
+    watchers = [
+        {
+            path: 'WebContent/',
+            remotePath: '',
+            excludes: [],
+        },
+        {
+            path: process.env.APOLLO_BASE_DIR + '/common/client/js/',
+            remotePath: 'js/app/common/',
+            excludes: [/vendor/],
+        },
+        {
+            path: process.env.APOLLO_BASE_DIR + '/common/client/css/',
+            remotePath: 'css/',
+            excludes: [],
+        }
+    ];
+
 
 function log(msg) {
     process.stdout.write(msg);
@@ -34,24 +54,6 @@ function syncFile(source, destination) {
         }
     });
 }
-
-var watchers = [
-    {
-        path: 'WebContent/',
-        remotePath: '',
-        excludes: [],
-    },
-    {
-        path: process.env.APOLLO_BASE_DIR + '/common/client/js/',
-        remotePath: 'js/app/common/',
-        excludes: [/vendor/],
-    },
-    {
-        path: process.env.APOLLO_BASE_DIR + '/common/client/css/',
-        remotePath: 'css/',
-        excludes: [],
-    }
-]
 
 _.each(watchers, function (watcher) {
     var w = chokidar.watch(watcher.path, {persistent: true})
