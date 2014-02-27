@@ -6,7 +6,15 @@ var chokidar = require('chokidar'),
     moment = require('moment'),
     _ = require('underscore');
 
-var appId,
+var appDescriptor = fs.readFileSync('appDescriptor.json').toString(),
+    appId = JSON.parse(appDescriptor).appId,
+    version = fs.readFileSync('version.txt').toString().replace('\n', ''),
+    stackatoAppId = [
+        appId,
+        version.replace('.', '-'),
+        moment().format('YYYYMM'),
+        process.env.USER
+    ].join('-'),
     watchers = [
         {
             path: 'WebContent/',
@@ -30,21 +38,9 @@ function log(msg) {
     process.stdout.write(msg);
 }
 
-function getAppId() {
-    if (!appId) {
-        appId = fs.readFileSync('appDescriptor.json').toString();
-        appId = JSON.parse(appId).appId;
-        var version = fs.readFileSync('version.txt').toString();
-        appId += '-' + version.replace('.', '-').replace('\n', '');
-        appId += '-' + moment().format('YYYYMM');
-        appId += '-' + process.env.USER;
-    }
-    return appId;
-}
-
 function syncFile(source, destination) {
     log('Updating file: ' + source + ' ... ');
-    exec('stackato scp ' + getAppId() + ' ' + source + ' :' + destination, function (err, stdout, stderr) {
+    exec('stackato scp ' + stackatoAppId + ' ' + source + ' :' + destination, function (err, stdout, stderr) {
         if (err) {
             console.log('Error:');
             log(stdout + stderr);
