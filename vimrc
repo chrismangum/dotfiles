@@ -12,6 +12,7 @@ set incsearch
 set pastetoggle=<F3>
 set ignorecase
 set nofoldenable
+cnoremap sudow w !sudo tee % >/dev/null
 autocmd BufEnter * set sw=2 sts=2 ts=2 nospell
 "set tabs to 4 spaces for specific projects
 autocmd BufEnter ~/www/Apollo* set sw=4 sts=4 ts=4
