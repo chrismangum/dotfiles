@@ -105,7 +105,7 @@ if [[ $(uname) == 'Darwin' ]]; then
   export PATH="/usr/local/bin:/usr/local/sbin:$HOME/.rbenv/bin:$HOME/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin"
   eval "$(rbenv init -)"
 else
-  export PATH=/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
+  export PATH=~/.gem/ruby/2.1.0/bin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
 fi
 
 
