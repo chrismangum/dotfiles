@@ -1,6 +1,9 @@
 # use vim as an editor
 export EDITOR=vim
 
+# set apollo base dir
+export APOLLO_BASE_DIR='/home/chris/www/Apollo'
+
 # aliases
 if [[ -e ~/.aliases ]]; then
   source ~/.aliases
@@ -16,14 +19,11 @@ if [[ $(uname) == 'Linux' ]]; then
   }
 fi
 
-# set apollo base dir
-export APOLLO_BASE_DIR="/home/chris/www/Apollo"
-
 # oh-my-zsh options:
-ZSH=$HOME/.oh-my-zsh
-ZSH_THEME="robbyrussell"
-DISABLE_AUTO_TITLE="true"
-DISABLE_CORRECTION="true"
+ZSH=~/.oh-my-zsh
+ZSH_THEME='robbyrussell'
+DISABLE_AUTO_TITLE='true'
+DISABLE_CORRECTION='true'
 
 # oh-my-zsh plugins:
 # format: plugins=(rails git textmate ruby lighthouse)
@@ -35,9 +35,9 @@ source $ZSH/oh-my-zsh.sh
 
 # modifications to vi mode:
 if [[ $(uname) == 'Linux' ]]; then
-  bindkey "^?" backward-delete-char
-  bindkey "^W" backward-kill-word
-  bindkey "^R" history-incremental-search-backward
+  bindkey '^?' backward-delete-char
+  bindkey '^W' backward-kill-word
+  bindkey '^R' history-incremental-search-backward
 fi
 
 # PATH:
