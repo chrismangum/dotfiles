@@ -3,13 +3,9 @@ alias tmux="TERM=xterm-256color; tmux"
 if [[ $(uname) == 'Darwin' ]]; then
   alias pgstart="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
   alias pgstop="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop"
-  alias find="gfind"
   alias bower="noglob bower"
-  alias tar="gtar"
 else
-  bindkey "^?" backward-delete-char
   bindkey "^W" backward-kill-word 
-  bindkey "^H" backward-delete-char
   alias weechat="weechat-curses"
   alias xlock="xscreensaver-command -lock"
   alias pyserver='python -m SimpleHTTPServer 3000'
@@ -32,12 +28,9 @@ alias gf='git fetch; git status'
 alias gl='git log'
 alias glg='git log --stat'
 alias glp='git log -p'
+alias gp='git push'
 alias gpl='git pull'
-alias gpm='git push origin master'
-alias gpd='git push origin develop'
-alias gpc='git push origin develop-chris'
 alias gst='git status'
-alias gss='git status -s'
 
 if [[ $(uname) == 'Linux' ]]; then
   #disable bell
@@ -59,11 +52,9 @@ ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-if [[ $(uname) == 'Darwin' ]]; then
-  ZSH_THEME="robbyrussell"
-else
+ZSH_THEME="robbyrussell"
+if [[ $(uname) == 'Linux' ]]; then
   plugins=(vi-mode)
-  ZSH_THEME="custom"
 fi
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
