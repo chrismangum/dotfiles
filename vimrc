@@ -15,7 +15,7 @@ set nofoldenable
 autocmd BufEnter * set sw=2 sts=2 ts=2 nospell
 
 " set tabs to 4 spaces for specific projects
-autocmd BufEnter ~/www/Apollo/*,~/www/ApolloHubUser/*,~/www/ApolloHubAdmin/*,~/www/ApolloSupportCases/* set sw=4 sts=4 ts=4
+autocmd BufEnter ~/www/Apollo/*,~/www/ApolloHubUser/*,~/www/ApolloHubAdmin/*,~/www/ApolloInstallBase/*,~/www/ApolloSupportCases/* set sw=4 sts=4 ts=4
 
 " enable spell checker for mail messages
 autocmd BufEnter /tmp/* set spell spelllang=en_us
