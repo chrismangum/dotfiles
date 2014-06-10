@@ -1,6 +1,6 @@
 [colorpairs]
 # normal = white; black
- highlight = black; green
+highlight = black; green
 # highlightd = black; gray
 # shadow = black; darkgray
 title = white; black
