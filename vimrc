@@ -23,4 +23,4 @@ autocmd BufEnter /tmp/* set spell spelllang=en_us
 " Display extra whitespace
 set list listchars=tab:»·,trail:·
 
-colorscheme xoria256
+colorscheme smyck
