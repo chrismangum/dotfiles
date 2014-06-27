@@ -16,6 +16,7 @@ else
 fi
 
 #git aliases
+alias yaourt='yaourt --noconfirm'
 alias ga='git add'
 alias gau='git add -u'
 alias gaa='git add -A'
