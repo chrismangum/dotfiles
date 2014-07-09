@@ -449,7 +449,8 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 do
     local cmds =
     {
-        "dropbox start"
+        "dropbox start",
+        "pidgin"
     }
     for _,i in pairs(cmds) do
         awful.util.spawn(i)
