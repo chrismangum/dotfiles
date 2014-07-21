@@ -21,7 +21,7 @@ fi
 
 # oh-my-zsh options:
 ZSH=~/.oh-my-zsh
-ZSH_THEME='robbyrussell'
+ZSH_THEME='custom'
 DISABLE_AUTO_TITLE='true'
 DISABLE_CORRECTION='true'
 
