@@ -5,7 +5,6 @@ if [[ $(uname) == 'Darwin' ]]; then
   alias pgstop="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop"
   alias bower="noglob bower"
 else
-  alias weechat="weechat-curses"
   alias xlock="xscreensaver-command -lock"
   alias pyserver='python -m SimpleHTTPServer 3000'
   #safety nets:
@@ -16,7 +15,6 @@ else
 fi
 
 #git aliases
-alias yaourt='yaourt --noconfirm'
 alias ga='git add'
 alias gau='git add -u'
 alias gaa='git add -A'
