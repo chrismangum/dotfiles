@@ -38,7 +38,7 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(awful.util.getdir("config") .. "/theme.lua")
+beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
@@ -449,8 +449,10 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 do
     local cmds =
     {
+        "xscreensaver -nosplash",
         "dropboxd",
-        "pidgin"
+        "pidgin",
+        "nitrogen --restore"
     }
     for _,i in pairs(cmds) do
         awful.util.spawn(i)
