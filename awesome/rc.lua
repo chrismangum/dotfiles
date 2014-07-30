@@ -70,6 +70,7 @@ local layouts =
 }
 -- }}}
 
+--[[
 -- {{{ Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
@@ -77,6 +78,7 @@ if beautiful.wallpaper then
     end
 end
 -- }}}
+]]
 
 -- {{{ Tags
 -- Define a tag table which hold all screen tags.
