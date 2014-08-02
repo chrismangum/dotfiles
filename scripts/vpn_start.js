@@ -87,7 +87,6 @@ if (process.getuid() !== 0) {
     writeVpnConfig,
     function (callback) {
       log('Done.\nStarting OpenVPN: ');
-      //exec('/etc/init.d/openvpn restart', callback);
       exec('systemctl restart openvpn@client.service', callback);
     },
     //get routes:
