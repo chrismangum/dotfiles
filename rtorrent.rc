@@ -1,4 +1,4 @@
-directory = /mnt/external/torrents
+directory = ~/tv
 session = ~/.session
 dht = auto
 dht_port = 6881

@@ -1,0 +1,2 @@
+image/*; /bin/feh '%s';
+application/pdf; mupdf %s

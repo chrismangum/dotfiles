@@ -1,12 +1,11 @@
-alias tmux="TERM=xterm-256color; tmux"
+alias tmux='TERM=xterm-256color; tmux'
 
 if [[ $(uname) == 'Darwin' ]]; then
-  alias pgstart="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start"
-  alias pgstop="pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop"
-  alias bower="noglob bower"
+  alias pgstart='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+  alias pgstop='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop'
+  alias bower='noglob bower'
 else
-  alias weechat="weechat-curses"
-  alias xlock="xscreensaver-command -lock"
+  alias xlock='xscreensaver-command -lock'
   alias pyserver='python -m SimpleHTTPServer 3000'
   #safety nets:
   alias rm='rm -I --preserve-root'
@@ -19,6 +18,7 @@ fi
 alias ga='git add'
 alias gau='git add -u'
 alias gaa='git add -A'
+alias gch='git checkout'
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gd='git diff'
