@@ -4,10 +4,19 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 Plugin 'jlanzarotta/bufexplorer'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'kien/ctrlp.vim'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'digitaltoad/vim-jade'
+Plugin 'pangloss/vim-javascript'
+Plugin 'wavded/vim-stylus'
 call vundle#end()
 
 syntax on
 filetype plugin on
+set hidden
+set nobackup
+set noswapfile
 set number
 set autoread
 set ruler
@@ -19,13 +28,15 @@ set incsearch
 set pastetoggle=<F3>
 set ignorecase
 set nofoldenable
+set visualbell
+set noerrorbells
 autocmd BufEnter * set sw=2 sts=2 ts=2 nospell
 
 " ctrlp settings
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-set wildignore+=*.swp,*.zip
+let g:ctrlp_working_path_mode = 0
+set wildignore=*.swp,*.zip,*.bak
 let g:ctrlp_custom_ignore = '\v[\/]\.git$'
 
 " set tabs to 4 spaces for specific projects

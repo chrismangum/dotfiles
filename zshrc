@@ -9,15 +9,10 @@ if [[ -e ~/.aliases ]]; then
   source ~/.aliases
 fi
 
-if [[ $(uname) == 'Linux' ]]; then
-  #disable bell
-  xset -b
-
-  function mail() {
-    cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
-    mutt
-  }
-fi
+function mail() {
+  cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
+  mutt
+}
 
 # oh-my-zsh options:
 ZSH=~/.oh-my-zsh
@@ -41,11 +36,6 @@ if [[ $(uname) == 'Linux' ]]; then
 fi
 
 # PATH:
-if [[ $(uname) == 'Darwin' ]]; then
-  export PATH=/usr/local/bin:/usr/local/sbin:~/.rbenv/bin:~/.rbenv/shims:/usr/bin:/bin:/usr/sbin:/sbin
-  eval "$(rbenv init -)"
-else
-  export PATH=~/.gem/ruby/2.1.0/bin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
-fi
+export PATH=/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
 
 
