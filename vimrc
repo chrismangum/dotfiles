@@ -30,7 +30,9 @@ set ignorecase
 set nofoldenable
 set visualbell
 set noerrorbells
-autocmd BufEnter * set sw=2 sts=2 ts=2 nospell
+
+autocmd BufEnter * set cc=80 tw=0 sw=2 sts=2 ts=2 nospell
+autocmd BUfEnter * hi ColorColumn ctermbg=16
 
 " ctrlp settings
 let g:ctrlp_map = '<c-p>'
@@ -42,7 +44,7 @@ let g:ctrlp_custom_ignore = '\v[\/]\.git$'
 autocmd BufEnter ~/www/Cisco/ApolloHubUser/*,~/www/Cisco/ApolloHubAdmin/*,~/www/Cisco/ApolloInstallBase/*,~/www/Cisco/ApolloSupportCases/* set sw=4 sts=4 ts=4
 
 " enable spell checker for mail messages
-autocmd BufEnter /tmp/* set spell spelllang=en_us
+autocmd BufEnter /tmp/* set cc=72 tw=72 spell spelllang=en_us
 
 " Display extra whitespace
 set list listchars=tab:»·,trail:·
