@@ -17,13 +17,11 @@ filetype plugin indent on
 set autoindent
 set expandtab
 set number
+set ignorecase smartcase
 set hlsearch
 set cursorline
-set smartcase
-set ignorecase
 set incsearch
-set visualbell
-set noerrorbells
+set visualbell noerrorbells
 set ruler
 set list listchars=tab:»·,trail:· " show extra space characters
 set nofoldenable
@@ -35,6 +33,7 @@ set hidden
 set nobackup
 set noswapfile
 set pastetoggle=<F3>
+set showcmd
 set t_Co=256
 
 colorscheme smyck
