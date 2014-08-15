@@ -35,8 +35,8 @@ set wildmode=list:longest,full
 
 set autoread
 set hidden
-set nobackup
-set noswapfile
+set noswapfile nobackup nowritebackup
+set nojoinspaces
 set pastetoggle=<F3>
 set showcmd
 set t_Co=256
