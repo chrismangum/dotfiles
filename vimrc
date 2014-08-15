@@ -36,7 +36,6 @@ autocmd BufEnter * set sw=2 sts=2 ts=2 nospell
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 0
-set wildignore=*.swp,*.zip,*.bak
 let g:ctrlp_custom_ignore = '\v[\/]\.git$'
 
 " set tabs to 4 spaces for specific projects
