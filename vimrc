@@ -2,6 +2,7 @@ set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+" Plugins
 Plugin 'gmarik/Vundle.vim'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'tpope/vim-commentary'
@@ -10,6 +11,8 @@ Plugin 'kchmck/vim-coffee-script'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'pangloss/vim-javascript'
 Plugin 'wavded/vim-stylus'
+" Colors
+Plugin 'https://bitbucket.org/chadhs/smyck.vim'
 call vundle#end()
 
 syntax on
