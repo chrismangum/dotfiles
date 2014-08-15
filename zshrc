@@ -2,7 +2,7 @@
 export EDITOR=vim
 
 # set apollo base dir
-export APOLLO_BASE_DIR='/home/chris/www/Cisco/Apollo'
+export APOLLO_BASE_DIR='/home/chris/Cisco/Apollo'
 
 # aliases
 if [[ -e ~/.aliases ]]; then
