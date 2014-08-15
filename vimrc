@@ -40,7 +40,7 @@ set wildignore=*.swp,*.zip,*.bak
 let g:ctrlp_custom_ignore = '\v[\/]\.git$'
 
 " set tabs to 4 spaces for specific projects
-autocmd BufEnter ~/www/ApolloHubUser/*,~/www/ApolloHubAdmin/*,~/www/ApolloInstallBase/*,~/www/ApolloSupportCases/* set sw=4 sts=4 ts=4
+autocmd BufEnter ~/www/Cisco/ApolloHubUser/*,~/www/Cisco/ApolloHubAdmin/*,~/www/Cisco/ApolloInstallBase/*,~/www/Cisco/ApolloSupportCases/* set sw=4 sts=4 ts=4
 
 " enable spell checker for mail messages
 autocmd BufEnter /tmp/* set spell spelllang=en_us
