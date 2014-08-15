@@ -1,4 +1,4 @@
-directory = ~/tv
+directory = /srv/nfs4/media/torrents
 session = ~/.session
 dht = auto
 dht_port = 6881
