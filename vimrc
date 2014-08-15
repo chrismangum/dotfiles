@@ -1,4 +1,11 @@
-call pathogen#infect()
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'
+Plugin 'jlanzarotta/bufexplorer'
+call vundle#end()
+
 syntax on
 filetype plugin on
 set number
