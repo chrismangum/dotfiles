@@ -13,24 +13,17 @@ function log(msg) {
   process.stdout.write(msg);
 }
 
-function arrStrFind(arr, string) {
-  return _.find(arr, function (i) {
-    return i.indexOf(string) !== -1;
-  });
-}
-
-function grepOne(needle, haystack) {
-  return arrStrFind(haystack.split('\n'), needle);
-}
-
 function getIP() {
-  var ifaces = os.networkInterfaces(),
-    iface = arrStrFind(_.keys(ifaces), 'en');
-  return ifaces[iface][0].address;
+  return _.find(os.networkInterfaces(), function (iface, name) {
+    return /e(np|th)/.test(name);
+  })[0].address;
 }
 
 function getNetAddr(ipRoute) {
-  return grepOne(getIP(), ipRoute).split(' ')[0];
+  var ip = getIP();
+  return _.find(ipRoute.split('\n'), function (line) {
+    return line.indexOf(ip) !== -1;
+  }).split(' ')[0];
 }
 
 function writeIpRules(stdout, stderr, callback) {
