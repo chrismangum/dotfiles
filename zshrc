@@ -33,6 +33,7 @@ if [[ $(uname) == 'Linux' ]]; then
   bindkey '^?' backward-delete-char
   bindkey '^W' backward-kill-word
   bindkey '^R' history-incremental-search-backward
+  bindkey '^F' history-incremental-search-forward
 fi
 
 # PATH:
