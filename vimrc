@@ -1,4 +1,4 @@
-set nocompatible
+
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -24,7 +24,7 @@ set expandtab
 set number
 set ignorecase smartcase
 set hlsearch
-" set cursorline
+set cursorline
 set incsearch
 set visualbell noerrorbells
 set ruler
@@ -42,19 +42,22 @@ set showcmd
 set t_Co=256
 
 colorscheme smyck
-
-highlight ColorColumn ctermbg=16
-highlight StatusLine  ctermbg=16
-highlight SpellBad    ctermbg=0  ctermfg=1
+highlight VertSplit    ctermbg=2  ctermfg=16
+highlight ColorColumn  ctermbg=16
+highlight CursorLineNr ctermbg=236 ctermfg=240
+highlight CursorLine   ctermbg=236
+highlight StatusLineNC ctermbg=235 ctermfg=240
+highlight StatusLine   ctermbg=235 ctermfg=2
+highlight SpellBad     ctermbg=0   ctermfg=1
 
 autocmd BufEnter * set cc=80 tw=0 sw=2 sts=2 ts=2 nospell
 " set tabs to 4 spaces for specific projects
 autocmd BufEnter ~/Cisco/ApolloHubUser/*,~/Cisco/ApolloHubAdmin/*,~/Cisco/ApolloInstallBase/*,~/Cisco/ApolloSupportCases/* set sw=4 sts=4 ts=4
-" enable spell checker for mail messages
-autocmd BufEnter /tmp/* set cc=72 tw=72 spell spelllang=en_us
+" enable spell checker for mail / commit messages
+autocmd BufEnter /tmp/*,COMMIT_EDITMSG set cc=72 tw=72 spell spelllang=en_us
 
 " ctrlp settings
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = '\v[\/]\.git$'
+let g:ctrlp_custom_ignore = 'node_modules\|git'
