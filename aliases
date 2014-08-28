@@ -1,12 +1,9 @@
 alias tmux='TERM=xterm-256color; tmux'
 
-if [[ $(uname) == 'Darwin' ]]; then
-  alias pgstart='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
-  alias pgstop='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log stop'
-  alias bower='noglob bower'
-else
+if [[ $(uname) == 'Linux' ]]; then
   alias xlock='xscreensaver-command -lock'
   alias pyserver='python -m SimpleHTTPServer 3000'
+  alias rename='perl-rename'
   #safety nets:
   alias rm='rm -I --preserve-root'
   alias chown='chown --preserve-root'
