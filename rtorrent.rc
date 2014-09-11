@@ -1,5 +1,5 @@
 download_rate = 2375
-upload_rate = 200
+upload_rate = 175
 max_uploads_global = 33
 
 directory = /srv/nfs4/media/torrents
