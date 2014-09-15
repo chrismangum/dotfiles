@@ -2,7 +2,7 @@ download_rate = 2375
 upload_rate = 175
 max_uploads_global = 33
 
-directory = /srv/nfs4/media/torrents
+directory = ~/torrents
 session = ~/.session
 
 encryption = allow_incoming,try_outgoing,enable_retry
