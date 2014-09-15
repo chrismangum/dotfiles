@@ -15,7 +15,7 @@ function log(msg) {
 
 function getIP() {
   return _.find(os.networkInterfaces(), function (iface, name) {
-    return /e(np|th)/.test(name);
+    return /^e(n|th)/.test(name);
   })[0].address;
 }
 
