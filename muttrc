@@ -17,8 +17,8 @@ set spoolfile = "+INBOX"
 set record =/dev/null
 set postponed = "+[Gmail]/Drafts"
 
-set header_cache=~/.mutt/cache/headers
-set message_cachedir=~/.mutt/cache/bodies
+set header_cache=~/.cache/mutt/headers
+set message_cachedir=~/.cache/mutt/bodies
 set certificate_file=~/.mutt/certificates
 
 set sort = 'threads'

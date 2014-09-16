@@ -11,6 +11,8 @@ if [[ $(uname) == 'Linux' ]]; then
   alias chgrp='chgrp --preserve-root'
 fi
 
+alias s='stackato'
+
 #git aliases
 alias ga='git add'
 alias gap='git add -p'
