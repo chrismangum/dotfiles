@@ -1,16 +1,24 @@
 #!/usr/bin/env node
 
 var os = require('os'),
-  async = require('async'),
+  Q = require('q'),
   _ = require('underscore'),
   fs = require('fs'),
   dns = require('dns'),
-  exec = require('child_process').exec;
+  child_process = require('child_process');
 
-var pia_ip;
+var pia_ip,
+  dnsLookup = Q.denodeify(dns.resolve4),
+  writeFile = Q.denodeify(fs.writeFile),
+  exec = Q.denodeify(child_process.exec);
 
 function log(msg) {
-  process.stdout.write(msg);
+  if (_.isArray(msg)) {
+    msg = _.first(msg);
+  }
+  if (msg) {
+    process.stdout.write(msg);
+  }
 }
 
 function getIP() {
@@ -26,26 +34,26 @@ function getNetAddr(ipRoute) {
   }).split(' ')[0];
 }
 
-function writeIpRules(stdout, stderr, callback) {
+function writeIpRules(stdout) {
   log('Done.\nWriting iptables rule file: ');
-  fs.writeFile('/etc/iptables.up.rules', [
+  return writeFile('/etc/iptables.up.rules', [
     '*filter',
     ':INPUT ACCEPT [0:0]',
     ':FORWARD ACCEPT [0:0]',
     ':OUTPUT ACCEPT [0:0]',
     '-A OUTPUT -o lo -j ACCEPT',
     '-A OUTPUT -o tun0 -j ACCEPT',
-    '-A OUTPUT -d ' + getNetAddr(stdout.toString()) + ' -j ACCEPT',
+    '-A OUTPUT -d ' + getNetAddr(stdout[0]) + ' -j ACCEPT',
     '-A OUTPUT -d ' + pia_ip + ' -j ACCEPT',
     '-A OUTPUT -j DROP',
     'COMMIT' + os.EOL
-  ].join(os.EOL), callback);
+  ].join(os.EOL));
 }
 
-function writeVpnConfig(addresses, callback) {
+function writeVpnConfig(addresses) {
   log('Done.\nWriting VPN config file: ');
   pia_ip = addresses[0];
-  fs.writeFile('/etc/openvpn/client.conf', [
+  return writeFile('/etc/openvpn/client.conf', [
     'up /etc/openvpn/update-resolv-conf',
     'down /etc/openvpn/update-resolv-conf',
     'script-security 2',
@@ -64,35 +72,31 @@ function writeVpnConfig(addresses, callback) {
     'comp-lzo',
     'verb 1',
     'reneg-sec 0' + os.EOL
-  ].join(os.EOL), callback);
+  ].join(os.EOL));
 }
 
 if (process.getuid() !== 0) {
-  exec('sudo ./vpn_start.js', function (err, stdout, stderr) {
-    log(stdout + stderr);
-  });
+  exec('sudo ./vpn_start.js').then(log);
 } else {
-  async.waterfall([
-    function (callback) {
-      log('Getting VPN IP: ');
-      dns.resolve4('us-east.privateinternetaccess.com', callback);
-    },
-    writeVpnConfig,
-    function (callback) {
+  log('Getting VPN IP: ');
+  dnsLookup('us-east.privateinternetaccess.com')
+    .then(writeVpnConfig)
+    .then(function () {
       log('Done.\nStarting OpenVPN: ');
-      exec('systemctl restart openvpn@client.service', callback);
-    },
-    //get routes:
-    function (stdout, stderr, callback) {
-      exec('ip route', callback);
-    },
-    writeIpRules,
-    function (callback) {
+      return exec('systemctl restart openvpn@client.service');
+    })
+    .then(function() {
+      return exec('ip route');
+    })
+    .then(writeIpRules)
+    .then(function () {
       log('Done.\nApplying iptables rules: ');
-      exec('iptables-restore < /etc/iptables.up.rules', callback);
-    }
-  ], function (err, result) {
-      console.log(err ? 'Failed.\n' + err : 'Done.');
-    }
-  );
+      return exec('iptables-restore < /etc/iptables.up.rules');
+    })
+    .then(function() {
+      console.log('Done.');
+    })
+    .catch(function (err) {
+       console.log('Failed.\n' + err);
+    });
 }
