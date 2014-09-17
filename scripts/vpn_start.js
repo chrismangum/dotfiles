@@ -102,6 +102,6 @@ if (process.getuid() !== 0) {
     function () {
       log('Done.\nApplying iptables rules: ');
       return exec('iptables-restore < /etc/iptables.up.rules');
-    },
+    }
   ]);
 }
