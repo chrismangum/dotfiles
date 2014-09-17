@@ -13,10 +13,7 @@ var pia_ip,
   exec = Q.denodeify(child_process.exec);
 
 function log(msg) {
-  if (_.isArray(msg)) {
-    msg = _.first(msg);
-  }
-  if (msg) {
+  if (msg = _.isArray(msg) ? _.first(msg) : msg) {
     process.stdout.write(msg);
   }
 }
@@ -75,28 +72,36 @@ function writeVpnConfig(addresses) {
   ].join(os.EOL));
 }
 
+function step(sequence) {
+  _.reduce(sequence, function (promise, item) {
+    return promise.then(item);
+  }, Q()).then(function() {
+    console.log('Done.');
+  }).catch(function (err) {
+    console.log('Failed.\n' + err);
+  });
+}
+
 if (process.getuid() !== 0) {
   exec('sudo ./vpn_start.js').then(log);
 } else {
-  log('Getting VPN IP: ');
-  dnsLookup('us-east.privateinternetaccess.com')
-    .then(writeVpnConfig)
-    .then(function () {
+  step([
+    function () {
+      log('Getting VPN IP: ');
+      return dnsLookup('us-east.privateinternetaccess.com');
+    },
+    writeVpnConfig,
+    function () {
       log('Done.\nStarting OpenVPN: ');
       return exec('systemctl restart openvpn@client.service');
-    })
-    .then(function() {
+    },
+    function () {
       return exec('ip route');
-    })
-    .then(writeIpRules)
-    .then(function () {
+    },
+    writeIpRules,
+    function () {
       log('Done.\nApplying iptables rules: ');
       return exec('iptables-restore < /etc/iptables.up.rules');
-    })
-    .then(function() {
-      console.log('Done.');
-    })
-    .catch(function (err) {
-       console.log('Failed.\n' + err);
-    });
+    },
+  ]);
 }
