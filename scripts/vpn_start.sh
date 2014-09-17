@@ -22,7 +22,7 @@ remote-cert-tls server
 auth-user-pass login.txt
 comp-lzo
 verb 1
-reneg-sec 0" | sudo tee /etc/openvpn/client.conf
+reneg-sec 0" | sudo dd of=/etc/openvpn/client.conf &> /dev/null
 
 sudo systemctl start openvpn@client.service
 
@@ -32,3 +32,5 @@ sudo iptables -A OUTPUT -o tun0 -j ACCEPT
 sudo iptables -A OUTPUT -d $net_addr -j ACCEPT
 sudo iptables -A OUTPUT -d $pia_ip -j ACCEPT
 sudo iptables -A OUTPUT -j DROP
+
+echo "Connected to: $pia_ip"
