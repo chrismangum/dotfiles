@@ -9,7 +9,7 @@ var os = require('os'),
 
 var pia_ip,
   dnsLookup = Q.denodeify(dns.lookup),
-  writeFile = Q.denodeify(fs.writeFile),
+  fsWriteFile = Q.denodeify(fs.writeFile),
   exec = Q.denodeify(child_process.exec);
 
 function log(msg) {
@@ -18,6 +18,10 @@ function log(msg) {
       process.stdout.write(msg);
     }
   });
+}
+
+function writeFile(path, arr) {
+  return fsWriteFile(path, arr.join(os.EOL) + os.EOL);
 }
 
 function writeIpRules(stdout) {
@@ -31,8 +35,8 @@ function writeIpRules(stdout) {
     '-A OUTPUT -d ' + stdout[0].trim() + ' -j ACCEPT',
     '-A OUTPUT -d ' + pia_ip + ' -j ACCEPT',
     '-A OUTPUT -j DROP',
-    'COMMIT' + os.EOL
-  ].join(os.EOL));
+    'COMMIT'
+  ]);
 }
 
 function writeVpnConfig(addresses) {
@@ -55,8 +59,8 @@ function writeVpnConfig(addresses) {
     'auth-user-pass login.txt',
     'comp-lzo',
     'verb 1',
-    'reneg-sec 0' + os.EOL
-  ].join(os.EOL));
+    'reneg-sec 0'
+  ]);
 }
 
 function step(sequence) {
