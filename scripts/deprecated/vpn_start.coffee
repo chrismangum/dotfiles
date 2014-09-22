@@ -12,12 +12,6 @@ dnsLookup = Q.denodeify dns.lookup
 fsWriteFile = Q.denodeify fs.writeFile
 exec = Q.denodeify child_process.exec
 
-log = (msgs) ->
-  msgs = if _.isArray msgs then msgs else [msgs]
-  _.each msgs, (msg) ->
-    if msg
-      process.stdout.write msg
-
 writeFile = (path, arr) ->
   fsWriteFile path, arr.join(os.EOL) + os.EOL
 
@@ -64,10 +58,11 @@ step = (sequence) ->
   ), Q()
     .then ->
       console.log 'Connected to: ' + pia_ip
-    .catch log
+    .catch console.log
 
 if process.getuid() isnt 0
-  exec('sudo ./vpn_start.js').then log
+  console.log 'Must be run as root.'
+  process.exit 1
 else
   step [
     _.partial dnsLookup, 'us-east.privateinternetaccess.com'
