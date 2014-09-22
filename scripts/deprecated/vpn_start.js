@@ -8,18 +8,19 @@ var os = require('os'),
   child_process = require('child_process');
 
 var pia_ip,
-  dnsLookup = Q.denodeify(dns.resolve4),
+  dnsLookup = Q.denodeify(dns.lookup),
   writeFile = Q.denodeify(fs.writeFile),
   exec = Q.denodeify(child_process.exec);
 
 function log(msg) {
-  if (msg = _.isArray(msg) ? _.first(msg) : msg) {
-    process.stdout.write(msg);
-  }
+  _.each(_.isArray(msg) ? msg : [msg], function (msg) {
+    if (msg) {
+      process.stdout.write(msg);
+    }
+  });
 }
 
 function writeIpRules(stdout) {
-  log('Done.\nWriting iptables rule file: ');
   return writeFile('/etc/iptables.up.rules', [
     '*filter',
     ':INPUT ACCEPT [0:0]',
@@ -35,7 +36,6 @@ function writeIpRules(stdout) {
 }
 
 function writeVpnConfig(addresses) {
-  log('Done.\nWriting VPN config file: ');
   pia_ip = addresses[0];
   return writeFile('/etc/openvpn/client.conf', [
     'up /etc/openvpn/update-resolv-conf',
@@ -63,33 +63,19 @@ function step(sequence) {
   _.reduce(sequence, function (promise, item) {
     return promise.then(item);
   }, Q()).then(function() {
-    console.log('Done.');
-  }).catch(function (err) {
-    console.log('Failed.\n' + err);
-  });
+    console.log('Connected to: ' + pia_ip);
+  }).catch(log);
 }
 
 if (process.getuid() !== 0) {
   exec('sudo ./vpn_start.js').then(log);
 } else {
   step([
-    function () {
-      log('Getting VPN IP: ');
-      return dnsLookup('us-east.privateinternetaccess.com');
-    },
+    _.partial(dnsLookup, 'us-east.privateinternetaccess.com'),
     writeVpnConfig,
-    function () {
-      log('Done.\nStarting OpenVPN: ');
-      return exec('systemctl restart openvpn@client.service');
-    },
-    function () {
-      return exec('ip route show scope link | grep -E "dev e(n|th)" | cut -d " " -f 1');
-    },
+    _.partial(exec, 'systemctl restart openvpn@client.service'),
+    _.partial(exec, 'ip route show scope link | grep -E "dev e(n|th)" | cut -d " " -f 1'),
     writeIpRules,
-    function () {
-      log('Done.\nApplying iptables rules: ');
-      return exec('iptables-restore < /etc/iptables.up.rules');
-    }
+    _.partial(exec, 'iptables-restore < /etc/iptables.up.rules')
   ]);
 }
-
