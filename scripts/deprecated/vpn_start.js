@@ -18,19 +18,6 @@ function log(msg) {
   }
 }
 
-function getIP() {
-  return _.find(os.networkInterfaces(), function (iface, name) {
-    return /^e(n|th)/.test(name);
-  })[0].address;
-}
-
-function getNetAddr(ipRoute) {
-  var ip = getIP();
-  return _.find(ipRoute.split('\n'), function (line) {
-    return line.indexOf(ip) !== -1;
-  }).split(' ')[0];
-}
-
 function writeIpRules(stdout) {
   log('Done.\nWriting iptables rule file: ');
   return writeFile('/etc/iptables.up.rules', [
@@ -40,7 +27,7 @@ function writeIpRules(stdout) {
     ':OUTPUT ACCEPT [0:0]',
     '-A OUTPUT -o lo -j ACCEPT',
     '-A OUTPUT -o tun0 -j ACCEPT',
-    '-A OUTPUT -d ' + getNetAddr(stdout[0]) + ' -j ACCEPT',
+    '-A OUTPUT -d ' + stdout[0].trim() + ' -j ACCEPT',
     '-A OUTPUT -d ' + pia_ip + ' -j ACCEPT',
     '-A OUTPUT -j DROP',
     'COMMIT' + os.EOL
@@ -96,7 +83,7 @@ if (process.getuid() !== 0) {
       return exec('systemctl restart openvpn@client.service');
     },
     function () {
-      return exec('ip route');
+      return exec('ip route show scope link | grep -E "dev e(n|th)" | cut -d " " -f 1');
     },
     writeIpRules,
     function () {
@@ -105,3 +92,4 @@ if (process.getuid() !== 0) {
     }
   ]);
 }
+
