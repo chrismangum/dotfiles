@@ -12,9 +12,16 @@ def writeFile(filepath, content):
   f.write(content)
   f.close()
 
-sh('iptables -F; systemctl stop openvpn@client.service')
+def getPing(ip):
+  return sh('ping -c 1 %s | grep ttl | sed -r \'s/.*time=(\S+).*/\\1/\'' % ip)
 
-PIA = socket.gethostbyname('us-east.privateinternetaccess.com')
+sh('iptables -F; systemctl stop openvpn@client.service')
+# find the address with the shortest ping:
+results = []
+for ip in socket.gethostbyname_ex('us-east.privateinternetaccess.com')[2]:
+  results.append((getPing(ip), ip))
+PIA = sorted(results)[0][1]
+
 writeFile('/etc/openvpn/client.conf',
 '''up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf
