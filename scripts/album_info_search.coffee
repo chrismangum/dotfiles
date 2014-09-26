@@ -87,5 +87,4 @@ async.waterfall [
   ),
   (res, body, callback) ->
     fs.writeFile './command', getCommandText(parseAlbumLookup(body)), callback
-], (err) ->
-    console.log err or 'Done'
+], (err) -> console.log err or 'Done'
