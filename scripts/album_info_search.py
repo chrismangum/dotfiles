@@ -35,7 +35,7 @@ def albumLookup(albumID):
       'index': index,
       'oldName': 'track' + index + '.cdda.flac',
       'newName': '"' + index + ' ' + track['name'] + '.flac"'
-    });
+    })
   album['tracks'] = tracks
   return album
 
