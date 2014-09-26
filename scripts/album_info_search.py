@@ -1,8 +1,8 @@
 #! /usr/bin/python3
 import json
 import os
-import urllib.parse
-import urllib.request
+from urllib.parse import urlencode
+from urllib.request import urlopen
 
 def writeFile(filepath, content):
   f = open(filepath, 'w')
@@ -10,14 +10,15 @@ def writeFile(filepath, content):
   f.close()
 
 def httpGet(url):
-  return urllib.request.urlopen(url).readall().decode('utf-8')
+  return urlopen(url).readall().decode('utf-8')
 
 def getJSON(url):
   return json.loads(httpGet(url))
 
 def albumSearch():
-  data = getJSON('http://ws.spotify.com/search/1/album.json?' +
-    urllib.parse.urlencode({'q': input('Enter Album Query: ')}))
+  data = getJSON('http://ws.spotify.com/search/1/album.json?' + urlencode({
+    'q': input('Enter Album Query: ')
+  }))
   return list(map(lambda album: {
     'name': album['name'],
     'artist': album['artists'][0]['name'],
