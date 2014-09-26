@@ -70,13 +70,8 @@ getCommandText = (album) ->
   cmds.push 'mv *.flac ' + folder
   cmds.join(os.EOL) + os.EOL
 
-insertNullArg = (callback) -> ->
-  args = _.toArray arguments
-  args.unshift null
-  callback.apply this, args
-
 async.waterfall [
-  ((callback) -> rl.question 'Enter Album Query: ', insertNullArg callback),
+  ((callback) -> rl.question 'Enter Album Query: ', (res) -> callback null, res),
   ((res, callback) ->
     request 'http://ws.spotify.com/search/1/album.json?q=' + res, callback
   ),
