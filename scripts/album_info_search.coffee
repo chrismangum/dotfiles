@@ -43,7 +43,7 @@ parseAlbumLookup = (body) ->
     index = if index < 10 then '0' + index else index
     name: track.name
     index: index
-    oldName: "track #{ index }.cdda.flac"
+    oldName: "track#{ index }.cdda.flac"
     newName: "\"#{ index } #{ track.name }.flac\""
   _.pick album, 'name', 'artist', 'released', 'tracks'
 
