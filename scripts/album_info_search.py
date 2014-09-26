@@ -33,8 +33,7 @@ def albumLookup(albumID):
     tracks.append({
       'name': track['name'],
       'index': index,
-      'oldName': 'track' + index + '.cdda.flac',
-      'newName': '"' + index + ' ' + track['name'] + '.flac"'
+      'filename': '"' + index + ' ' + track['name'] + '.flac"'
     })
   album['tracks'] = tracks
   return album
@@ -50,11 +49,12 @@ def getCommandText(album):
     genTagCmd('ARTIST', album['artist'], '*.flac')
   ]
   for track in album['tracks']:
-    cmds.append(genTagCmd('TRACKNUMBER', track['index'], track['oldName']))
-    cmds.append(genTagCmd('TITLE', track['name'], track['oldName']))
-    cmds.append('mv ' + track['oldName'] + ' ' + track['newName'])
-  cmds.append('mkdir -p ' + folder)
-  cmds.append('mv *.flac ' + folder)
+    cmds += [
+      'mv track' + track['index'] + '.cdda.flac ' + track['filename'],
+      genTagCmd('TRACKNUMBER', track['index'], track['filename']),
+      genTagCmd('TITLE', track['name'], track['filename'])
+    ]
+  cmds += ['mkdir -p ' + folder, 'mv *.flac ' + folder]
   return os.linesep.join(cmds) + os.linesep
 
 def selectAlbum(albums):
@@ -72,5 +72,5 @@ def selectAlbum(albums):
 selected = selectAlbum(albumSearch())
 if selected:
   album = albumLookup(selected['id'])
-  writeFile('command', getCommandText(album))
+  writeFile('commands', getCommandText(album))
   print('Done.')
