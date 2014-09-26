@@ -14,18 +14,16 @@ var rl = readline.createInterface({
 });
 
 function logAlbumInfo(album) {
-  console.log(
-    'Album: ' + album.name + '\n' +
-    'Artist: ' + album.artist
-  );
+  console.log('Album: ' + album.name);
+  console.log('Artist: ' + album.artist);
 }
 
-function stepPrompt(arr, logger, callback) {
+function stepPrompt(arr, callback) {
   async.detectSeries(arr,
     function (item, callback) {
-      logger(item);
+      logAlbumInfo(item);
       rl.question('Is this correct? (y, n): ', function (res) {
-        callback(/y/i.test(res));
+        callback(res.toLowerCase() === 'y');
       });
     },
     function (result) {
@@ -84,7 +82,7 @@ function iterateTracks(tracks, iterator) {
 }
 
 function getCommandText(album) {
-  var folder = '/media/external/music/iTunes/Music/"' +
+  var folder = '~/media/music/"' +
     album.artist + '"/"' + album.name + '"';
   return _.flatten([
     genTagCmds(album),
@@ -112,7 +110,7 @@ async.waterfall([
     request('http://ws.spotify.com/search/1/album.json?q=' + res, callback);
   },
   function (res, body, callback) {
-    stepPrompt(parseAlbumSearch(body), logAlbumInfo, callback);
+    stepPrompt(parseAlbumSearch(body), callback);
   },
   function (res, callback) {
     request('http://ws.spotify.com/lookup/1/.json?extras=track&uri=spotify:album:' + res.id, callback);
