@@ -48,50 +48,45 @@ function parseAlbumSearch(body) {
 
 function parseAlbumLookup(body) {
   var album = JSON.parse(body).album;
-  album.tracks = _.pluck(album.tracks, 'name');
+  album.tracks = _.map(album.tracks, function (track, index) {
+    index += 1;
+    index = index < 10 ? '0' + index : index;
+    return {
+      name: track.name,
+      index: index,
+      oldName: 'track' + index + '.cdda.flac',
+      newName: '"' + index + ' ' + track.name + '.flac"'
+    };
+  });
   return _.pick(album, 'name', 'artist', 'released', 'tracks');
 }
 
 function genTagCmds(album) {
-  return [
+  var cmds = [
     genTagCmd('DATE', album.released, '*.flac'),
     genTagCmd('ALBUM', album.name, '*.flac'),
     genTagCmd('ARTIST', album.artist, '*.flac'),
-    iterateTracks(album.tracks, function (i, track, oldName) {
-      return [
-        genTagCmd('TRACKNUMBER', i, oldName),
-        genTagCmd('TITLE', track, oldName)
-      ];
-    })
   ];
+  _.each(album.tracks, function (track) {
+    cmds.push(genTagCmd('TRACKNUMBER', track.index, track.oldName));
+    cmds.push(genTagCmd('TITLE', track.name, track.oldName));
+  });
+  return cmds;
 }
 
 function genTagCmd(tagname, value, filename) {
   return 'metaflac --set-tag="' + tagname + '=' + value + '" ' + filename;
 }
 
-function iterateTracks(tracks, iterator) {
-  return _.map(tracks, function (track, i) {
-    var oldName, newName;
-    i += 1;
-    i = i < 10 ? '0' + i : i;
-    oldName = 'track' + i + '.cdda.flac';
-    newName = '"' + i + ' ' + track + '.flac"';
-    return iterator(i, track, oldName, newName);
-  });
-}
-
 function getCommandText(album) {
-  var folder = '~/media/music/"' +
-    album.artist + '"/"' + album.name + '"';
-  return _.flatten([
-    genTagCmds(album),
-    iterateTracks(album.tracks, function (i, track, oldName, newName) {
-      return 'mv ' + oldName + ' ' + newName;
-    }),
-    'mkdir -p ' + folder,
-    'mv *.flac ' + folder
-  ]).join(os.EOL) + os.EOL;
+  var folder = '~/media/music/"' + album.artist + '"/"' + album.name + '"';
+  var cmds = genTagCmds(album);
+  _.each(album.tracks, function (track) {
+    cmds.push('mv ' + track.oldName + ' ' + track.newName);
+  });
+  cmds.push('mkdir -p ' + folder);
+  cmds.push('mv *.flac ' + folder);
+  return cmds.join(os.EOL) + os.EOL;
 }
 
 function insertNullArg(callback) {
