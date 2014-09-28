@@ -43,7 +43,7 @@ def genTagCmd(tagname, value, filename):
   return 'metaflac --set-tag="' + tagname + '=' + value + '" ' + filename
 
 def getCommandText(album):
-  folder = '~/media/music/"' +  album['artist'] + '"/"' + album['name'] + '"'
+  folder = '~/media/music/"' + album['artist'] + '"/"' + album['name'] + '"'
   cmds = [
     genTagCmd('DATE', album['released'], '*.flac'),
     genTagCmd('ALBUM', album['name'], '*.flac'),
