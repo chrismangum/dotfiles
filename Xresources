@@ -1,14 +1,15 @@
 
-xterm*faceName: MonacoB2:style=Regular:size=9
 xterm*background: #1B1B1B
+xterm*cursorColor: #218693
+xterm*faceName: MonacoB2:style=Regular:size=9
 xterm*foreground: #F8F8F8
+xterm*metaSendsEscape: true
+xterm*multiScroll: true
 xterm*saveLines: 512
 xterm*scrollKey: true
 xterm*scrollTtyOutput: false
-xterm*multiScroll: true
+xterm*termName: xterm-256color
 xterm*visualBell: false
-xterm*metaSendsEscape: true
-xterm*cursorColor: #218693
 
 !Black
 xterm*color0: #000000
