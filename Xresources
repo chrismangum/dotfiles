@@ -1,16 +1,17 @@
-
-xterm*background: #1B1B1B
-xterm*cursorColor: #218693
 xterm*faceName: MonacoB2:style=Regular:size=9
-xterm*foreground: #F8F8F8
+xterm*locale: true
 xterm*metaSendsEscape: true
 xterm*multiScroll: true
-xterm*saveLines: 512
+xterm*saveLines: 4096
 xterm*scrollKey: true
 xterm*scrollTtyOutput: false
 xterm*termName: xterm-256color
 xterm*visualBell: false
 
+! Smyck Color Scheme
+xterm*background: #1B1B1B
+xterm*cursorColor: #218693
+xterm*foreground: #F8F8F8
 !Black
 xterm*color0: #000000
 xterm*color8: #5D5D5D
