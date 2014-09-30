@@ -17,7 +17,6 @@ order += "run_watch VPN"
 order += "ethernet eno1"
 order += "disk /"
 order += "load"
-order += "cpu_temperature 0"
 order += "tztime local"
 
 ethernet eno1 {
@@ -36,10 +35,6 @@ run_watch VPN {
 
 tztime local {
   format = "%Y-%m-%d %H:%M:%S"
-}
-
-cpu_temperature 0 {
-  format = "T: %degrees °C"
 }
 
 load {
