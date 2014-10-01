@@ -1,6 +1,5 @@
 if [[ $(uname) == 'Linux' ]]; then
   alias xlock='xscreensaver-command -lock'
-  alias pyserver='python -m SimpleHTTPServer 3000'
   alias rename='perl-rename'
   #safety nets:
   alias rm='rm -I --preserve-root'
@@ -10,6 +9,7 @@ if [[ $(uname) == 'Linux' ]]; then
 fi
 
 alias s='stackato'
+alias pyserver='python -m SimpleHTTPServer 3000'
 
 #git aliases
 alias ga='git add'
