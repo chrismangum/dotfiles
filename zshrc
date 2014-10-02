@@ -37,6 +37,6 @@ if [[ $(uname) == 'Linux' ]]; then
 fi
 
 # PATH:
-export PATH=/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
+export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
 
 
