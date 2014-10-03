@@ -42,13 +42,14 @@ set showcmd
 set t_Co=256
 
 colorscheme smyck
-highlight VertSplit    ctermbg=2  ctermfg=16
 highlight ColorColumn  ctermbg=16
-highlight CursorLineNr ctermbg=236 ctermfg=240
 highlight CursorLine   ctermbg=236
-highlight StatusLineNC ctermbg=235 ctermfg=240
-highlight StatusLine   ctermbg=235 ctermfg=2
+highlight CursorLineNr ctermbg=236 ctermfg=240
 highlight SpellBad     ctermbg=0   ctermfg=1
+highlight StatusLine   ctermbg=235 ctermfg=2
+highlight StatusLineNC ctermbg=235 ctermfg=240
+highlight TabLineFill  ctermbg=2   ctermfg=16
+highlight VertSplit    ctermbg=2   ctermfg=16
 
 autocmd BufEnter * set cc=80 tw=0 sw=2 sts=2 ts=2 nospell
 " set tabs to 4 spaces for specific projects
