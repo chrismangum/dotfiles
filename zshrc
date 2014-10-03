@@ -2,7 +2,7 @@
 export EDITOR=vim
 
 # set apollo base dir
-export APOLLO_BASE_DIR='/home/chris/Cisco/Apollo'
+export APOLLO_BASE_DIR=$HOME/Cisco/Apollo
 
 # aliases
 if [[ -e ~/.aliases ]]; then
@@ -37,6 +37,7 @@ if [[ $(uname) == 'Linux' ]]; then
 fi
 
 # PATH:
-export PATH=/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin
-
-
+export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
+if [[ $(uname) == 'Darwin' ]]; then
+  export PATH=~/bin:$PATH
+fi
