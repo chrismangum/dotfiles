@@ -170,4 +170,3 @@ bindsym XF86AudioNext exec --no-startup-id cmus-remote -n
 # autostart programs
 exec_always dropboxd
 exec_always pidgin
-exec ~/scripts/set_vbox_res.sh
