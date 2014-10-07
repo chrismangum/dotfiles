@@ -36,7 +36,8 @@ ignore "DKIM-Signature:"
 hdr_order Date From To Cc
 
 #render HTML:
-auto_view text/x-vcard text/html text/enriched
+auto_view text/html
+alternative_order text/plain text/html
 
 #key bindings
 bind index "^" imap-fetch-mail
@@ -46,17 +47,16 @@ macro index \cb   "|urlview\n"
 macro pager \cb   "|urlview\n"
 
 #colors
-color   attachment  brightmagenta       default
-color   error       brightred           default
-color   hdrdefault  red                 default
-color   indicator   brightyellow        red
-color   markers     brightcyan          default
-color   message     brightcyan          default
-color   normal      default             default
-color   quoted      brightblue          default
-color   search      default             green
-color   signature   red                 default
-color   status      green               default
-color   tilde       magenta             default
-color   tree        magenta             default
-
+color  attachment  brightmagenta  default
+color  error       brightred      default
+color  hdrdefault  red            default
+color  indicator   brightyellow   red
+color  markers     brightcyan     default
+color  message     brightcyan     default
+color  normal      default        default
+color  quoted      brightblue     default
+color  search      default        green
+color  signature   red            default
+color  status      green          default
+color  tilde       magenta        default
+color  tree        magenta        default
