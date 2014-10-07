@@ -35,6 +35,9 @@ ignore "DomainKey-Signature:"
 ignore "DKIM-Signature:"
 hdr_order Date From To Cc
 
+#render HTML:
+auto_view text/x-vcard text/html text/enriched
+
 #key bindings
 bind index "^" imap-fetch-mail
 
