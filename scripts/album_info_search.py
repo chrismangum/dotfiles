@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 import json
 import os
+import sys
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -34,29 +35,72 @@ def albumLookup(albumID):
     tracks.append({
       'name': track['name'],
       'index': index,
-      'filename': '"' + index + ' ' + track['name'] + '.flac"'
+      'filename': '"' + index + ' ' + track['name']
     })
   album['tracks'] = tracks
   return album
 
-def genTagCmd(tagname, value, filename):
-  return 'metaflac --set-tag="' + tagname + '=' + value + '" ' + filename
+preCommands = {
+  'flac': 'metaflac --remove-all-tags *.flac',
+  'm4a':  'mp4tags -r R *.m4a'
+}
+
+tags = {
+  'flac': {
+    'album':  'ALBUM',
+    'artist': 'ARTIST',
+    'song':   'TITLE',
+    'track':  'TRACKNUMBER',
+    'year':   'DATE'
+  },
+  'm4a': {
+    'album':  'album',
+    'artist': 'artist',
+    'song':   'song',
+    'track':  'track',
+    'year':   'year'
+  }
+}
+
+def genTagCmd(ext, tag, value, filename):
+  if ext == 'flac':
+    return 'metaflac --set-tag="' + tags[ext][tag] + '=' + value + '" ' + filename
+  elif ext == 'm4a':
+    return 'mp4tags -' + tags[ext][tag] + ' "' + value + '" ' + filename
 
 def getCommandText(album):
+  ext = promptExtension()
+  mvCommands = input('Include mv commands? (y, n): ').lower() == 'y'
+  wildcard = '*.' + ext
   folder = '~/media/music/"' + album['artist'] + '"/"' + album['name'] + '"'
   cmds = [
-    genTagCmd('DATE', album['released'], '*.flac'),
-    genTagCmd('ALBUM', album['name'], '*.flac'),
-    genTagCmd('ARTIST', album['artist'], '*.flac')
+    preCommands[ext],
+    genTagCmd(ext, 'year', album['released'], wildcard),
+    genTagCmd(ext, 'album', album['name'], wildcard),
+    genTagCmd(ext, 'artist', album['artist'], wildcard)
   ]
   for track in album['tracks']:
+    track['filename'] += '.' + ext + '"'
+    if mvCommands:
+      cmds.append('mv track' + track['index'] + '.cdda.' + ext + ' ' +
+                  track['filename'])
     cmds += [
-      'mv track' + track['index'] + '.cdda.flac ' + track['filename'],
-      genTagCmd('TRACKNUMBER', track['index'], track['filename']),
-      genTagCmd('TITLE', track['name'], track['filename'])
+      genTagCmd(ext, 'track', track['index'], track['filename']),
+      genTagCmd(ext, 'song', track['name'], track['filename'])
     ]
-  cmds += ['mkdir -p ' + folder, 'mv *.flac ' + folder]
+  if mvCommands:
+    cmds += ['mkdir -p ' + folder, 'mv '+ wildcard + ' ' + folder]
   return os.linesep.join(cmds) + os.linesep
+
+def promptExtension():
+  res = input('flac (f) or m4a (m)? ')
+  if res == 'f':
+    return 'flac'
+  elif res == 'm':
+    return 'm4a'
+  else:
+    print('Unsupported response.')
+    sys.exit(1)
 
 def selectAlbum(albums):
   selected = None
