@@ -9,10 +9,10 @@ if [[ $(hostname) == 'archtop' ]]; then
 
   xrandr --newmode $modeValue
   xrandr --addmode VBOX1 $modeName
-  xrandr --output VBOX1 --mode $modeName --left-of VBOX0 --output VBOX0 --mode 1920x1080
+  xrandr --output VBOX1 --mode $modeName --left-of VBOX0 --output VBOX0 --primary --mode 1920x1080
 elif [[ $(hostname) == 'archnuc' ]]; then
-  xrandr --output DP1 --mode 1920x1080 --rate 144
+  xrandr --output DP1 --primary --mode 1920x1080 --rate 144
 elif [[ $(hostname) == 'archmac' ]]; then
-  xrandr --output DisplayPort-0 --mode 1920x1080 --rate 144
+  xrandr --output DisplayPort-0 --primary --mode 1920x1080 --rate 144
 fi
 exec i3
