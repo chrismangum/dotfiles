@@ -56,16 +56,24 @@ macro index \cb "|urlview\n"
 macro pager \cb "|urlview\n"
 
 #colors
-color  attachment  brightmagenta  default
-color  error       brightred      default
-color  hdrdefault  red            default
-color  indicator   brightyellow   red
-color  markers     brightcyan     default
-color  message     brightcyan     default
-color  normal      default        default
-color  quoted      brightblue     default
-color  search      default        green
-color  signature   red            default
-color  status      green          default
-color  tilde       magenta        default
-color  tree        magenta        default
+color  attachment  green       default
+color  error       brightred   default
+color  hdrdefault  color240    default
+color  indicator   green       color236
+color  markers     brightcyan  default
+color  message     brightcyan  default
+color  normal      default     default
+color  search      default     green
+color  signature   color240    default
+color  status      green       color236
+color  tilde       color240    default
+color  tree        cyan        default
+#quoting levels
+color  quoted      blue        default
+color  quoted1     yellow      default
+color  quoted2     magenta     default
+color  quoted3     green       default
+color  quoted4     blue        default
+color  quoted5     yellow      default
+color  quoted6     magenta     default
+color  quoted7     green       default
