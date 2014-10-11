@@ -21,7 +21,7 @@ set smtp_url = "$my_gurl"
 set smtp_pass = "$my_gpass"
 set from = "$my_gacct"
 set realname = "Chris Mangum"
-set signature= "~/.mutt/signature"
+set signature = "~/.mutt/signature"
 
 #compose
 set alias_file= "~/.mutt/aliases"
@@ -41,8 +41,8 @@ ignore "X-Mailer"
 ignore "User-Agent"
 
 #cache
-set header_cache= "~/.cache/mutt/headers"
-set message_cachedir= "~/.cache/mutt/bodies"
+set header_cache = "~/.cache/mutt/headers"
+set message_cachedir = "~/.cache/mutt/bodies"
 
 #render HTML
 auto_view text/html
