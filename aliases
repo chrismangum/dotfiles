@@ -11,7 +11,7 @@ else
 fi
 
 alias s='stackato'
-alias pyserver='python -m SimpleHTTPServer 3000'
+alias pyserver='python2 -m SimpleHTTPServer 3001'
 
 #git aliases
 alias ga='git add'
