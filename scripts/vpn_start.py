@@ -18,8 +18,7 @@ def getPing(ip):
   return sh('ping -c 1 %s | grep ttl | sed -r \'s/.*time=(\S+).*/\\1/\'' % ip)
 
 if os.geteuid() != 0:
-  print('Must be run as root.')
-  sys.exit()
+  sys.exit('Must be run as root.')
 
 sh('iptables -F; systemctl stop openvpn@client.service')
 # find the address with the shortest ping:
