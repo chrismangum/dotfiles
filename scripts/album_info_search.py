@@ -42,7 +42,8 @@ def albumLookup(albumID):
 
 preCommands = {
   'flac': 'metaflac --remove-all-tags *.flac',
-  'm4a':  'mp4tags -r R *.m4a'
+  'm4a':  'mp4tags -r R *.m4a',
+  'mp3':  'id3v2 -d *.mp3'
 }
 
 tags = {
@@ -59,6 +60,13 @@ tags = {
     'song':   'song',
     'track':  'track',
     'year':   'year'
+  },
+  'mp3': {
+    'album':  'album',
+    'artist': 'artist',
+    'song':   'song',
+    'track':  'track',
+    'year':   'year'
   }
 }
 
@@ -67,6 +75,8 @@ def genTagCmd(ext, tag, value, filename):
     return 'metaflac --set-tag="' + tags[ext][tag] + '=' + value + '" ' + filename
   elif ext == 'm4a':
     return 'mp4tags -' + tags[ext][tag] + ' "' + value + '" ' + filename
+  elif ext == 'mp3':
+    return 'id3v2 --' + tags[ext][tag] + ' "' + value + '" ' + filename
 
 def getCommandText(album):
   ext = promptExtension()
@@ -93,11 +103,10 @@ def getCommandText(album):
   return os.linesep.join(cmds) + os.linesep
 
 def promptExtension():
-  res = input('flac (f) or m4a (m)? ')
-  if res == 'f':
-    return 'flac'
-  elif res == 'm':
-    return 'm4a'
+  types = ['flac', 'm4a', 'mp3']
+  res = input('Extension (flac / m4a / mp3)? ')
+  if res in types:
+    return res
   else:
     print('Unsupported response.')
     sys.exit(1)
