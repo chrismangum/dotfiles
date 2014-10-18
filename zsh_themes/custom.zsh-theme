@@ -1,8 +1,9 @@
 
 function custom_prompt_info() {
+  local ref=''
+  local ret="$ZSH_THEME_GIT_PROMPT_PREFIX"
   ref=$(command git symbolic-ref HEAD 2> /dev/null) || \
   ref=$(command git rev-parse --short HEAD 2> /dev/null) || return 0
-  ret="$ZSH_THEME_GIT_PROMPT_PREFIX"
   if isnt_clean; then
     ret+="%{$fg[red]%}"
   elif isnt_synced; then
@@ -33,7 +34,7 @@ function isnt_clean() {
 }
 
 function isnt_synced() {
-  remote=${$(command git rev-parse --verify ${hook_com[branch]}@{upstream} --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
+  local remote=${$(command git rev-parse --verify ${hook_com[branch]}@{upstream} --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
   if [[ -n ${remote} ]] ; then
     ahead=$(command git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l)
     behind=$(command git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l)

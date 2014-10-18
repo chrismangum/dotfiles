@@ -14,6 +14,13 @@ function mail() {
   mutt
 }
 
+function speedtest() {
+  local url='http://speedtest.wdc01.softlayer.com/downloads/test10.zip'
+  local speed_bps=$(curl -o /dev/null -w '%{speed_download}' -s $url)
+  local speed_mbps=$(bc <<< "scale=3; $speed_bps / 1024 / 1024 * 8")
+  echo "Download: $speed_mbps Mbps"
+}
+
 # oh-my-zsh options:
 ZSH=~/.oh-my-zsh
 ZSH_THEME='custom'
