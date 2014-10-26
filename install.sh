@@ -2,7 +2,7 @@
 set -e
 
 #create symlinks
-stow -v alsa fonts git i3 mutt rtorrent scripts tmux urlview vim xorg yaourt zsh
+stow -v alsa cups fonts git i3 mutt rtorrent scripts tmux urlview vim xorg yaourt zsh
 
 #install fonts
 fc-cache -vf $HOME/.fonts
