@@ -1,3 +1,6 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
 source ~/scripts/git-prompt.sh
 
 export APOLLO_BASE_DIR=$HOME/Cisco/Apollo
@@ -23,7 +26,7 @@ alias gpl='git pull'
 alias gst='git status'
 alias l='ls -lah'
 alias ll='ls -lh'
-alias ls='ls --color'
+alias ls='ls --color=auto'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias pyserver='python2 -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
