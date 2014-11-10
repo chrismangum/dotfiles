@@ -7,4 +7,5 @@ $if mode=vi
 
   set keymap vi-insert
   Control-l: clear-screen
+  Control-x: glob-expand-word
 $endif
