@@ -3,7 +3,7 @@ sudo iptables -F
 sudo systemctl stop openvpn@client.service
 
 PIA=$(host us-east.privateinternetaccess.com | head -n 1 | cut -d " " -f 4)
-CIDR=$(ip route show scope link | grep -E "dev e(n|th)" | cut -d " " -f 1)
+CIDR=$(ip route show scope link | grep -P "dev e(n|th)" | cut -d " " -f 1)
 
 echo "up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf

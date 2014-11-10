@@ -2,6 +2,7 @@
 mencoder dvd://40 -sid 1000 -ovc copy -oac mp3lame -o test.avi
 mplayer test.avi -vf cropdetect
 avconv -i test.avi -vf crop=704:480:10:0 -strict experimental test.mp4
+-----------------------
 
 ----- RIP BLU RAY -----
 mencoder br://55 -bluray-device /media/br -ovc copy -oac mp3lame -o test.avi
@@ -22,7 +23,7 @@ flac --best *.wav
 -----------------------
 
 ---- ALAC -> FLAC -----
-for i in *; ffmpeg -i $i -c:a flac "$(echo $i | sed -r 's/m4a/flac/g')"
+for i in *; ffmpeg -i $i -c:a flac "$(echo $i | sed 's/m4a$/flac/')"
 -----------------------
 
 -- SYNC MEDIA DRIVES --
