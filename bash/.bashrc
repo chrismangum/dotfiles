@@ -3,11 +3,16 @@
 
 source ~/scripts/git-prompt.sh
 
+#PS1 colors:
+txtcyn='\e[0;36m'
+bldblu='\e[1;34m'
+txtrst='\e[0m'
+
 export APOLLO_BASE_DIR=$HOME/Cisco/Apollo
 export EDITOR=vim
 export GREP_COLOR='1;32'
 export GREP_OPTIONS='--color=auto --line-number --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor'
-export PS1='\e[0;36m[\w]$(__git_ps1 "[\e[1;34m%s\e[0;36m]")\e[m$ '
+export PS1="\[$txtcyn\][\w]$(__git_ps1 "[\[$bldblu\]%s\[$txtcyn\]]")\[$txtrst\]$ "
 
 alias ga='git add'
 alias gaa='git add -A'
