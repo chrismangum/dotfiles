@@ -2,6 +2,7 @@
 set -e
 
 #create symlinks
+mkdir -v ~/.config
 stow -v alsa bash cups fonts git i3 mutt rtorrent scripts tmux tsocks urlview vim xorg yaourt
 
 #install fonts
