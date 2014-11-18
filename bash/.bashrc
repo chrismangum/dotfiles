@@ -50,7 +50,7 @@ alias rm='rm -I --preserve-root'
 export HISTCONTROL=ignoredups:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
-shopt -s histappend
+export PROMPT_COMMAND="history -a"
 
 function mail() {
   cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
