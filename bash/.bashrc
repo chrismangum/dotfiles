@@ -3,7 +3,7 @@
 
 source ~/scripts/git-prompt.sh
 
-#PS1 colors:
+# PS1 colors:
 txtcyn='\e[0;36m'
 bldblu='\e[1;34m'
 txtrst='\e[0m'
@@ -40,11 +40,15 @@ alias rename='perl-rename'
 alias s='stackato'
 alias xlock='xscreensaver-command -lock'
 
-#safety nets:
+# safety nets:
 alias chgrp='chgrp --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chown='chown --preserve-root'
 alias rm='rm -I --preserve-root'
+
+# history
+export HISTCONTROL=ignoredups:erasedups
+shopt -s histappend
 
 function mail() {
   cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
