@@ -48,6 +48,8 @@ alias rm='rm -I --preserve-root'
 
 # history
 export HISTCONTROL=ignoredups:erasedups
+export HISTSIZE=100000
+export HISTFILESIZE=100000
 shopt -s histappend
 
 function mail() {
