@@ -1,5 +1,5 @@
-download_rate = 2375
-upload_rate = 175
+download_rate = 5472
+upload_rate = 512
 max_uploads_global = 33
 
 directory = ~/torrents
