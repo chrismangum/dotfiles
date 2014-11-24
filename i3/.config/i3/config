@@ -157,8 +157,8 @@ bar {
 new_window 1pixel
 
 # brightness keys
-bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
-bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 5
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 10
 
 # volume keys
 bindsym XF86AudioRaiseVolume exec --no-startup-id amixer set Master 5%+
