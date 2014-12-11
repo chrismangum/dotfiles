@@ -11,7 +11,6 @@ txtrst='\e[0m'
 export APOLLO_BASE_DIR=$HOME/Cisco/Apollo
 export EDITOR=vim
 export GREP_COLOR='1;32'
-export GREP_OPTIONS='--color=auto --line-number --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
 export TSOCKS_CONF_FILE=$HOME/.tsocks.conf
 
@@ -30,6 +29,7 @@ alias glg='git log --stat'
 alias glp='git log -p'
 alias gp='git push'
 alias gpl='git pull'
+alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor'
 alias gst='git status'
 alias l='ls -lah'
 alias ll='ls -lh'
