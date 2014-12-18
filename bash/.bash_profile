@@ -1,2 +1,2 @@
 [[ -f ~/.bashrc ]] && . ~/.bashrc
-[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+[[ $(uname) == 'Linux' && -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx

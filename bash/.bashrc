@@ -1,5 +1,5 @@
 # If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+[[ $(uname) == 'Linux' && $- != *i* ]] && return
 
 source ~/scripts/git-prompt.sh
 
@@ -39,6 +39,9 @@ alias pyserver='python2 -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
 alias s='stackato'
 alias xlock='xscreensaver-command -lock'
+if [[ $(uname) == 'Darwin' ]]; then
+  alias ls='ls -G'
+fi
 
 # safety nets:
 alias chgrp='chgrp --preserve-root'
