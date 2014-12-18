@@ -48,6 +48,9 @@ alias chgrp='chgrp --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chown='chown --preserve-root'
 alias rm='rm -I --preserve-root'
+if [[ $(uname) == 'Darwin' ]]; then
+  unalias rm
+fi
 
 # history
 export HISTCONTROL=ignoredups:erasedups
