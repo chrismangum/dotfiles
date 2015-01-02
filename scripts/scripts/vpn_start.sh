@@ -22,13 +22,12 @@ remote-cert-tls server
 auth-user-pass login.txt
 comp-lzo
 verb 1
-reneg-sec 0" | sudo dd of=/etc/openvpn/client.conf &> /dev/null
+reneg-sec 0" | sudo tee /etc/openvpn/client.conf &> /dev/null
 
 sudo systemctl start openvpn@client.service
 
 sudo iptables -A OUTPUT -o lo -j ACCEPT
 sudo iptables -A OUTPUT -o tun0 -j ACCEPT
-#allow traffic on local network
 sudo iptables -A OUTPUT -d $CIDR -j ACCEPT
 sudo iptables -A OUTPUT -d $PIA -j ACCEPT
 sudo iptables -A OUTPUT -j DROP
