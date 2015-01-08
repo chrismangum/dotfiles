@@ -29,7 +29,3 @@ for i in *; ffmpeg -i $i -c:a flac "$(echo $i | sed 's/m4a$/flac/')"
 -- SYNC MEDIA DRIVES --
 rsync -vr --delete --progress --ignore-existing /media/external2/* /media/external
 -----------------------
-
--------- MONGO --------
-MONGO_EXT_CONFIG=$STACKATO_FILESYSTEM_APOLLO_HUB_FS"/config/mongoCfg.json" ; if [[ -f $MONGO_EXT_CONFIG ]]; then MONGO_INFO=($(cat $MONGO_EXT_CONFIG | json hostname port username password db)) ; else MONGO_INFO=($(echo $VCAP_SERVICES | json mongodb[0].credentials.hostname mongodb[0].credentials.port mongodb[0].credentials.username mongodb[0].credentials.password mongodb[0].credentials.db)); fi ; mongo -u ${MONGO_INFO[2]} -p ${MONGO_INFO[3]} --host ${MONGO_INFO[0]} --port ${MONGO_INFO[1]} db
------------------------

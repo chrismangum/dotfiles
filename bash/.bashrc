@@ -21,6 +21,7 @@ alias cdhu='cd ~/Cisco/ApolloHubUser'
 alias cdib='cd ~/Cisco/ApolloInstallBase'
 alias cdsa='cd ~/Cisco/ApolloSupportAutomation/client'
 alias cdsc='cd ~/Cisco/ApolloSupportCases'
+alias cmongo="stackato ssh -a ciscoAdmin '"'MONGO_INFO=($(cat /app/fs/apollo-hub-fs/config/mongoCfg.json | json hostname port username password db)); mongo -u ${MONGO_INFO[2]} -p ${MONGO_INFO[3]} ${MONGO_INFO[0]}/${MONGO_INFO[4]}'"'"
 alias ga='git add'
 alias gaa='git add -A'
 alias gap='git add -p'
