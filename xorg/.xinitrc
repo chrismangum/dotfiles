@@ -8,7 +8,7 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
 fi
 
 xrdb "${HOME}/.Xresources"
-xflux -l 36 -g -79
+redshift &
 xscreensaver -no-splash &
 
 if [[ $(hostname) == 'archtop' ]]; then
