@@ -14,6 +14,13 @@ export GREP_COLOR='1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
 export TSOCKS_CONF_FILE=$HOME/.tsocks.conf
 
+alias cdap='cd ~/Cisco/Apollo/common/client'
+alias cdc='cd ~/Cisco'
+alias cdha='cd ~/Cisco/ApolloHubAdmin'
+alias cdhu='cd ~/Cisco/ApolloHubUser'
+alias cdib='cd ~/Cisco/ApolloInstallBase'
+alias cdsa='cd ~/Cisco/ApolloSupportAutomation/client'
+alias cdsc='cd ~/Cisco/ApolloSupportCases'
 alias ga='git add'
 alias gaa='git add -A'
 alias gap='git add -p'
