@@ -12,21 +12,14 @@ general {
 }
 
 order += "volume master"
-order += "battery 0"
 order += "run_watch VPN"
 order += "ethernet eno1"
-order += "disk /"
 order += "load"
 order += "tztime local"
 
 ethernet eno1 {
-  # if you use %speed, i3status requires root privileges
   format_up = "E: %ip"
   format_down = "E: down"
-}
-
-battery 0 {
-  format = "%status %percentage %remaining"
 }
 
 run_watch VPN {
@@ -34,15 +27,11 @@ run_watch VPN {
 }
 
 tztime local {
-  format = "%Y-%m-%d %H:%M:%S"
+  format = "%m-%d %H:%M"
 }
 
 load {
   format = "%1min"
-}
-
-disk "/" {
-  format = "%avail"
 }
 
 volume master {
