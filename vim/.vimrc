@@ -51,9 +51,9 @@ highlight StatusLineNC ctermbg=235 ctermfg=240
 highlight TabLineFill  ctermbg=2   ctermfg=16
 highlight VertSplit    ctermbg=2   ctermfg=16
 
-autocmd BufEnter * set cc=80 tw=0 sw=2 sts=2 ts=2 nospell
+autocmd BufEnter * set cc=100 tw=0 sw=2 sts=2 ts=2 nospell
 " set tabs to 4 spaces for specific projects
-autocmd BufEnter ~/Cisco/ApolloHubUser/*,~/Cisco/ApolloHubAdmin/*,~/Cisco/ApolloInstallBase/*,~/Cisco/ApolloSupportCases/* set sw=4 sts=4 ts=4
+autocmd BufEnter ~/Cisco/* set sw=4 sts=4 ts=4
 " enable spell checker for mail / commit messages
 autocmd BufEnter /tmp/*,COMMIT_EDITMSG set cc=72 tw=72 spell spelllang=en_us
 
