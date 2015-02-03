@@ -61,4 +61,4 @@ autocmd BufEnter /tmp/*,COMMIT_EDITMSG set cc=72 tw=72 spell spelllang=en_us
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = 'node_modules\|git'
+let g:ctrlp_custom_ignore = 'node_modules\|git\|build'
