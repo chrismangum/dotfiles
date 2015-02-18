@@ -1,5 +1,6 @@
+uname=$(uname)
 # If not running interactively, don't do anything
-[[ $(uname) == 'Linux' && $- != *i* ]] && return
+[[ $uname == 'Linux' && $- != *i* ]] && return
 
 source ~/scripts/git-prompt.sh
 
@@ -47,8 +48,11 @@ alias pyserver='python2 -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
 alias s='stackato'
 alias xlock='xscreensaver-command -lock'
-if [[ $(uname) == 'Darwin' ]]; then
+if [[ $uname == 'Darwin' ]]; then
   alias ls='ls -G'
+fi
+if [[ $uname == *'CYGWIN'* ]]; then
+  export TERM=xterm-256color
 fi
 
 # safety nets:
@@ -56,7 +60,7 @@ alias chgrp='chgrp --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chown='chown --preserve-root'
 alias rm='rm -I --preserve-root'
-if [[ $(uname) == 'Darwin' ]]; then
+if [[ $uname == 'Darwin' ]]; then
   unalias rm
 fi
 

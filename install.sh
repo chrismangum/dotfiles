@@ -5,10 +5,12 @@ set -e
 if [[ ! -d ~/.config ]]; then
   mkdir -v ~/.config
 fi
-stow -v alsa bash cups fonts git i3 mutt redshift rtorrent scripts tmux tsocks urlview vim xorg yaourt
+stow -v alsa bash cygwin cups fonts git i3 mutt redshift rtorrent scripts tmux tsocks urlview vim xorg yaourt
 
 #install fonts
-fc-cache -vf $HOME/.fonts
+if [[ -x fc-cache ]]; then
+  fc-cache -vf $HOME/.fonts
+fi
 
 #install vim plugins
 if [[ ! -d ~/.vim/bundle ]]; then
