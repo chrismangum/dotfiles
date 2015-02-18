@@ -172,5 +172,5 @@ bindsym XF86AudioPrev exec --no-startup-id cmus-remote -r
 bindsym XF86AudioNext exec --no-startup-id cmus-remote -n
 
 # autostart programs
-exec_always dropboxd
+exec_always dropbox
 exec_always pidgin
