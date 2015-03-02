@@ -47,6 +47,7 @@ alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias pyserver='python2 -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
 alias s='stackato'
+alias stackato='stackato --skip-ssl-validation'
 alias xlock='xscreensaver-command -lock'
 if [[ $uname == 'Darwin' ]]; then
   alias ls='ls -G'
