@@ -10,8 +10,8 @@ down /etc/openvpn/update-resolv-conf
 script-security 2
 client
 dev tun
-proto udp
-remote $PIA 1194
+proto tcp
+remote $PIA 443
 resolv-retry infinite
 nobind
 persist-key
