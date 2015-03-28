@@ -84,3 +84,7 @@ function speedtest() {
 
 # PATH:
 export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
+#add java and node to cygiwn path
+if [[ $uname == *'CYGWIN'* ]]; then
+  export PATH=$PATH:/cygdrive/c/ProgramData/Oracle/Java/javapath:/cygdrive/c/Program\ Files/nodejs:/cygdrive/c/Users/chris/AppData/Roaming/npm
+fi
