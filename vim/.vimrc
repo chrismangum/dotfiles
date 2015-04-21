@@ -54,7 +54,7 @@ highlight VertSplit    ctermbg=2   ctermfg=16
 " default cc and indentation
 set cc=100 tw=0 sw=2 sts=2 ts=2
 
-autocmd FileType javascript setlocal sw=4 sts=4 ts=4
+autocmd FileType javascript,html setlocal sw=4 sts=4 ts=4
 autocmd FileType html setlocal cc=0
 " enable spell checker for mail / commit messages
 autocmd BufNewFile,BufRead /tmp/*,COMMIT_EDITMSG setlocal cc=72 tw=72 spell spelllang=en_us
