@@ -1,10 +1,11 @@
 #!/bin/bash
 set -e
 
-#create symlinks
-if [[ ! -d ~/.config ]]; then
-  mkdir -v ~/.config
+if [[ ! -d ~/.config/systemd/user ]]; then
+  mkdir -pv ~/.config/systemd/user
 fi
+
+#create symlinks
 stow -v alsa bash cygwin cups fonts git i3 mutt redshift rtorrent scripts tmux tsocks urlview vim xorg yaourt
 
 #install fonts
