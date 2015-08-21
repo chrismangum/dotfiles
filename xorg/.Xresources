@@ -1,4 +1,5 @@
 xterm*faceName: MonacoB2:style=Regular:size=9
+xterm*highlightSelection: true
 xterm*locale: true
 xterm*metaSendsEscape: true
 xterm*multiScroll: true
