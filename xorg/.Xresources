@@ -1,10 +1,9 @@
 
 URxvt*font: xft:MonacoB:pixelsize=11:antialias=true:hinting=true
 URxvt*saveLines: 5000
+URxvt*scrollBar: false
 URxvt*scrollTtyKeypress: true
 URxvt*scrollTtyOutput: false
-URxvt*scrollBar: false
-URxvt*termName: xterm-256color
 
 ! Smyck Color Scheme
 URxvt*background: #1B1B1B
