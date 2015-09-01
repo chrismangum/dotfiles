@@ -13,6 +13,7 @@ export APOLLO_BASE_DIR=$HOME/Cisco/Apollo
 export EDITOR=vim
 export GREP_COLOR='1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export TSOCKS_CONF_FILE=$HOME/.tsocks.conf
 
 alias arcnew="arc diff --reviewers '#apollo' --create"
