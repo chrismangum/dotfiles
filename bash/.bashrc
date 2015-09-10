@@ -16,6 +16,9 @@ export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export TSOCKS_CONF_FILE=$HOME/.tsocks.conf
 
+alias mongo_info='MONGO_INFO=($(cat ~/Desktop/mongoCfg.json | json hostname port username password db))'
+alias apollo_mongo='mongo_info; mongo -u ${MONGO_INFO[2]} -p ${MONGO_INFO[3]} ${MONGO_INFO[0]}/${MONGO_INFO[4]}'
+alias apollo_mongo_remote='mongo_info; tsocks mongo -u ${MONGO_INFO[2]} -p ${MONGO_INFO[3]} ${MONGO_INFO[0]}/${MONGO_INFO[4]}'
 alias arcnew="arc diff --reviewers '#apollo' --create"
 alias arcpre='arc diff --preview'
 alias arcupd='arc diff --update'
@@ -24,13 +27,11 @@ alias cdc='cd ~/Cisco'
 alias cdha='cd ~/Cisco/ApolloHubAdmin'
 alias cdhu='cd ~/Cisco/ApolloHubUser'
 alias cdib='cd ~/Cisco/ApolloInstallBase'
-alias cdsa='cd ~/Cisco/ApolloSupportAutomation/client'
-alias cdssa='cd ~/Cisco/ApolloSAStandalone'
 alias cdmd='cd ~/Cisco/ApolloMyDevices'
+alias cdsa='cd ~/Cisco/ApolloSupportAutomation/client'
 alias cdsc='cd ~/Cisco/ApolloSupportCases'
-alias mongo_info='MONGO_INFO=($(cat ~/Desktop/mongoCfg.json | json hostname port username password db))'
-alias apollo_mongo='mongo_info; mongo -u ${MONGO_INFO[2]} -p ${MONGO_INFO[3]} ${MONGO_INFO[0]}/${MONGO_INFO[4]}'
-alias apollo_mongo_remote='mongo_info; tsocks mongo -u ${MONGO_INFO[2]} -p ${MONGO_INFO[3]} ${MONGO_INFO[0]}/${MONGO_INFO[4]}'
+alias cdssa='cd ~/Cisco/ApolloSAStandalone'
+alias cisco_vpn='sudo openconnect --csd-wrapper=/home/chris/scripts/csd-wrapper-simple.sh --cafile=/etc/openconnect/cisco-root-CA-M1.pem rtp1-asavpn-cluster-1.cisco.com'
 alias ga='git add'
 alias gaa='git add -A'
 alias gap='git add -p'
@@ -57,9 +58,7 @@ alias rename='perl-rename'
 alias s='stackato'
 alias stackato='stackato --skip-ssl-validation'
 alias xlock='xscreensaver-command -lock'
-if [[ $uname == 'Darwin' ]]; then
-  alias ls='ls -G'
-fi
+
 if [[ $uname == *'CYGWIN'* ]]; then
   export TERM=xterm-256color
 fi
@@ -69,9 +68,6 @@ alias chgrp='chgrp --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chown='chown --preserve-root'
 alias rm='rm -I --preserve-root'
-if [[ $uname == 'Darwin' ]]; then
-  unalias rm
-fi
 
 # history
 export HISTCONTROL=ignoredups:erasedups
