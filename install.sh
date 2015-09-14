@@ -6,7 +6,7 @@ if [[ ! -d ~/.config/systemd/user ]]; then
 fi
 
 #create symlinks
-stow -v alsa bash cygwin cups fonts git i3 mpv mutt redshift rtorrent scripts tmux tsocks urlview vim xorg yaourt
+stow -v alsa bash cygwin cups fonts git gtk i3 mpv mutt redshift rtorrent scripts tmux tsocks urlview vim xorg yaourt
 
 #install fonts
 if [[ -x fc-cache ]]; then
