@@ -4,23 +4,18 @@ import sys
 from datetime import datetime, timezone
 from urllib import request
 
-HEADERS = {
-    'Accept:': 'application/vnd.twitchtv.v3+json'
-}
-BASEURL = 'https://api.twitch.tv/kraken/'
+BASEURL = 'https://api.twitch.tv/kraken'
+HEADERS = {'Accept:': 'application/vnd.twitchtv.v3+json'}
 
 def getFollowing(username):
-    data = getJSON(BASEURL + 'users/' + sys.argv[1] + '/follows/channels/?limit=100', HEADERS)
-    return sorted([ch['channel']['name'] for ch in data['follows']])
+    data = getTwitchJSON('/users/' + username + '/follows/channels/?limit=100')
+    return [ch['channel']['name'] for ch in data['follows']]
 
-def getJSON(url, headers):
-    return json.loads(httpGet(url, headers))
-
-def getLiveChannels(channels):
-    data = getJSON(BASEURL + 'streams/?channel=' + ','.join(channels), HEADERS)
-    ret = {}
+def getLiveChannels(channelNames):
+    data = getTwitchJSON('/streams/?channel=' + ','.join(channelNames))
+    channels = {}
     for ch in data['streams']:
-        ret[ch['channel']['name']] = {
+        channels[ch['channel']['name']] = {
             'game': ch['channel']['game'],
             'title': ch['channel']['status'],
             'viewers': ch['viewers'],
@@ -28,7 +23,10 @@ def getLiveChannels(channels):
                 .replace(tzinfo=timezone.utc).astimezone() \
                 .strftime('%c')
         }
-    return ret
+    return channels
+
+def getTwitchJSON(path):
+    return json.loads(httpGet(BASEURL + path, HEADERS))
 
 def httpGet(url, headers):
     req = request.Request(url, headers=headers)
