@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import json
 import sys
+from datetime import datetime, timezone
 from urllib import request
 
 HEADERS = {
@@ -22,7 +23,10 @@ def getLiveChannels(channels):
         ret[ch['channel']['name']] = {
             'game': ch['channel']['game'],
             'title': ch['channel']['status'],
-            'viewers': ch['viewers']
+            'viewers': ch['viewers'],
+            'live_since': datetime.strptime(ch['created_at'], '%Y-%m-%dT%XZ') \
+                .replace(tzinfo=timezone.utc).astimezone() \
+                .strftime('%c')
         }
     return ret
 
