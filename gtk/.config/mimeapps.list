@@ -1,5 +1,5 @@
 [Added Associations]
-text/plain=org.gnome.gedit.desktop
+text/plain=org.gnome.gedit.desktop;
 text/css=org.org.gnome.gedit.desktop
 text/javascript=org.org.gnome.gedit.desktop
 text/mathml=org.org.gnome.gedit.desktop
@@ -205,3 +205,18 @@ application/x-cbr=mupdf.desktop
 application/x-cbz=mupdf.desktop
 application/x-cb7=mupdf.desktop
 text/x-log=org.gnome.gedit.desktop;
+application/x-gnumeric=gnumeric.desktop
+application/tab-separated-values=gnumeric.desktop
+text/tab-separated-values=gnumeric.desktop
+text/csv=gnumeric.desktop
+text/x-csv=gnumeric.desktop
+application/vnd.lotus-1-2-3=gnumeric.desktop
+application/x-123=gnumeric.desktop
+application/x-applix-spreadsheet=gnumeric.desktop
+application/x-mps=gnumeric.desktop
+application/x-oleo=gnumeric.desktop
+application/x-planperfect=gnumeric.desktop
+application/x-quattropro=gnumeric.desktop
+application/x-sc=gnumeric.desktop
+application/x-sylk=gnumeric.desktop
+application/x-xbase=gnumeric.desktop
