@@ -1,9 +1,9 @@
 #!/bin/bash
-set -e
 
-if [[ ! -d ~/.config/systemd/user ]]; then
-  mkdir -pv ~/.config/systemd/user
-fi
+mkdir -pv ~/.config/systemd/user \
+  ~/.local/share/xorg \
+
+set -e
 
 #create symlinks
 stow -v alsa bash cygwin cups fonts git gtk i3 mpv mutt redshift rtorrent scripts tmux tsocks urlview vim xorg yaourt
