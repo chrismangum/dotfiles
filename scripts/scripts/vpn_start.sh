@@ -16,10 +16,10 @@ resolv-retry infinite
 nobind
 persist-key
 persist-tun
-ca ca.crt
+ca /etc/openvpn/ca.crt
 tls-client
 remote-cert-tls server
-auth-user-pass login.txt
+auth-user-pass /etc/openvpn/login.txt
 comp-lzo
 verb 1
 reneg-sec 0" | sudo tee /etc/openvpn/client.conf &> /dev/null
