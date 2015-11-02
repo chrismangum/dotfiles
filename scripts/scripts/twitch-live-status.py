@@ -43,7 +43,7 @@ def printLiveChannels(liveChannels):
     out = 'Found ' + str(count) + ' live channel'
     if count == 0 or count > 1:
         out += 's'
-    if (count):
+    if count:
         out += ': ' + prettyPrint(liveChannels)
     print(out)
 
@@ -53,13 +53,13 @@ parser.add_argument('-u', '--username', help='Username to query live followed st
 parser.add_argument('-l', '--limit', help='Maximum number of objects in array. Default is 25. Maximum is 100.')
 args = parser.parse_args()
 
-if (args.game or args.username):
+if args.game or args.username:
     query = {'stream_type': 'live'}
-    if (args.game):
+    if args.game:
         query['game'] = args.game
-    if (args.username):
+    if args.username:
         query['channel'] = ','.join(getFollowing(args.username))
-    if (args.limit):
+    if args.limit:
         query['limit'] = args.limit
     printLiveChannels(getLiveChannels(query))
 else:
