@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 sudo iptables -F
 sudo systemctl stop openvpn@client.service
 

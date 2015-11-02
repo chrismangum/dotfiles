@@ -15,9 +15,9 @@ hostname=$(hostname)
 if [[ $hostname == 'archtop' ]]; then
   display2=$(xrandr | grep ' connected ' | tail -n 1 | cut -d ' ' -f 1)
   if [[ $display2 == 'DP1' ]]; then
-    xrandr --output LVDS1 --mode 1280x800 --right-of DP1 --output DP1 --mode 1920x1080 --rate 144
+    xrandr --output eDP1 --mode 1600x900 --right-of DP1 --output DP1 --mode 1920x1080 --rate 144
   elif [[ $display2 == 'HDMI1' ]]; then
-    xrandr --output LVDS1 --mode 1280x800 --right-of HDMI1 --output HDMI1 --mode 1920x1080
+    xrandr --output eDP1 --mode 1600x900 --right-of HDMI1 --output HDMI1 --mode 1920x1080
   fi
 elif [[ $hostname == 'archbox' ]]; then
   xrandr --output DVI-D-0 --mode 1920x1080 --rate 144
