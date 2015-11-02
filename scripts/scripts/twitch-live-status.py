@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 import argparse
 import json
-import sys
 from datetime import datetime, timezone
 from urllib import parse, request
 
