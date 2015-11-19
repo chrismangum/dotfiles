@@ -76,6 +76,8 @@ export HISTSIZE=100000
 export HISTFILESIZE=100000
 export PROMPT_COMMAND="history -a"
 
+source ~/Desktop/.bashrc_private
+
 function mail() {
   cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
   mutt

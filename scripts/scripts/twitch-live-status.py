@@ -4,9 +4,6 @@ import json
 from datetime import datetime, timezone
 from urllib import parse, request
 
-BASEURL = 'https://api.twitch.tv/kraken'
-HEADERS = {'Accept': 'application/vnd.twitchtv.v3+json'}
-
 def getFollowing(username):
     data = getTwitchJSON('/users/' + username + '/follows/channels/?limit=100')
     return [ch['channel']['name'] for ch in data['follows']]
@@ -29,7 +26,9 @@ def getLiveChannels(query):
     return channels
 
 def getTwitchJSON(path):
-    return json.loads(httpGet(BASEURL + path, HEADERS))
+    return json.loads(httpGet('https://api.twitch.tv/kraken' + path, {
+        'Accept': 'application/vnd.twitchtv.v3+json'
+    }))
 
 def httpGet(url, headers):
     req = request.Request(url, headers=headers)
