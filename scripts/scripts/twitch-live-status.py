@@ -35,7 +35,7 @@ def httpGet(url, headers):
     return request.urlopen(req).read().decode('utf-8')
 
 def prettyPrint(data):
-    return json.dumps(data, indent=2)
+    return json.dumps(data, indent=2, ensure_ascii=False)
 
 def printLiveChannels(liveChannels):
     count = len(liveChannels)
