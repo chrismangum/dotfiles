@@ -11,7 +11,7 @@ def writeFile(filepath, content):
   f.close()
 
 def httpGet(url):
-  return urlopen(url).readall().decode('utf-8')
+  return urlopen(url).read().decode('utf-8')
 
 def getJSON(url):
   return json.loads(httpGet(url))
