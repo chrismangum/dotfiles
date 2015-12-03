@@ -1,3 +1,3 @@
 #!/bin/bash
-sudo iptables -F
+sudo ufw disable
 sudo systemctl stop openvpn@client.service
