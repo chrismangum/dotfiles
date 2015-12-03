@@ -19,8 +19,8 @@ call vundle#end()
 
 syntax on
 filetype plugin indent on
-set autoindent
-set expandtab
+set autoindent                    " align the new line indent with the previous line
+set expandtab                     " insert spaces when hitting TABs
 set number
 set ignorecase smartcase
 set hlsearch
@@ -30,6 +30,10 @@ set visualbell noerrorbells
 set ruler
 set list listchars=tab:»·,trail:· " show extra space characters
 set nofoldenable
+set shiftround                    " round indent to multiple of 'shiftwidth'
+set shiftwidth=4                  " operation >> indents 4 columns; << unindents 4 columns
+set softtabstop=4                 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
+set tabstop=4                     " a hard TAB displays as 4 columns
 set wildmenu                      " enable bash style tab completion
 set wildmode=list:longest,full
 
@@ -51,10 +55,9 @@ highlight StatusLineNC ctermbg=235 ctermfg=240
 highlight TabLineFill  ctermbg=2   ctermfg=16
 highlight VertSplit    ctermbg=2   ctermfg=16
 
-" default cc and indentation
-set cc=100 tw=0 sw=2 sts=2 ts=2
+" default cc / tw
+set cc=100 tw=0
 
-autocmd FileType javascript,html setlocal sw=4 sts=4 ts=4
 autocmd FileType html setlocal cc=0
 " enable spell checker for mail / commit messages
 autocmd BufNewFile,BufRead /tmp/*,COMMIT_EDITMSG setlocal cc=72 tw=72 spell spelllang=en_us
