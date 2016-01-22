@@ -59,6 +59,7 @@ alias rename='perl-rename'
 alias s='stackato'
 alias stackato='stackato --skip-ssl-validation'
 alias xlock='xscreensaver-command -lock'
+alias xsleep='xlock; systemctl suspend'
 
 if [[ $uname == *'CYGWIN'* ]]; then
   export TERM=xterm-256color
