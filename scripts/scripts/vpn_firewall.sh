@@ -27,7 +27,7 @@ pia=$(ip route show scope link | grep 'dev tun0' | awk '{print $NF}')
     # DNS
     sudo ufw allow in from any to any port 53
     sudo ufw allow out from any to any port 53
-} &> /dev/null
+} > /dev/null
 
 sudo ufw enable
 sudo ufw status
