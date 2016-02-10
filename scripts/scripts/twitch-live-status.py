@@ -40,7 +40,7 @@ def prettyPrint(data):
 def printLiveChannels(liveChannels):
     count = len(liveChannels)
     out = 'Found ' + str(count) + ' live channel'
-    if count == 0 or count > 1:
+    if count != 1:
         out += 's'
     if count:
         out += ': ' + prettyPrint(liveChannels)
