@@ -2,7 +2,7 @@ uname=$(uname)
 # If not running interactively, don't do anything
 [[ $uname == 'Linux' && $- != *i* ]] && return
 
-source ~/scripts/git-prompt.sh
+source /usr/share/git/completion/git-prompt.sh
 
 # PS1 colors:
 txtcyn='\e[0;36m'
