@@ -17,25 +17,26 @@ def getJSON(url):
     return json.loads(httpGet(url))
 
 def albumSearch():
-    data = getJSON('http://ws.spotify.com/search/1/album.json?' + urlencode({
-        'q': input('Enter Album Query: ')
+    data = getJSON('https://api.spotify.com/v1/search?' + urlencode({
+        'q': input('Enter Album Query: '),
+        'type': 'album'
     }))
-    return list(map(lambda album: {
-        'name': album['name'],
-        'artist': album['artists'][0]['name'],
-        'id': album['href'].split(':')[2]
-    }, data['albums'][0:10]))
+    return [album['id'] for album in data['albums']['items'][0:10]]
 
-def albumLookup(albumID):
-    data = getJSON('http://ws.spotify.com/lookup/1/.json?extras=track&uri=spotify:album:' + albumID)
+def albumLookup(albumId):
+    data = getJSON('https://api.spotify.com/v1/albums/' + albumId)
+    album = {
+        'name': data['name'],
+        'release_date': data['release_date'],
+        'artist': data['artists'][0]['name']
+    }
     tracks = []
-    album = data['album']
-    for i, track in enumerate(album['tracks']):
-        index = format(i + 1, '02')
+    for track in data['tracks']['items']:
+        track_number = format(track['track_number'], '02')
         tracks.append({
             'name': track['name'],
-            'index': index,
-            'filename': '"' + index + ' ' + track['name']
+            'track_number': track_number,
+            'filename': '"' + track_number + ' ' + track['name']
         })
     album['tracks'] = tracks
     return album
@@ -85,16 +86,16 @@ def getCommandText(album):
     folder = '~/media/music/"' + album['artist'] + '"/"' + album['name'] + '"'
     cmds = [
         preCommands[ext],
-        genTagCmd(ext, 'year', album['released'], wildcard),
+        genTagCmd(ext, 'year', album['release_date'], wildcard),
         genTagCmd(ext, 'album', album['name'], wildcard),
         genTagCmd(ext, 'artist', album['artist'], wildcard)
     ]
     for track in album['tracks']:
         track['filename'] += '.' + ext + '"'
         if mvCommands:
-            cmds.append('mv track' + track['index'] + '.cdda.' + ext + ' ' + track['filename'])
+            cmds.append('mv track' + track['track_number'] + '.cdda.' + ext + ' ' + track['filename'])
         cmds += [
-            genTagCmd(ext, 'track', track['index'], track['filename']),
+            genTagCmd(ext, 'track', track['track_number'], track['filename']),
             genTagCmd(ext, 'song', track['name'], track['filename'])
         ]
     if mvCommands:
@@ -110,9 +111,10 @@ def promptExtension():
         print('Unsupported response.')
         sys.exit(1)
 
-def selectAlbum(albums):
+def selectAlbum(albumIds):
     selected = None
-    for album in albums:
+    for albumId in albumIds:
+        album = albumLookup(albumId)
         print('Album: ' + album['name'])
         print('Artist: ' + album['artist'])
         if input('Is this correct? (y, n): ').lower() == 'y':
@@ -124,6 +126,5 @@ def selectAlbum(albums):
 
 selected = selectAlbum(albumSearch())
 if selected:
-    album = albumLookup(selected['id'])
-    writeFile('commands', getCommandText(album))
+    writeFile('commands', getCommandText(selected))
     print('Done.')
