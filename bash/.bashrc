@@ -2,7 +2,7 @@ uname=$(uname)
 # If not running interactively, don't do anything
 [[ $uname == 'Linux' && $- != *i* ]] && return
 
-source ~/scripts/git-prompt.sh
+source /usr/share/git/completion/git-prompt.sh
 
 # PS1 colors:
 txtcyn='\e[0;36m'
@@ -22,15 +22,19 @@ alias apollo_mongo_remote='mongo_info; tsocks mongo -u ${MONGO_INFO[2]} -p ${MON
 alias arcnew="arc diff --reviewers '#apollo' --create"
 alias arcpre='arc diff --preview'
 alias arcupd='arc diff --update'
+alias away='setJabberStatus away'
+alias avail='setJabberStatus available'
 alias cdap='cd ~/Cisco/Apollo'
 alias cdc='cd ~/Cisco'
 alias cdha='cd ~/Cisco/ApolloHubAdmin'
 alias cdhu='cd ~/Cisco/ApolloHubUser'
 alias cdib='cd ~/Cisco/ApolloInstallBase'
+alias cdgsa='cd ~/Cisco/ApolloGoSA'
 alias cdmd='cd ~/Cisco/ApolloMyDevices'
 alias cdsa='cd ~/Cisco/ApolloSupportAutomation/client'
 alias cdsc='cd ~/Cisco/ApolloSupportCases'
 alias cdssa='cd ~/Cisco/ApolloSAStandalone'
+alias cdsst='cdssa; cd build/standalone/staging'
 alias cdst='cd ~/Cisco/ApolloStorage'
 alias cisco_vpn='sudo openconnect --csd-wrapper=/home/chris/scripts/csd-wrapper-simple.sh --cafile=/etc/openconnect/cisco-root-CA-M1.pem rtp1-asavpn-cluster-1.cisco.com'
 alias ga='git add'
@@ -57,9 +61,10 @@ alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias pyserver='python2 -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
 alias s='stackato'
+alias snw='cdsst; nw'
 alias stackato='stackato --skip-ssl-validation'
-alias xlock='xscreensaver-command -lock'
-alias xsleep='xlock; systemctl suspend'
+alias xlock='away; xscreensaver-command -lock'
+alias xsleep='xlock; sleep 2; systemctl suspend'
 
 if [[ $uname == *'CYGWIN'* ]]; then
   export TERM=xterm-256color
@@ -82,6 +87,10 @@ source ~/Desktop/.bashrc_private
 function mail() {
   cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
   mutt
+}
+
+function setJabberStatus() {
+  purple-remote setstatus?status=$1
 }
 
 function speedtest() {
