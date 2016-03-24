@@ -1,30 +1,33 @@
-set my_tmpsecret=`gpg -o ~/.tmp -d ~/.mutt/gpg/pass.gpg`
-set my_gacct=`awk '/acct/ {print $2}' ~/.tmp`
-set my_gpass=`awk '/pass/ {print $2}' ~/.tmp`
-set my_gurl=`awk '/url/ {print $2}' ~/.tmp`
-set my_del=`rm ~/.tmp`
+set my_tmpsecret = "`gpg -o ~/.tmp -d ~/.mutt/gpg/pass.gpg`"
+set my_acct = "`grep ^acct .tmp | sed 's/^acct //'`"
+set my_pass = "`grep ^pass .tmp | sed 's/^pass //'`"
+set my_url = "`grep ^url .tmp | sed 's/^url //'`"
+set my_folder = "`grep ^folder .tmp | sed 's/^folder //'`"
+set my_record = "`grep ^record .tmp | sed 's/^record //'`"
+set my_del = "`rm ~/.tmp`"
 
 #receive
-set imap_user = "$my_gacct"
-set imap_pass = "$my_gpass"
-set folder = "imaps://imap.gmail.com:993"
+set imap_user = "$my_acct"
+set imap_pass = "$my_pass"
+set folder = "$my_folder"
 set spoolfile = "+INBOX"
-set postponed = "+[Gmail]/Drafts"
+set postponed = "+Drafts"
 set mail_check = 60
 set imap_keepalive = 300
 set imap_check_subscribed
+set ssl_starttls = yes
 unset imap_passive
-unset record
 
 #send
-set smtp_url = "$my_gurl"
-set smtp_pass = "$my_gpass"
-set from = "$my_gacct"
+set smtp_url = "$my_url"
+set smtp_pass = "$my_pass"
+set from = "$my_acct"
 set realname = "Chris Mangum"
 set signature = "~/.mutt/signature"
+set record = "$my_record"
 
 #compose
-set alias_file= "~/.mutt/aliases"
+set alias_file = "~/.mutt/aliases"
 set editor = "/usr/bin/vim"
 set include
 source $alias_file
@@ -51,9 +54,11 @@ alternative_order text/plain text/html
 #custom key bindings
 bind index "^" imap-fetch-mail
 
+#macros
+macro index,pager d "<save-message>=Deleted<quote-char> Items<enter><enter>" "delete the current entry"
+
 #open urls
-macro index \cb "|urlview\n"
-macro pager \cb "|urlview\n"
+macro index,pager \cb "|urlview\n"
 
 #colors
 color  attachment  green       default
