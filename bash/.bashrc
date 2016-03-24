@@ -89,6 +89,14 @@ function mail() {
   mutt
 }
 
+function ffmpegSplice() {
+  ffmpeg -i $1 -ss 0 -c copy -t $2 cut1.mp4
+  ffmpeg -i $1 -ss $3 -c copy cut2.mp4
+  printf "file '$PWD/cut1.mp4'\nfile '$PWD/cut2.mp4'" > /tmp/ffmpeg_concat.txt
+  ffmpeg -f concat -i /tmp/ffmpeg_concat.txt -c copy result.mp4
+  rm cut1.mp4 cut2.mp4
+}
+
 function setJabberStatus() {
   purple-remote setstatus?status=$1
 }
