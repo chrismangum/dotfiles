@@ -14,11 +14,8 @@ export EDITOR=vim
 export GREP_COLOR='1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
-export TSOCKS_CONF_FILE=$HOME/.tsocks.conf
 
-alias mongo_info='MONGO_INFO=($(cat ~/Desktop/mongoCfg.json | json hostname port username password db))'
-alias apollo_mongo='mongo_info; mongo -u ${MONGO_INFO[2]} -p ${MONGO_INFO[3]} ${MONGO_INFO[0]}/${MONGO_INFO[4]}'
-alias apollo_mongo_remote='mongo_info; tsocks mongo -u ${MONGO_INFO[2]} -p ${MONGO_INFO[3]} ${MONGO_INFO[0]}/${MONGO_INFO[4]}'
+alias apollo_mongo='mongo swtgdev-mongo-1.cisco.com/db'
 alias arcnew="arc diff --reviewers '#apollo' --create"
 alias arcpre='arc diff --preview'
 alias arcupd='arc diff --update'
