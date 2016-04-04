@@ -10,8 +10,8 @@ cp -v systemd/.config/systemd/user/* ~/.config/systemd/user
 for i in ~/.config/systemd/user/*.service; do systemctl --user enable $(basename $i); done;
 
 #create symlinks
-stow -v alsa bash compton cups cygwin fonts git gtk i3 mpv mutt redshift rtorrent scripts tmux tsocks \
-  urlview vim xorg yaourt
+stow -v alsa bash compton cups cygwin fonts git gtk i3 mongo mpv mutt redshift rtorrent scripts tmux \
+  tsocks urlview vim xorg yaourt
 
 #install fonts
 if [[ -x fc-cache ]]; then
