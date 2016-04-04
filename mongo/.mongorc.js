@@ -36,3 +36,21 @@ function Favorite(collection, query) {
         return this.collection[method](this.query, arg);
     };
 });
+
+function removeOldApps() {
+    var currentAppRegex = RegExp(['\\w+', version, year, 'chris'].join('-'));
+    var apps = db.app
+        .find({apolloAppId: {$regex: /-chris$/}})
+        .toArray()
+        .filter(function (app) {
+            return !currentAppRegex.test(app.apolloAppId);
+        });
+    if (!apps.length) {
+        print('No old apps found.');
+    } else {
+        apps.forEach(function (app) {
+            print('Removing:', app.apolloAppId);
+            db.app.remove({apolloAppId: app.apolloAppId});
+        });
+    }
+}
