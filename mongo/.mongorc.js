@@ -3,29 +3,6 @@ login();
 EDITOR = '/bin/vim';
 DBQuery.prototype._prettyShell = true;
 
-var year = new Date().getFullYear();
-var version = '2-0-0';
-var my = {
-    acct: new Favorite('account', {accountId: '23232'}),
-    app: _myApp,
-    appid: _myAppId,
-    hub: _myApp('hub'),
-    mdev: _myApp('mdev'),
-    user: new Favorite('account', {accountId: '23232', 'users.userId': 'cmagnum'})
-};
-
-function appId(appName, user) {
-    return [appName, version, year, user].join('-');
-}
-
-function _myAppId(appName) {
-    return appId(appName, 'chris');
-}
-
-function _myApp(appName) {
-    return new Favorite('app', {apolloAppId: _myAppId(appName)});
-}
-
 function Favorite(collection, query) {
     this.collection = db[collection];
     this.query = query;
@@ -37,10 +14,35 @@ function Favorite(collection, query) {
     };
 });
 
+function Favorites(options) {
+    Object.assign(this, options);
+    this.acct = new Favorite('account', {accountId: this.acctid});
+    this.hub = this.app('hub');
+    this.mdev = this.app('mdev');
+    this.sasa = this.app('sasa');
+    this.user = new Favorite('account', {accountId: this.acctid, 'users.userId': this.userid});
+}
+
+Favorites.prototype.appid = function (appName) {
+    return [appName, this.version, this.year, this.username].join('-');
+};
+
+Favorites.prototype.app = function (appName) {
+    return new Favorite('app', {apolloAppId: this.appid(appName)});
+};
+
+var my = new Favorites({
+    acctid: '23232',
+    userid: 'cmagnum',
+    username: 'chris',
+    version: '2-0-0',
+    year: new Date().getFullYear()
+});
+
 function removeOldApps() {
-    var currentAppRegex = RegExp(['\\w+', version, year, 'chris'].join('-'));
+    var currentAppRegex = RegExp(my.appid('\\w+'));
     var apps = db.app
-        .find({apolloAppId: {$regex: /-chris$/}})
+        .find({apolloAppId: {$regex: RegExp('-' + my.username + '$')}})
         .toArray()
         .filter(function (app) {
             return !currentAppRegex.test(app.apolloAppId);
