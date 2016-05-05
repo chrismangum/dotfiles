@@ -60,6 +60,7 @@ alias rename='perl-rename'
 alias s='stackato'
 alias snw='cdsst; nw'
 alias stackato='stackato --skip-ssl-validation'
+alias wcpe='mpv http://audio-mp3.ibiblio.org:8000/wcpe.mp3'
 alias xlock='away; xscreensaver-command -lock'
 alias xsleep='xlock; sleep 2; systemctl suspend'
 
@@ -80,6 +81,12 @@ export HISTFILESIZE=100000
 export PROMPT_COMMAND="history -a"
 
 source ~/Desktop/.bashrc_private
+
+function gch_cli() {
+  cdsa; gch $1
+  cdhu; gch $1
+  cdssa; gch $1
+}
 
 function mail() {
   cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
