@@ -28,6 +28,7 @@ alias cdhu='cd ~/Cisco/ApolloHubUser'
 alias cdib='cd ~/Cisco/ApolloInstallBase'
 alias cdgsa='cd ~/Cisco/ApolloGoSA'
 alias cdmd='cd ~/Cisco/ApolloMyDevices'
+alias cdrn='cd ~/Cisco/ApolloPlatformAutomation/ansible/roles/apache/files/html/docs/ReleaseNotes/sasa'
 alias cdsa='cd ~/Cisco/ApolloSupportAutomation/client'
 alias cdsc='cd ~/Cisco/ApolloSupportCases'
 alias cdssa='cd ~/Cisco/ApolloSAStandalone'
@@ -96,9 +97,9 @@ function mail() {
 function ffmpegSplice() {
   ffmpeg -i $1 -ss 0 -c copy -t $2 cut1.mp4
   ffmpeg -i $1 -ss $3 -c copy cut2.mp4
-  printf "file '$PWD/cut1.mp4'\nfile '$PWD/cut2.mp4'" > /tmp/ffmpeg_concat.txt
-  ffmpeg -f concat -i /tmp/ffmpeg_concat.txt -c copy result.mp4
-  rm cut1.mp4 cut2.mp4
+  printf "file 'cut1.mp4'\nfile 'cut2.mp4'" > ffmpeg_concat.txt
+  ffmpeg -f concat -i ffmpeg_concat.txt -c copy result.mp4
+  rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
 }
 
 function setJabberStatus() {
