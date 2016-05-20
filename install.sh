@@ -6,8 +6,10 @@ mkdir -pv ~/.config/systemd/user \
   ~/.local/share/xorg \
 
 #copy and add systemd user services
-cp -v systemd/.config/systemd/user/* ~/.config/systemd/user
-for i in ~/.config/systemd/user/*.service; do systemctl --user enable $(basename $i); done;
+if [[ -x systemctl ]]; then
+    cp -v systemd/.config/systemd/user/* ~/.config/systemd/user
+    for i in ~/.config/systemd/user/*.service; do systemctl --user enable $(basename $i); done;
+fi
 
 #create symlinks
 stow -v alsa bash compton cups cygwin fonts git gtk i3 mongo mpv mutt redshift rtorrent scripts tmux \

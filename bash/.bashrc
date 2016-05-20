@@ -2,7 +2,11 @@ uname=$(uname)
 # If not running interactively, don't do anything
 [[ $uname == 'Linux' && $- != *i* ]] && return
 
-source /usr/share/git/completion/git-prompt.sh
+if [[ $uname == 'Linux' ]]; then
+    source /usr/share/git/completion/git-prompt.sh
+else
+    source ~/scripts/git-prompt.sh
+fi
 
 # PS1 colors:
 txtcyn='\e[0;36m'
@@ -81,7 +85,9 @@ export HISTSIZE=100000
 export HISTFILESIZE=100000
 export PROMPT_COMMAND="history -a"
 
-source ~/Desktop/.bashrc_private
+if [[ -e '~/Desktop/.bashrc_private' ]]; then
+    source ~/Desktop/.bashrc_private
+fi
 
 function gch_cli() {
   cdsa; gch $1
@@ -118,4 +124,9 @@ export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
 #add java and node to cygiwn path
 if [[ $uname == *'CYGWIN'* ]]; then
   export PATH=$PATH:/cygdrive/c/ProgramData/Oracle/Java/javapath:/cygdrive/c/Program\ Files/nodejs:/cygdrive/c/Users/chris/AppData/Roaming/npm
+fi
+# OS X: gnu coreutils paths:
+if [[ $uname == 'Darwin' ]]; then
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
