@@ -38,7 +38,7 @@ alias cdsc='cd ~/Cisco/ApolloSupportCases'
 alias cdssa='cd ~/Cisco/ApolloSAStandalone'
 alias cdsst='cdssa; cd build/standalone/staging'
 alias cdst='cd ~/Cisco/ApolloStorage'
-alias cisco_vpn='sudo openconnect --csd-wrapper=/home/chris/scripts/csd-wrapper-simple.sh --cafile=/etc/openconnect/cisco-root-CA-M1.pem rtp1-asavpn-cluster-1.cisco.com'
+alias cisco_vpn="sudo openconnect --csd-wrapper=$HOME/scripts/csd-wrapper-simple.sh --cafile=/etc/openconnect/cisco-root-CA-M1.pem rtp1-asavpn-cluster-1.cisco.com"
 alias ga='git add'
 alias gaa='git add -A'
 alias gap='git add -p'
