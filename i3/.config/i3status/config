@@ -37,6 +37,6 @@ load {
 volume master {
   format = "♪: %volume"
   device = "default"
-  mixer = "Master"
+  mixer = "PCM"
   mixer_idx = 0
 }

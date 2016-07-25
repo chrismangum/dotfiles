@@ -38,7 +38,7 @@ alias cdsc='cd ~/Cisco/ApolloSupportCases'
 alias cdssa='cd ~/Cisco/ApolloSAStandalone'
 alias cdsst='cdssa; cd build/standalone/staging'
 alias cdst='cd ~/Cisco/ApolloStorage'
-alias cisco_vpn="sudo openconnect --csd-wrapper=$HOME/scripts/csd-wrapper-simple.sh --cafile=/etc/openconnect/cisco-root-CA-M1.pem rtp1-asavpn-cluster-1.cisco.com"
+alias cisco_vpn="sudo vpnc --no-detach /etc/vpnc/default.conf"
 alias ga='git add'
 alias gaa='git add -A'
 alias gap='git add -p'
@@ -63,6 +63,7 @@ alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias pyserver='python2 -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
 alias s='stackato'
+alias sa_sync='cp -r ~/Cisco/ApolloSAStandalone/build/standalone/staging/ ~/Containers/Current/home/chris/www'
 alias snw='cdsst; nw'
 alias stackato='stackato --skip-ssl-validation'
 alias wcpe='mpv http://audio-mp3.ibiblio.org:8000/wcpe.mp3'
@@ -70,7 +71,7 @@ alias xlock='away; xscreensaver-command -lock'
 alias xsleep='xlock; sleep 2; systemctl suspend'
 
 if [[ $uname == *'CYGWIN'* ]]; then
-  export TERM=xterm-256color
+    export TERM=xterm-256color
 fi
 
 # safety nets:
@@ -90,40 +91,40 @@ if [[ -e '~/Desktop/.bashrc_private' ]]; then
 fi
 
 function gch_cli() {
-  cdsa; gch $1
-  cdhu; gch $1
-  cdssa; gch $1
+    cdsa; gch $1
+    cdhu; gch $1
+    cdssa; gch $1
 }
 
 function mail() {
-  cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
-  mutt
+    cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
+    mutt
 }
 
 function ffmpegSplice() {
-  ffmpeg -i $1 -ss 0 -c copy -t $2 cut1.mp4
-  ffmpeg -i $1 -ss $3 -c copy cut2.mp4
-  printf "file 'cut1.mp4'\nfile 'cut2.mp4'" > ffmpeg_concat.txt
-  ffmpeg -f concat -i ffmpeg_concat.txt -c copy result.mp4
-  rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
+    ffmpeg -i $1 -ss 0 -c copy -t $2 cut1.mp4
+    ffmpeg -i $1 -ss $3 -c copy cut2.mp4
+    printf "file 'cut1.mp4'\nfile 'cut2.mp4'" > ffmpeg_concat.txt
+    ffmpeg -f concat -i ffmpeg_concat.txt -c copy result.mp4
+    rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
 }
 
 function setJabberStatus() {
-  purple-remote setstatus?status=$1
+    purple-remote setstatus?status=$1
 }
 
 function speedtest() {
-  local url='http://speedtest.wdc01.softlayer.com/downloads/test10.zip'
-  local speed_bps=$(curl -o /dev/null -w '%{speed_download}' -s $url)
-  local speed_mbps=$(bc <<< "scale=3; $speed_bps / 1024 / 1024 * 8")
-  echo "Download: $speed_mbps Mbps"
+    local url='http://speedtest.wdc01.softlayer.com/downloads/test10.zip'
+    local speed_bps=$(curl -o /dev/null -w '%{speed_download}' -s $url)
+    local speed_mbps=$(bc <<< "scale=3; $speed_bps / 1024 / 1024 * 8")
+    echo "Download: $speed_mbps Mbps"
 }
 
 # PATH:
 export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
 #add java and node to cygiwn path
 if [[ $uname == *'CYGWIN'* ]]; then
-  export PATH=$PATH:/cygdrive/c/ProgramData/Oracle/Java/javapath:/cygdrive/c/Program\ Files/nodejs:/cygdrive/c/Users/chris/AppData/Roaming/npm
+    export PATH=$PATH:/cygdrive/c/ProgramData/Oracle/Java/javapath:/cygdrive/c/Program\ Files/nodejs:/cygdrive/c/Users/chris/AppData/Roaming/npm
 fi
 # OS X: gnu coreutils paths:
 if [[ $uname == 'Darwin' ]]; then
