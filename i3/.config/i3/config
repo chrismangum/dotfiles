@@ -155,6 +155,7 @@ bar {
 
 # border style
 new_window 1pixel
+# new_window normal
 
 # brightness keys
 bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 10
@@ -166,10 +167,13 @@ bindsym XF86AudioLowerVolume exec --no-startup-id amixer set PCM 5%-
 bindsym XF86AudioMute exec --no-startup-id amixer sset Master toggle
 
 # music playback keys
-bindsym XF86AudioPlay exec --no-startup-id cmus-remote -u
-bindsym XF86AudioStop exec --no-startup-id cmus-remote -s
-bindsym XF86AudioPrev exec --no-startup-id cmus-remote -r
-bindsym XF86AudioNext exec --no-startup-id cmus-remote -n
+# bindsym XF86AudioPlay exec --no-startup-id cmus-remote -u
+# bindsym XF86AudioStop exec --no-startup-id cmus-remote -s
+# bindsym XF86AudioPrev exec --no-startup-id cmus-remote -r
+# bindsym XF86AudioNext exec --no-startup-id cmus-remote -n
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86AudioNext exec --no-startup-id playerctl next
 
 # lock screen
 bindsym $mod+XF86Eject exec --no-startup-id xscreensaver-command -lock
