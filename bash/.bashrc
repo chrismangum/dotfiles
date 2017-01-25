@@ -19,7 +19,7 @@ export GREP_COLOR='1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
-alias apollo_mongo='mongo swtgdev-mongo-1.cisco.com/db'
+alias apollo_mongo='mongo swtgdev-mongo-1b:27017/db'
 alias arcnew="arc diff --reviewers '#apollo' --create"
 alias arcpre='arc diff --preview'
 alias arcupd='arc diff --update'
@@ -29,6 +29,7 @@ alias cdap='cd ~/Cisco/Apollo'
 alias cdat='cd ~/Cisco/Atlantic-UI'
 alias cdbdb='cd ~/Cisco/compose/web_ui/ui'
 alias cdc='cd ~/Cisco'
+alias cdcsc='cd ~/Cisco/ApolloCSCUploader'
 alias cdha='cd ~/Cisco/ApolloHubAdmin'
 alias cdhu='cd ~/Cisco/ApolloHubUser'
 alias cdib='cd ~/Cisco/ApolloInstallBase'
@@ -49,11 +50,12 @@ alias gc='git commit'
 alias gch='git checkout'
 alias gcm='git commit -m'
 alias gcp='git cherry-pick'
-alias gd='git diff'
-alias gdc='git diff --cached'
+alias gd='git diff -w'
+alias gdc='gd --cached'
 alias gf='git fetch; git status'
-alias glg='git log --stat'
-alias glp='git log -p'
+alias gl='git log -w'
+alias glg='gl --stat'
+alias glp='gl -p'
 alias gp='git push'
 alias gpl='git pull'
 alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=build'
@@ -62,7 +64,8 @@ alias l='ls -lah'
 alias ll='ls -lh'
 alias ls='ls --color=auto'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
-alias pyserver='python2 -m SimpleHTTPServer 3001'
+alias pyserver='python -m http.server 3001'
+alias pyserver2='python -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
 alias s='stackato'
 alias sa_sync='cp -r ~/Cisco/ApolloSAStandalone/build/standalone/staging/ ~/Containers/Current/home/chris/www'
@@ -91,6 +94,8 @@ export PROMPT_COMMAND="history -a"
 if [[ -e '~/Desktop/.bashrc_private' ]]; then
     source ~/Desktop/.bashrc_private
 fi
+
+source ~/.kube/bash_config.sh
 
 function gch_cli() {
     cdsa; gch $1
