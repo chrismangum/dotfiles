@@ -11,11 +11,6 @@ var request = require('request');
 var util = require('util');
 
 Promise.onPossiblyUnhandledRejection(_.noop);
-var _console = _.mapValues({error: 'red', warn: 'yellow'}, function (color) {
-    return function () {
-        console.error(chalk[color].apply(chalk, arguments));
-    };
-});
 
 function buildQuery(program) {
     var query = {stream_type: 'live'};
@@ -42,8 +37,13 @@ var getTwitchClientId = (function () {
             return Promise.resolve(clientId);
         }
         return readFile(path.join(os.homedir(), 'Desktop', 'twitch-client-id.txt')).then(function (buffer) {
-            clientId = buffer.toString();
-            return clientId;
+            var token = _.first(_.toString(buffer).match(/\w+/));
+            if (token) {
+                clientId = token;
+                return clientId;
+            } else {
+                return Promise.reject(new Error('Unable to parse twitch client id'));
+            }
         });
     };
 }());
@@ -80,14 +80,20 @@ function inspect(label, data) {
     console.log(chalk.bold.blue(label) + ':', util.inspect(data, {colors: true}));
 }
 
+function logError(error) {
+    if (_.isError(error)) {
+        console.error(chalk.red('Error') + ':', error.message);
+    } else {
+        console.error(chalk.yellow('Warning') + ':', error);
+    }
+}
+
 function makeRequest(options) {
     return new Promise(function (resolve, reject) {
         request(options, function (err, response, data) {
             if (err || response.statusCode !== 200) {
-                var error = err || 'call to ' + options.url + ' returned status: ' +
-                    response.statusCode + ' ' + response.statusMessage;
-                _console[err ? 'error' : 'warn'](error);
-                reject(_.isError(error) ? error : new Error(error));
+                reject(err || ('call to ' + options.url + ' returned status: ' +
+                    response.statusCode + ' ' + response.statusMessage));
             } else {
                 resolve(data);
             }
@@ -103,7 +109,6 @@ function readFile(filename) {
     return new Promise(function(resolve, reject) {
         fs.readFile(filename, function (err, buffer) {
             if (err) {
-                _console.error(err);
                 reject(err);
             } else {
                 resolve(buffer);
@@ -125,7 +130,8 @@ if (program.game || program.username) {
     }
     buildQuery(program)
         .then(getLiveStreams)
-        .then(prettyPrint);
+        .then(prettyPrint)
+        .catch(logError);
 } else {
     program.help();
 }
