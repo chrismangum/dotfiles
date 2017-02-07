@@ -1,3 +1,5 @@
+conn = new Mongo('apollo/swtg-qa-mongo-2a.cisco.com,swtg-qa-mongo-2b.cisco.com,swtg-qa-mongo-2c.cisco.com')
+db = conn.getDB('dev2')
 login();
 
 EDITOR = '/bin/vim';
@@ -35,8 +37,8 @@ var my = new Favorites({
     acctid: '23232',
     userid: 'cmagnum',
     username: 'chris',
-    version: '2-0-0',
-    year: new Date().getFullYear()
+    version: '4-0-0',
+    year: new Date().getFullYear() - 2000
 });
 
 function removeOldApps() {

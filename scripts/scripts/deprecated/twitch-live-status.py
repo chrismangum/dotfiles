@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from urllib import parse, request
 
 def getFollowing(username):
-    data = getTwitchJSON('/users/' + username + '/follows/channels/?limit=100')
+    data = getTwitchJSON('/users/' + username + '/follows/channels/?limit=150')
     return [ch['channel']['name'] for ch in data['follows']]
 
 def getLiveChannels(query):

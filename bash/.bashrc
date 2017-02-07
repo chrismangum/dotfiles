@@ -19,7 +19,7 @@ export GREP_COLOR='1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
-alias apollo_mongo='mongo swtgdev-mongo-1b:27017/db'
+alias apollo_mongo='mongo --nodb'
 alias arcnew="arc diff --reviewers '#apollo' --create"
 alias arcpre='arc diff --preview'
 alias arcupd='arc diff --update'
@@ -74,6 +74,7 @@ alias stackato='stackato --skip-ssl-validation'
 alias wcpe='mpv http://audio-mp3.ibiblio.org:8000/wcpe.mp3'
 alias xlock='away; xscreensaver-command -lock'
 alias xsleep='xlock; sleep 2; systemctl suspend'
+alias wired_auth='sudo wpa_supplicant -D wired -i enp0s25 -c /etc/wpa_supplicant/wpa_supplicant-enp0s25.conf'
 
 if [[ $uname == *'CYGWIN'* ]]; then
     export TERM=xterm-256color
@@ -90,10 +91,6 @@ export HISTCONTROL=ignoredups:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
 export PROMPT_COMMAND="history -a"
-
-if [[ -e '~/Desktop/.bashrc_private' ]]; then
-    source ~/Desktop/.bashrc_private
-fi
 
 source ~/.kube/bash_config.sh
 
