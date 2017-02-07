@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 var _ = require('lodash');
 var chalk = require('chalk');
 var moment = require('moment');
@@ -53,13 +54,8 @@ var getTwitchClientId = (function () {
             return Promise.resolve(clientId);
         }
         return readFile(path.join(os.homedir(), 'Desktop', 'twitch-client-id.txt')).then(function (buffer) {
-            var token = _.first(_.toString(buffer).match(/\w+/));
-            if (token) {
-                clientId = token;
-                return clientId;
-            } else {
-                return Promise.reject(new Error('Unable to parse twitch client id'));
-            }
+            clientId = _.first(_.toString(buffer).match(/\w+/));
+            return clientId || Promise.reject(new Error('Unable to parse twitch client id'));
         });
     };
 }());
