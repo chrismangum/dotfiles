@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 var _ = require('lodash');
 var chalk = require('chalk');
-var fs = require('fs');
 var moment = require('moment');
 var os = require('os');
 var path = require('path');
@@ -10,7 +9,8 @@ var Promise = require('bluebird');
 var request = require('request');
 var util = require('util');
 
-Promise.onPossiblyUnhandledRejection(_.noop);
+var pRequest = Promise.promisify(request);
+var readFile = Promise.promisify(require('fs').readFile);
 
 function buildQuery(program) {
     var query = {stream_type: 'live'};
@@ -97,32 +97,18 @@ function logError(error) {
 }
 
 function makeRequest(options) {
-    return new Promise(function (resolve, reject) {
-        request(options, function (err, response, data) {
-            if (err || response.statusCode !== 200) {
-                reject(err || ('call to ' + options.url + ' returned status: ' +
-                    response.statusCode + ' ' + response.statusMessage));
-            } else {
-                resolve(data);
-            }
-        });
+    return pRequest(options).then(function (res) {
+        if (res.statusCode !== 200) {
+            return Promise.reject('call to ' + options.url + ' returned status: ' + res.statusCode +
+                                  ' ' + res.statusMessage);
+        } else {
+            return res.body;
+        }
     });
 }
 
 function prettyPrint(data) {
     console.log(JSON.stringify(data, null, 2));
-}
-
-function readFile(filename) {
-    return new Promise(function(resolve, reject) {
-        fs.readFile(filename, function (err, buffer) {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(buffer);
-            }
-        });
-    });
 }
 
 program
