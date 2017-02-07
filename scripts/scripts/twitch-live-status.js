@@ -25,8 +25,24 @@ function buildQuery(program) {
 }
 
 function getFollowing(username) {
-    return getTwitchJson('users/' + username + '/follows/channels/', {limit: 150}).then(function (data) {
-        return _.map(data.follows, 'channel.name');
+    return getTwitchUserId(username).then(function (userId) {
+        return getTwitchJson('users/' + userId + '/follows/channels/', {limit: 200}).then(function (data) {
+            return _.map(data.follows, 'channel._id');
+        });
+    });
+}
+
+function getLiveStreams(query) {
+    return getTwitchJson('streams/', query).then(function (data) {
+        return _.map(data.streams, function (stream) {
+            return {
+                name: stream.channel.name,
+                title: stream.channel.status,
+                viewers: stream.viewers,
+                game: stream.channel.game,
+                uptime: moment(stream.created_at).fromNow(true)
+            };
+        });
     });
 }
 
@@ -48,31 +64,23 @@ var getTwitchClientId = (function () {
     };
 }());
 
-function getLiveStreams(query) {
-    return getTwitchJson('streams/', query).then(function (data) {
-        return _.map(data.streams, function (stream) {
-            return {
-                name: stream.channel.name,
-                title: stream.channel.status,
-                viewers: stream.viewers,
-                game: stream.channel.game,
-                uptime: moment(stream.created_at).fromNow(true)
-            };
-        });
-    });
-}
-
 function getTwitchJson(path, query) {
     return getTwitchClientId().then(function (clientId) {
         return makeRequest({
             headers: {
-                'Accept': 'application/vnd.twitchtv.v3+json',
+                'Accept': 'application/vnd.twitchtv.v5+json',
                 'Client-ID': clientId
             },
             json: true,
             qs: query,
             url: 'https://api.twitch.tv/kraken/' + path
         });
+    });
+}
+
+function getTwitchUserId(username) {
+    return getTwitchJson('users/', {login: username}).then(function (data) {
+        return _.get(_.first(data.users), '_id');
     });
 }
 
