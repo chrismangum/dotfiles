@@ -26,8 +26,16 @@ function buildQuery(program) {
 }
 
 function formatDuration(value, unit) {
-    var d = moment.duration(value, unit);
-    return _.join([d.hours(), d.minutes(), d.seconds()], ':');
+    var duration = moment.duration(value, unit);
+    return _.reduce(['hours', 'minutes', 'seconds'], function (memo, unit) {
+        var val = duration[unit]();
+        if (memo) {
+            memo += ':' + (val < 10 ? '0' + val : _.toString(val));
+        } else if (val) {
+            memo += val;
+        }
+        return memo;
+    }, '');
 }
 
 function getFollowing(username) {
