@@ -26,44 +26,6 @@ function formatDuration(value, unit) {
     }, '');
 }
 
-function getClips(query) {
-    return getTwitchJson('clips/top', query, 'v4').then(function (data) {
-        return _.mapValues(_.groupBy(data.clips, query.channel ? 'game' : 'broadcaster.name'), function (clips) {
-            return _.map(clips, function (clip) {
-                return {
-                    title: clip.title,
-                    created: moment(clip.created_at).fromNow(),
-                    views: clip.views,
-                    vod: clip.vod.url,
-                    url: clip.url
-                };
-            });
-        });
-    });
-}
-
-function getFollowing(username) {
-    return getUserId(username).then(function (userId) {
-        return getTwitchJson('users/' + userId + '/follows/channels/', {limit: 200}).then(function (data) {
-            return _.map(data.follows, 'channel._id');
-        });
-    });
-}
-
-function getLiveStreams(query) {
-    return getTwitchJson('streams/', query).then(function (data) {
-        return _.mapValues(_.groupBy(data.streams, 'channel.game'), function (streams) {
-            return _.mapValues(_.keyBy(streams, 'channel.name'), function (stream) {
-                return {
-                    title: stream.channel.status,
-                    viewers: stream.viewers,
-                    quality: stream.video_height + 'p' + (Math.round(stream.average_fps / 10) * 10)
-                };
-            });
-        });
-    });
-}
-
 var getClientId = (function () {
     var clientId;
     return function () {
@@ -76,6 +38,49 @@ var getClientId = (function () {
         });
     };
 }());
+
+function getClips(query) {
+    return getTwitchJson('clips/top', query, 'v4').then(function (data) {
+        return _.chain(data.clips)
+            .groupBy(query.channel ? 'game' : 'broadcaster.name')
+            .mapValues(function (clips) {
+                return _.map(clips, function (clip) {
+                    return {
+                        title: clip.title,
+                        created: moment(clip.created_at).fromNow(),
+                        views: clip.views,
+                        vod: clip.vod.url,
+                        url: clip.url
+                    };
+                });
+            })
+            .value();
+    });
+}
+
+function getFollowing(username) {
+    return getUserId(username).then(function (userId) {
+        return getTwitchJson('users/' + userId + '/follows/channels/', {limit: 200});
+    }).then(function (data) {
+        return _.map(data.follows, 'channel._id');
+    });
+
+}
+
+function getStreams(query) {
+    return getTwitchJson('streams/', query).then(function (data) {
+        return _.mapValues(_.groupBy(data.streams, 'channel.game'), function (streams) {
+            return _.mapValues(_.keyBy(streams, 'channel.name'), function (stream) {
+                return {
+                    title: stream.channel.status,
+                    viewers: stream.viewers,
+                    uptime: moment(stream.created_at).fromNow(true),
+                    quality: stream.video_height + 'p' + (Math.round(stream.average_fps / 10) * 10)
+                };
+            });
+        });
+    });
+}
 
 function getTwitchJson(path, query, api) {
     return getClientId().then(function (clientId) {
@@ -102,19 +107,22 @@ function getVods(query) {
     return promise.then(function (userId) {
         return getTwitchJson(userId ? 'channels/' + userId + '/videos' : 'videos/top', query)
             .then(function (data) {
-                return _.mapValues(_.groupBy(data[userId ? 'videos' : 'vods'], userId ? 'game' : 'channel.name'), function (vods) {
-                    return _.map(vods, function (vod) {
-                        return {
-                            title: vod.title,
-                            created: moment(vod.created_at).fromNow(),
-                            duration: formatDuration(vod.length, 'seconds'),
-                            views: vod.views,
-                            quality: _.last(_.split(vod.resolutions.chunked, 'x')) + 'p' +
-                                (Math.round(vod.fps.chunked / 10) * 10),
-                            url: vod.url
-                        };
-                    });
-                });
+                return _.chain(data[userId ? 'videos' : 'vods'])
+                    .groupBy(userId ? 'game' : 'channel.name')
+                    .mapValues(function (vods) {
+                        return _.map(vods, function (vod) {
+                            return {
+                                title: vod.title,
+                                created: moment(vod.created_at).fromNow(),
+                                duration: formatDuration(vod.length, 'seconds'),
+                                views: vod.views,
+                                quality: _.last(_.split(vod.resolutions.chunked, 'x')) + 'p' +
+                                    (Math.round(vod.fps.chunked / 10) * 10),
+                                url: vod.url
+                            };
+                        });
+                    })
+                    .value();
             });
     });
 }
@@ -153,7 +161,7 @@ program
 
 program
     .command('clips [channel]')
-    .description('get clips by channel or by game.')
+    .description('get clips by channel or by game')
     .option('-p, --period <period>', 'Period', 'month')
     .action(function (channel, options) {
         if (channel || program.game) {
@@ -174,7 +182,7 @@ program
 
 program
     .command('vods [channel]')
-    .description('get clips by channel or by game.')
+    .description('get vods by channel or by game')
     .option('-t, --type <type>', 'Broadcast type', 'archive')
     .action(function (channel, options) {
         if (channel || program.game) {
@@ -210,7 +218,7 @@ program
                 return query;
             }) : Promise.resolve(query);
             promise
-                .then(getLiveStreams)
+                .then(getStreams)
                 .then(prettyPrint)
                 .catch(logError);
         } else {
