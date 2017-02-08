@@ -2,7 +2,6 @@
 'use strict';
 var _ = require('lodash');
 var chalk = require('chalk');
-var moment = require('moment');
 var os = require('os');
 var path = require('path');
 var program = require('commander');
@@ -35,14 +34,14 @@ function getFollowing(username) {
 
 function getLiveStreams(query) {
     return getTwitchJson('streams/', query).then(function (data) {
-        return _.map(data.streams, function (stream) {
-            return {
-                name: stream.channel.name,
-                title: stream.channel.status,
-                viewers: stream.viewers,
-                game: stream.channel.game,
-                uptime: moment(stream.created_at).fromNow(true)
-            };
+        return _.mapValues(_.groupBy(data.streams, 'channel.game'), function (streams) {
+            return _.mapValues(_.keyBy(streams, 'channel.name'), function (stream) {
+                return {
+                    title: stream.channel.status,
+                    viewers: stream.viewers,
+                    quality: stream.video_height + 'p' + (Math.round(stream.average_fps / 10) * 10)
+                };
+            });
         });
     });
 }
@@ -104,7 +103,7 @@ function makeRequest(options) {
 }
 
 function prettyPrint(data) {
-    console.log(JSON.stringify(data, null, 2));
+    console.log(JSON.stringify(data, null, 4));
 }
 
 program
