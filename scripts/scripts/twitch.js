@@ -13,29 +13,33 @@ var util = require('util');
 var pRequest = Promise.promisify(request);
 var readFile = Promise.promisify(require('fs').readFile);
 
-function buildQuery(program) {
-    var query = {stream_type: 'live'};
-    _.assign(query, _.pick(program, 'game', 'limit'));
-    if (program.username) {
-        return getFollowing(program.username).then(function (channels) {
-            query.channel = _.join(channels);
-            return query;
-        });
-    }
-    return Promise.resolve(query);
-}
-
 function formatDuration(value, unit) {
     var duration = moment.duration(value, unit);
     return _.reduce(['hours', 'minutes', 'seconds'], function (memo, unit) {
         var val = duration[unit]();
         if (memo) {
-            memo += ':' + (val < 10 ? '0' + val : _.toString(val));
+            memo += ':' + (val < 10 ? '0' + val : val);
         } else if (val) {
             memo += val;
         }
         return memo;
     }, '');
+}
+
+function getClips(query) {
+    return getTwitchJson('clips/top', query, 'v4').then(function (data) {
+        return _.mapValues(_.groupBy(data.clips, query.channel ? 'game' : 'broadcaster.name'), function (clips) {
+            return _.map(clips, function (clip) {
+                return {
+                    title: clip.title,
+                    created: moment(clip.created_at).fromNow(),
+                    views: clip.views,
+                    vod: clip.vod.url,
+                    url: clip.url
+                };
+            });
+        });
+    });
 }
 
 function getFollowing(username) {
@@ -73,11 +77,11 @@ var getClientId = (function () {
     };
 }());
 
-function getTwitchJson(path, query) {
+function getTwitchJson(path, query, api) {
     return getClientId().then(function (clientId) {
         return makeRequest({
             headers: {
-                'Accept': 'application/vnd.twitchtv.v5+json',
+                'Accept': 'application/vnd.twitchtv.' + (api || 'v5') + '+json',
                 'Client-ID': clientId
             },
             json: true,
@@ -94,7 +98,6 @@ function getUserId(username) {
 }
 
 function getVods(query) {
-    _.defaults(query, { broadcast_type: 'archive' });
     return getTwitchJson('videos/top', query).then(function (data) {
         return _.mapValues(_.groupBy(data.vods, 'channel.name'), function (vods) {
             return _.map(vods, function (vod) {
@@ -140,27 +143,71 @@ function prettyPrint(data) {
 }
 
 program
-    .option('-g, --game <game>', 'Streams categorized under GAME')
-    .option('-u, --username <username>', 'Username to query live followed streams')
     .option('-l, --limit <limit>', 'Maximum number of objects in array. Default is 25. Maximum is 100.')
     .option('-d, --debug', 'Turn on http request debugging')
-    .option('-v, --vods', 'Fetch game vods. Requires --game argument.')
-    .parse(process.argv);
+    .option('-g, --game <game>', 'Streams categorized under GAME');
 
-if (program.debug) {
-    require('request-debug')(request, inspect);
-}
-if (program.game && program.vods) {
-    delete program.username
-    buildQuery(program)
-        .then(getVods)
-        .then(prettyPrint)
-        .catch(logError);
-} else if (program.game || program.username) {
-    buildQuery(program)
-        .then(getLiveStreams)
-        .then(prettyPrint)
-        .catch(logError);
-} else {
-    program.help();
-}
+program
+    .command('clips [channel]')
+    .description('get clips by channel or by game.')
+    .option('-p, --period <period>', 'Period', 'month')
+    .action(function (channel, options) {
+        if (channel || program.game) {
+            var query = _.assign(_.pick(program, 'game', 'limit'), {
+                channel: channel,
+                period: options.period
+            });
+            if (program.debug) {
+                require('request-debug')(request, inspect);
+            }
+            getClips(query)
+                .then(prettyPrint)
+                .catch(logError);
+        } else {
+            program.help();
+        }
+    });
+
+program
+    .command('vods <game>')
+    .description('get vods by game')
+    .option('-t, --type <type>', 'Broadcast type', 'archive')
+    .action(function (game, options) {
+        var query = _.assign(_.pick(program, 'limit'), {
+            broadcast_type: options.type,
+            game: game,
+        });
+        if (program.debug) {
+            require('request-debug')(request, inspect);
+        }
+        getVods(query)
+            .then(prettyPrint)
+            .catch(logError);
+    });
+
+program
+    .command('streams [username]')
+    .description('get live streams by username (follows) or game')
+    .option('-t, --type <type>', 'Stream type', 'live')
+    .action(function (username, options) {
+        if (username || program.game) {
+            var query = _.assign(_.pick(program, 'game', 'limit'), {
+                stream_type: options.type
+            });
+            if (program.debug) {
+                require('request-debug')(request, inspect);
+            }
+            var promise = username ? getFollowing(username).then(function (channels) {
+                query.channel = _.join(channels);
+                return query;
+            }) : Promise.resolve(query);
+            promise
+                .then(getLiveStreams)
+                .then(prettyPrint)
+                .catch(logError);
+        } else {
+            program.help();
+        }
+    });
+
+program.parse(process.argv);
