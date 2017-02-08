@@ -2,6 +2,7 @@
 'use strict';
 var _ = require('lodash');
 var chalk = require('chalk');
+var moment = require('moment');
 var os = require('os');
 var path = require('path');
 var program = require('commander');
@@ -24,8 +25,13 @@ function buildQuery(program) {
     return Promise.resolve(query);
 }
 
+function formatDuration(value, unit) {
+    var d = moment.duration(value, unit);
+    return _.join([d.hours(), d.minutes(), d.seconds()], ':');
+}
+
 function getFollowing(username) {
-    return getTwitchUserId(username).then(function (userId) {
+    return getUserId(username).then(function (userId) {
         return getTwitchJson('users/' + userId + '/follows/channels/', {limit: 200}).then(function (data) {
             return _.map(data.follows, 'channel._id');
         });
@@ -46,7 +52,7 @@ function getLiveStreams(query) {
     });
 }
 
-var getTwitchClientId = (function () {
+var getClientId = (function () {
     var clientId;
     return function () {
         if (clientId) {
@@ -60,7 +66,7 @@ var getTwitchClientId = (function () {
 }());
 
 function getTwitchJson(path, query) {
-    return getTwitchClientId().then(function (clientId) {
+    return getClientId().then(function (clientId) {
         return makeRequest({
             headers: {
                 'Accept': 'application/vnd.twitchtv.v5+json',
@@ -73,9 +79,28 @@ function getTwitchJson(path, query) {
     });
 }
 
-function getTwitchUserId(username) {
+function getUserId(username) {
     return getTwitchJson('users/', {login: username}).then(function (data) {
         return _.get(_.first(data.users), '_id');
+    });
+}
+
+function getVods(query) {
+    _.defaults(query, { broadcast_type: 'archive' });
+    return getTwitchJson('videos/top', query).then(function (data) {
+        return _.mapValues(_.groupBy(data.vods, 'channel.name'), function (vods) {
+            return _.map(vods, function (vod) {
+                return {
+                    title: vod.title,
+                    created: moment(vod.created_at).fromNow(),
+                    duration: formatDuration(vod.length, 'seconds'),
+                    views: vod.views,
+                    quality: _.last(_.split(vod.resolutions.chunked, 'x')) + 'p' +
+                        (Math.round(vod.fps.chunked / 10) * 10),
+                    url: vod.url
+                };
+            });
+        });
     });
 }
 
@@ -111,12 +136,19 @@ program
     .option('-u, --username <username>', 'Username to query live followed streams')
     .option('-l, --limit <limit>', 'Maximum number of objects in array. Default is 25. Maximum is 100.')
     .option('-d, --debug', 'Turn on http request debugging')
+    .option('-v, --vods', 'Fetch game vods. Requires --game argument.')
     .parse(process.argv);
 
-if (program.game || program.username) {
-    if (program.debug) {
-        require('request-debug')(request, inspect);
-    }
+if (program.debug) {
+    require('request-debug')(request, inspect);
+}
+if (program.game && program.vods) {
+    delete program.username
+    buildQuery(program)
+        .then(getVods)
+        .then(prettyPrint)
+        .catch(logError);
+} else if (program.game || program.username) {
     buildQuery(program)
         .then(getLiveStreams)
         .then(prettyPrint)
