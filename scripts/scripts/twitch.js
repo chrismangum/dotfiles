@@ -98,20 +98,24 @@ function getUserId(username) {
 }
 
 function getVods(query) {
-    return getTwitchJson('videos/top', query).then(function (data) {
-        return _.mapValues(_.groupBy(data.vods, 'channel.name'), function (vods) {
-            return _.map(vods, function (vod) {
-                return {
-                    title: vod.title,
-                    created: moment(vod.created_at).fromNow(),
-                    duration: formatDuration(vod.length, 'seconds'),
-                    views: vod.views,
-                    quality: _.last(_.split(vod.resolutions.chunked, 'x')) + 'p' +
-                        (Math.round(vod.fps.chunked / 10) * 10),
-                    url: vod.url
-                };
+    var promise = query.channel ? getUserId(query.channel) : Promise.resolve();
+    return promise.then(function (userId) {
+        return getTwitchJson(userId ? 'channels/' + userId + '/videos' : 'videos/top', query)
+            .then(function (data) {
+                return _.mapValues(_.groupBy(data[userId ? 'videos' : 'vods'], userId ? 'game' : 'channel.name'), function (vods) {
+                    return _.map(vods, function (vod) {
+                        return {
+                            title: vod.title,
+                            created: moment(vod.created_at).fromNow(),
+                            duration: formatDuration(vod.length, 'seconds'),
+                            views: vod.views,
+                            quality: _.last(_.split(vod.resolutions.chunked, 'x')) + 'p' +
+                                (Math.round(vod.fps.chunked / 10) * 10),
+                            url: vod.url
+                        };
+                    });
+                });
             });
-        });
     });
 }
 
@@ -169,20 +173,24 @@ program
     });
 
 program
-    .command('vods <game>')
-    .description('get vods by game')
+    .command('vods [channel]')
+    .description('get clips by channel or by game.')
     .option('-t, --type <type>', 'Broadcast type', 'archive')
-    .action(function (game, options) {
-        var query = _.assign(_.pick(program, 'limit'), {
-            broadcast_type: options.type,
-            game: game,
-        });
-        if (program.debug) {
-            require('request-debug')(request, inspect);
+    .action(function (channel, options) {
+        if (channel || program.game) {
+            var query = _.assign(_.pick(program, 'game', 'limit'), {
+                broadcast_type: options.type,
+                channel: channel
+            });
+            if (program.debug) {
+                require('request-debug')(request, inspect);
+            }
+            getVods(query)
+                .then(prettyPrint)
+                .catch(logError);
+        } else {
+            program.help();
         }
-        getVods(query)
-            .then(prettyPrint)
-            .catch(logError);
     });
 
 program
