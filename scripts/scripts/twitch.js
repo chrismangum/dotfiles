@@ -49,7 +49,7 @@ function getClips(query) {
                         title: clip.title,
                         created: moment(clip.created_at).fromNow(),
                         views: clip.views,
-                        vod: clip.vod.url,
+                        vod: _.get(clip, 'vod.url'),
                         url: clip.url
                     };
                 });
