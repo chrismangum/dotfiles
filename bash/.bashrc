@@ -13,7 +13,6 @@ txtcyn='\e[0;36m'
 bldblu='\e[1;34m'
 txtrst='\e[0m'
 
-export APOLLO_BASE_DIR=$HOME/Cisco/Apollo
 export EDITOR=vim
 export GREP_COLOR='1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
@@ -25,22 +24,20 @@ alias arcpre='arc diff --preview'
 alias arcupd='arc diff --update'
 alias away='setJabberStatus away'
 alias avail='setJabberStatus available'
-alias cdap='cd ~/Cisco/Apollo'
+alias cdag='cd ~/Cisco/apollo-gulp'
 alias cdat='cd ~/Cisco/Atlantic-UI'
 alias cdbdb='cd ~/Cisco/compose/web_ui/ui'
 alias cdc='cd ~/Cisco'
 alias cdcsc='cd ~/Cisco/ApolloCSCUploader'
-alias cdha='cd ~/Cisco/ApolloHubAdmin'
 alias cdhu='cd ~/Cisco/ApolloHubUser'
-alias cdib='cd ~/Cisco/ApolloInstallBase'
 alias cdgsa='cd ~/Cisco/ApolloGoSA'
 alias cdmd='cd ~/Cisco/ApolloMyDevices'
+alias cdms='cd ~/Cisco/ApolloPlatformMicroServices'
 alias cdrn='cd ~/Cisco/ApolloPlatformAutomation/ansible/roles/apache/files/html/docs/ReleaseNotes/sasa'
 alias cdsa='cd ~/Cisco/ApolloSupportAutomation/client'
 alias cdsc='cd ~/Cisco/ApolloSupportCases'
 alias cdssa='cd ~/Cisco/ApolloSAStandalone'
 alias cdsst='cdssa; cd build/standalone/staging'
-alias cdst='cd ~/Cisco/ApolloStorage'
 alias cisco_vpn="sudo vpnc --no-detach /etc/vpnc/default.conf"
 alias ga='git add'
 alias gaa='git add -A'
@@ -49,7 +46,6 @@ alias gau='git add -u'
 alias gc='git commit'
 alias gch='git checkout'
 alias gcm='git commit -m'
-alias gcp='git cherry-pick'
 alias gd='git diff -w'
 alias gdc='gd --cached'
 alias gf='git fetch; git status'
@@ -67,10 +63,8 @@ alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias pyserver='python -m http.server 3001'
 alias pyserver2='python -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
-alias s='stackato'
 alias sa_sync='cp -r ~/Cisco/ApolloSAStandalone/build/standalone/staging/ ~/Containers/Current/home/chris/www'
 alias snw='cdsst; nw'
-alias stackato='stackato --skip-ssl-validation'
 alias wcpe='mpv http://audio-mp3.ibiblio.org:8000/wcpe.mp3'
 alias xlock='away; xscreensaver-command -lock'
 alias xsleep='xlock; sleep 2; systemctl suspend'
@@ -94,6 +88,14 @@ export PROMPT_COMMAND="history -a"
 
 source ~/.kube/bash_config.sh
 
+function ffmpegSplice() {
+    ffmpeg -i $1 -ss 0 -c copy -t $2 cut1.mp4
+    ffmpeg -i $1 -ss $3 -c copy cut2.mp4
+    printf "file 'cut1.mp4'\nfile 'cut2.mp4'" > ffmpeg_concat.txt
+    ffmpeg -f concat -i ffmpeg_concat.txt -c copy result.mp4
+    rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
+}
+
 function gch_cli() {
     cdsa; gch $1
     cdhu; gch $1
@@ -105,14 +107,6 @@ function mail() {
     mutt
 }
 
-function ffmpegSplice() {
-    ffmpeg -i $1 -ss 0 -c copy -t $2 cut1.mp4
-    ffmpeg -i $1 -ss $3 -c copy cut2.mp4
-    printf "file 'cut1.mp4'\nfile 'cut2.mp4'" > ffmpeg_concat.txt
-    ffmpeg -f concat -i ffmpeg_concat.txt -c copy result.mp4
-    rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
-}
-
 function setJabberStatus() {
     purple-remote setstatus?status=$1
 }
@@ -122,6 +116,10 @@ function speedtest() {
     local speed_bps=$(curl -o /dev/null -w '%{speed_download}' -s $url)
     local speed_mbps=$(bc <<< "scale=3; $speed_bps / 1024 / 1024 * 8")
     echo "Download: $speed_mbps Mbps"
+}
+
+function tmpv() {
+    mpv https://twitch.tv/$1
 }
 
 # PATH:
