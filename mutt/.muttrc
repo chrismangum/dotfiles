@@ -58,7 +58,7 @@ bind index "^" imap-fetch-mail
 macro index,pager d "<save-message>=Deleted<quote-char> Items<enter><enter>" "delete the current entry"
 
 #open urls
-macro index,pager \cb "|urlview\n"
+macro index,pager \cb "|urlscan --no-browser|urlview\n"
 
 #colors
 color  attachment  green       default
