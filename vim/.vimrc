@@ -13,8 +13,6 @@ Plugin 'tpope/vim-surround'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'kchmck/vim-coffee-script'
 Plugin 'pangloss/vim-javascript'
-" Colors
-Plugin 'https://bitbucket.org/chadhs/smyck.vim'
 call vundle#end()
 
 syntax on
