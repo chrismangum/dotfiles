@@ -161,6 +161,7 @@ program
 
 program
     .command('clips [channel]')
+    .alias('c')
     .description('get clips by channel or by game')
     .option('-p, --period <period>', 'Period', 'month')
     .action(function (channel, options) {
@@ -182,6 +183,7 @@ program
 
 program
     .command('vods [channel]')
+    .alias('v')
     .description('get vods by channel or by game')
     .option('-t, --type <type>', 'Broadcast type', 'archive')
     .action(function (channel, options) {
@@ -203,6 +205,7 @@ program
 
 program
     .command('streams [username]')
+    .alias('s')
     .description('get live streams by username (follows) or game')
     .option('-t, --type <type>', 'Stream type', 'live')
     .action(function (username, options) {
