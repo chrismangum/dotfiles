@@ -11,8 +11,8 @@ Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 " Syntax
 Plugin 'digitaltoad/vim-jade'
-Plugin 'kchmck/vim-coffee-script'
 Plugin 'pangloss/vim-javascript'
+Plugin 'PProvost/vim-ps1'
 call vundle#end()
 
 syntax on
