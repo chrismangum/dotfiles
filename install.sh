@@ -12,8 +12,8 @@ if [[ -x systemctl ]]; then
 fi
 
 #create symlinks
-stow -v alsa bash compton cups cygwin fonts git gtk i3 mongo mpv mutt redshift rtorrent scripts tmux \
-  tsocks urlview vim xorg yaourt
+stow -v alsa bash cups fonts git gtk i3 mintty mongo mpv mutt redshift rtorrent scripts tmux \
+  urlview vim xorg
 
 #install fonts
 if [[ -x fc-cache ]]; then
