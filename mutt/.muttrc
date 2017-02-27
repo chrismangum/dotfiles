@@ -15,6 +15,7 @@ set postponed = "+Drafts"
 set mail_check = 60
 set imap_keepalive = 300
 set imap_check_subscribed
+set ssl_force_tls = yes
 set ssl_starttls = yes
 unset imap_passive
 

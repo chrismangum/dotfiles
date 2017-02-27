@@ -9,3 +9,4 @@
   editor = vim
   excludesfile = ~/.gitignore_global
   pager = less -+X -+F
+  attributesfile = /home/chris/.gitattributes
