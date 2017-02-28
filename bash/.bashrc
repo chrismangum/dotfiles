@@ -12,6 +12,11 @@ else
     source ~/scripts/git-prompt.sh
 fi
 
+# pass bash completion:
+if [[ -e /usr/share/bash-completion/completions/pass ]]; then
+    source /usr/share/bash-completion/completions/pass
+fi
+
 # PS1 colors:
 txtcyn='\e[0;36m'
 bldblu='\e[1;34m'
