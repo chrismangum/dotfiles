@@ -1,7 +1,5 @@
 
 #k8s
-alias ccs="ssh apollo-dev-bastion"
-
 alias k="kubectl"
 alias kpods="k get pods -o wide"
 alias kservices="k get services"
