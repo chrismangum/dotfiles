@@ -27,7 +27,7 @@ export GREP_COLOR='1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 
-if [[ $TERM != *-256color ]]; then
+if [[ $TERM != linux && $TERM != *-256color ]]; then
     export TERM=$TERM-256color
 fi
 
