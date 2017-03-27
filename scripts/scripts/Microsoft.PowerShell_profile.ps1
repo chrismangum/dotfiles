@@ -7,19 +7,19 @@ Function cdc {
 }
 
 Function cdsa {
-    cd ($CISCO_HOME + "ApolloSupportAutomation")
+    cd ($CISCO_HOME + "SupportAutomation")
 }
 
 Function cdhu {
-    cd ($CISCO_HOME + "ApolloHubUser")
+    cd ($CISCO_HOME + "HubUser")
 }
 
 Function cdssa {
-    cd ($CISCO_HOME + "ApolloSAStandalone")
+    cd ($CISCO_HOME + "CLIAnalyzer")
 }
 
 Function cdsst {
-    cd ($CISCO_HOME + "ApolloSAStandalone\build\standalone\staging")
+    cd ($CISCO_HOME + "CLIAnalyzer\build\standalone\staging")
 }
 
 Function gch {
