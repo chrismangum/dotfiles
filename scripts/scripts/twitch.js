@@ -13,6 +13,21 @@ var util = require('util');
 var pRequest = Promise.promisify(request);
 var readFile = Promise.promisify(require('fs').readFile);
 
+var getFileToken = (function () {
+    var cache = {};
+    return function (filename) {
+        if (cache[filename]) {
+            return Promise.resolve(cache[filename]);
+        }
+        return readFile(path.join(os.homedir(), 'Desktop', filename)).then(function (buffer) {
+            cache[filename] = _.first(_.toString(buffer).match(/\w+/));
+            return cache[filename] || Promise.reject(new Error('Unable to parse token in ' + filename));
+        });
+    };
+}());
+var getClientId = _.partial(getFileToken, 'twitch-client-id.txt');
+var getOauthToken = _.partial(getFileToken, 'twitch-oauth-token.txt');
+
 function formatDuration(value, unit) {
     var duration = moment.duration(value, unit);
     return _.reduce(['hours', 'minutes', 'seconds'], function (memo, unit) {
@@ -26,21 +41,8 @@ function formatDuration(value, unit) {
     }, '');
 }
 
-var getClientId = (function () {
-    var clientId;
-    return function () {
-        if (clientId) {
-            return Promise.resolve(clientId);
-        }
-        return readFile(path.join(os.homedir(), 'Desktop', 'twitch-client-id.txt')).then(function (buffer) {
-            clientId = _.first(_.toString(buffer).match(/\w+/));
-            return clientId || Promise.reject(new Error('Unable to parse twitch client id'));
-        });
-    };
-}());
-
 function getClips(query) {
-    return getTwitchJson('clips/top', query, 'v4').then(function (data) {
+    return getTwitchJson('clips/top', query, false, 'v4').then(function (data) {
         return _.chain(data.clips)
             .groupBy(query.channel ? 'game' : 'broadcaster.name')
             .mapValues(function (clips) {
@@ -64,11 +66,11 @@ function getFollowing(username) {
     }).then(function (data) {
         return _.map(data.follows, 'channel._id');
     });
-
 }
 
-function getStreams(query) {
-    return getTwitchJson('streams/', query).then(function (data) {
+function getStreams(query, followed) {
+    var url = followed ? 'streams/followed' : 'streams/';
+    return getTwitchJson(url, query, followed).then(function (data) {
         return _.mapValues(_.groupBy(data.streams, 'channel.game'), function (streams) {
             return _.mapValues(_.keyBy(streams, 'channel.name'), function (stream) {
                 return {
@@ -82,13 +84,21 @@ function getStreams(query) {
     });
 }
 
-function getTwitchJson(path, query, api) {
-    return getClientId().then(function (clientId) {
+function getTwitchJson(path, query, oauth, api) {
+    var promises = [getClientId()];
+    if (oauth) {
+        promises.push(getOauthToken());
+    }
+    return Promise.all(promises).spread(function (clientId, oauthToken) {
+        var headers = {
+            'Accept': 'application/vnd.twitchtv.' + (api || 'v5') + '+json',
+            'Client-ID': clientId
+        };
+        if (oauth) {
+            headers.Authorization = 'OAuth ' + oauthToken;
+        }
         return makeRequest({
-            headers: {
-                'Accept': 'application/vnd.twitchtv.' + (api || 'v5') + '+json',
-                'Client-ID': clientId
-            },
+            headers: headers,
             json: true,
             qs: query,
             url: 'https://api.twitch.tv/kraken/' + path
@@ -182,6 +192,23 @@ program
     });
 
 program
+    .command('followed-streams')
+    .alias('fs')
+    .description('get live followed streams')
+    .option('-t, --type <type>', 'Stream type', 'live')
+    .action(function (options) {
+        var query = _.assign(_.pick(program, 'game', 'limit'), {
+            stream_type: options.type
+        });
+        if (program.debug) {
+            require('request-debug')(request, inspect);
+        }
+        getStreams(query, true)
+            .then(prettyPrint)
+            .catch(logError);
+    });
+
+program
     .command('vods [channel]')
     .alias('v')
     .description('get vods by channel or by game')
@@ -230,3 +257,7 @@ program
     });
 
 program.parse(process.argv);
+
+if (_.isEmpty(_.drop(process.argv, 2))) {
+    program.help();
+}
