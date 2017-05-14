@@ -55,7 +55,8 @@ alias cdsa='cdc SupportAutomation/client'
 alias cdsc='cdc SupportCases'
 alias cdssa='cdc CLIAnalyzer'
 alias cdsst='cdc CLIAnalyzer/build/standalone/staging'
-alias cisco_vpn="sudo vpnc --no-detach /etc/vpnc/default.conf"
+alias cisco_vpn='sudo vpnc --no-detach /etc/vpnc/default.conf'
+alias ffmpeg='ffmpeg -hide_banner'
 alias ga='git add'
 alias gaa='git add -A'
 alias gap='git add -p'
@@ -102,7 +103,7 @@ alias rm='rm -I --preserve-root'
 export HISTCONTROL=ignoredups:erasedups
 export HISTSIZE=100000
 export HISTFILESIZE=100000
-export PROMPT_COMMAND="history -a"
+export PROMPT_COMMAND='history -a'
 
 source ~/.kube/bash_config.sh
 
