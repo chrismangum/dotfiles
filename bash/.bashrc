@@ -119,11 +119,6 @@ function ffmpegSplice() {
     rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
 }
 
-function mail() {
-    cp ~/.mutt/gpg/$1.gpg ~/.mutt/gpg/pass.gpg
-    mutt
-}
-
 function setJabberStatus() {
     purple-remote setstatus?status=$1
 }
