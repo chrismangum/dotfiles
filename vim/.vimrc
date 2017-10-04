@@ -12,7 +12,7 @@ Plugin 'tpope/vim-surround'
 " Syntax
 Plugin 'digitaltoad/vim-jade'
 Plugin 'pangloss/vim-javascript'
-Plugin 'PProvost/vim-ps1'
+Plugin 'mxw/vim-jsx'
 call vundle#end()
 
 syntax on
@@ -66,3 +66,6 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = 'node_modules\|git\|build'
+
+" jsx settings
+let g:jsx_ext_required = 0
