@@ -13,6 +13,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'digitaltoad/vim-jade'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'leafgarland/typescript-vim'
 call vundle#end()
 
 syntax on

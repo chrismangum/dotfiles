@@ -75,6 +75,7 @@ alias gpl='git pull'
 alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=build'
 alias gst='git status'
 alias l='ls -lah'
+alias lint='for i in $(gst -s | grep -P '"'"'\.js$'"'"' | awk '"'"'{print $NF}'"'"'); do jshint $i; done'
 alias ll='ls -lh'
 alias ls='ls --color=auto'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
@@ -85,6 +86,7 @@ alias sa_sync='cp -r ~/Cisco/CLIAnalyzer/build/standalone/staging/ ~/Containers/
 alias snw='cdsst; nw'
 alias xlock='away; xscreensaver-command -lock'
 alias xsleep='xlock; sleep 2; systemctl suspend'
+alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/windows10,format=raw'
 alias wired_auth='sudo wpa_supplicant -D wired -i enp0s25 -c /etc/wpa_supplicant/wpa_supplicant-enp0s25.conf'
 
 # radio stations
