@@ -19,7 +19,7 @@ call vundle#end()
 syntax on
 filetype plugin indent on
 set autoindent                    " align the new line indent with the previous line
-set expandtab                     " insert spaces when hitting TABs
+" set expandtab                     " insert spaces when hitting TABs
 set number
 set relativenumber
 set ignorecase smartcase
@@ -28,11 +28,11 @@ set cursorline
 set incsearch
 set visualbell noerrorbells
 set ruler
-set list listchars=tab:»·,trail:· " show extra space characters
+" set list listchars=tab:»·,trail:· " show extra space characters
 set nofoldenable
 set shiftround                    " round indent to multiple of 'shiftwidth'
 set shiftwidth=4                  " operation >> indents 4 columns; << unindents 4 columns
-set softtabstop=4                 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
+" set softtabstop=4                 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
 set tabstop=4                     " a hard TAB displays as 4 columns
 set wildmenu                      " enable bash style tab completion
 set wildmode=list:longest,full
@@ -66,7 +66,7 @@ autocmd BufNewFile,BufRead /tmp/*,COMMIT_EDITMSG setlocal cc=72 tw=72 spell spel
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = 'node_modules\|git\|build'
+let g:ctrlp_custom_ignore = 'node_modules\|git\|build\|coverage'
 
 " jsx settings
 let g:jsx_ext_required = 0

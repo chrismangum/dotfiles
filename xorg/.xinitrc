@@ -9,7 +9,7 @@ fi
 
 xrdb "${HOME}/.Xresources"
 synclient TouchpadOff=1
-redshift &
+# redshift &
 xscreensaver -no-splash &
 hostname=$(hostname)
 

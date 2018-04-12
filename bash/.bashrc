@@ -22,6 +22,7 @@ txtcyn='\e[0;36m'
 bldblu='\e[1;34m'
 txtrst='\e[0m'
 
+export CHROME_BIN=$(which chromium)
 export EDITOR=vim
 export GREP_COLOR='1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
@@ -39,15 +40,19 @@ else
 fi
 
 alias apollo_mongo='mongo --nodb'
-alias arcnew="arc diff --reviewers '#apollo' --create"
+alias arcnew="arc diff --reviewers '#fol' --create"
 alias arcpre='arc diff --preview'
 alias arcupd='arc diff --update'
 alias away='setJabberStatus away'
 alias avail='setJabberStatus available'
+alias cdac='cdc attclient'
 alias cdag='cdc apollo-gulp'
+alias cdas='cdc attserv'
 alias cdat='cdc Atlantic-UI'
 alias cdcsc='cdc CSCUploader'
 alias cdhu='cdc HubUser'
+alias cdfc='cdc folclient'
+alias cdfs='cdc folserv'
 alias cdgsa='cdc CLIWeb'
 alias cdmd='cdc MyDevices'
 alias cdrn='cdc PlatformAutomation/ansible/roles/apache/files/html/docs/ReleaseNotes/sasa'
@@ -72,7 +77,7 @@ alias glg='gl --stat'
 alias glp='gl -p'
 alias gp='git push'
 alias gpl='git pull'
-alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=build'
+alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage'
 alias gst='git status'
 alias l='ls -lah'
 alias lint='for i in $(gst -s | grep -P '"'"'\.js$'"'"' | awk '"'"'{print $NF}'"'"'); do jshint $i; done'

@@ -14,35 +14,39 @@ alias kdesc="k describe"
 alias kwatchpods="watch kubectl get pods"
 
 kcontext() {
-  context=$(k config view | grep current-context: | awk 'NF>1{print $NF}')
-  ns=$(k config view | grep -A 1 "cluster: $context" | awk 'FNR == 2 {print $2}')
-  echo "[${context}|${ns}]"
+	context=$(k config view | grep current-context: | awk 'NF>1{print $NF}')
+	ns=$(k config view | grep -A 1 "cluster: $context" | awk 'FNR == 2 {print $2}')
+	echo "[${context}|${ns}]"
 }
 
 kcon() {
- k exec -it $1 /bin/$2
+	k exec -it $1 /bin/$2
+}
+
+kreplace() {
+	k get pod $1 -o yaml | kubectl replace --force -f -
 }
 
 kswitch() {
- k config use-context $1
+	k config use-context $1
 }
 
 kns() {
- # 1: namespace
- # 2: context (dev / senna) defaults to dev
+	# 1: namespace
+	# 2: context (dev / senna) defaults to dev
 
- context=$2
- if [[ -z $context ]] ; then
-  context="dev"
- fi
+	context=$2
+	if [[ -z $context ]] ; then
+		context="dev"
+	fi
 
- k config set-context $context --namespace=$1
+	k config set-context $context --namespace=$1
 }
 
 kstats() {
- nodes=( $(k get nodes | awk 'FNR > 1 {print $1}') )
- for (( i=0; i<${#nodes[@]}; i++ )); do
-  k describe node ${nodes[i]};
-  #| sed -n -e '/Namespace/,$p'
- done
+	nodes=( $(k get nodes | awk 'FNR > 1 {print $1}') )
+	for (( i=0; i<${#nodes[@]}; i++ )); do
+		k describe node ${nodes[i]};
+		#| sed -n -e '/Namespace/,$p'
+	done
 }
