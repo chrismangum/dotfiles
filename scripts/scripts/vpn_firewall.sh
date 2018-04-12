@@ -21,8 +21,8 @@ pia=$(ip route show scope link | grep 'dev tun0' | awk '{print $NF}')
     sudo ufw allow out on $main_interface to $local_network
 
     # Openvpn
-    sudo ufw allow out on $main_interface to $pia
-    sudo ufw allow in on $main_interface from $pia
+    sudo ufw allow in on $main_interface from any port 1194
+    sudo ufw allow out on $main_interface to any port 1194
 
     # DNS
     sudo ufw allow in from any to any port 53
