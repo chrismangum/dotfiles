@@ -4,7 +4,7 @@
   ui = true
 [user]
   name = Chris Mangum
-  email = mtdbass5@gmail.com
+  email = cmagnum@cisco.com
 [core]
   editor = vim
   excludesfile = ~/.gitignore_global

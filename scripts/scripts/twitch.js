@@ -62,7 +62,7 @@ function getClips(query) {
 
 function getFollowing(username) {
     return getUserId(username).then(function (userId) {
-        return getTwitchJson('users/' + userId + '/follows/channels/', {limit: 200});
+        return getTwitchJson('users/' + userId + '/follows/channels/', {limit: 100});
     }).then(function (data) {
         return _.map(data.follows, 'channel._id');
     });

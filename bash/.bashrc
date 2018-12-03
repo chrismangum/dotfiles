@@ -40,7 +40,9 @@ else
 fi
 
 alias apollo_mongo='mongo --nodb'
-alias arcnew="arc diff --reviewers '#fol' --create"
+alias arcnewfol="arc diff --reviewers '#fol' --create"
+alias arcnewfeb="arc diff --reviewers '#feb' --create"
+alias arcnewcli="arc diff --reviewers '#apollo' --create"
 alias arcpre='arc diff --preview'
 alias arcupd='arc diff --update'
 alias away='setJabberStatus away'
@@ -54,6 +56,8 @@ alias cdhu='cdc HubUser'
 alias cdfc='cdc folclient'
 alias cdfs='cdc folserv'
 alias cdgsa='cdc CLIWeb'
+alias cdic='cdc IronBankApp'
+alias cdis='cdc ironbank'
 alias cdmd='cdc MyDevices'
 alias cdrn='cdc PlatformAutomation/ansible/roles/apache/files/html/docs/ReleaseNotes/sasa'
 alias cdsa='cdc SupportAutomation/client'
@@ -66,9 +70,9 @@ alias ga='git add'
 alias gaa='git add -A'
 alias gap='git add -p'
 alias gau='git add -u'
-alias gc='git commit'
+alias gc='git commit -n'
 alias gch='git checkout'
-alias gcm='git commit -m'
+alias gcm='gc -m'
 alias gd='git diff -w'
 alias gdc='gd --cached'
 alias gf='git fetch; git status'

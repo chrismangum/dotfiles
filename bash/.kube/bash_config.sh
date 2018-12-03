@@ -2,15 +2,15 @@
 alias k="kubectl"
 alias kpods="k get pods -o wide"
 alias kservices="k get services"
-alias kd="k get deployments"
-alias krc="k get replicationcontroller"
-alias ks="k get secrets"
+# alias kd="k get deployments"
+# alias krc="k get replicationcontroller"
+# alias ks="k get secrets"
 alias klogs="k logs -f"
-alias ktail="kubetail"
-alias kexec="k exec -it"
-alias kdesc="k describe"
+# alias ktail="kubetail"
+# alias kexec="k exec -it"
+# alias kdesc="k describe"
 
-alias kwatchpods="watch kubectl get pods"
+# alias kwatchpods="watch kubectl get pods"
 
 function kcontext() {
 	local context=$(k config view | grep current-context: | awk 'NF>1{print $NF}')
@@ -30,5 +30,10 @@ function kswitch() {
 	local context=$(k config view | grep current-context: | awk 'NF>1{print $NF}')
 	k config set-context $context --namespace=$1
 	kcontext
+}
+
+function kdebug() {
+	k exec $1 -- kill -usr1 1;
+	k port-forward $1 9229:9229;
 }
 
