@@ -100,8 +100,12 @@ alias wired_auth='sudo wpa_supplicant -D wired -i enp0s25 -c /etc/wpa_supplicant
 
 # reduce mouse accel for sc2:
 alias get_pointer_id="xinput list | grep -Po '2013\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
-alias set_accel="xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5"
-alias show_accel="xinput list-props $(get_pointer_id) | grep 295 | cut -d ':' -f 2 | perl -pe 's/^\s*//'"
+function set_accel() {
+	xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5
+}
+function show_accel() {
+	xinput list-props $(get_pointer_id) | grep 295 | cut -d ':' -f 2 | perl -pe 's/^\s*//'
+}
 
 # radio stations
 alias wcpe='mpv http://audio-mp3.ibiblio.org:8000/wcpe.mp3'
