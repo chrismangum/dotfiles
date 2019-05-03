@@ -21,7 +21,7 @@ if [[ $hostname == 'archtop' ]]; then
     xrandr --output eDP1 --mode 1600x900 --right-of HDMI1 --output HDMI1 --mode 1920x1080 --gamma 1.1:1.1:1.1
   fi
 elif [[ $hostname == 'archbox' ]]; then
-  xrandr --output DVI-D-0 --mode 1920x1080 --rate 144
+  xrandr --output DP-2 --mode 1920x1080 --rate 144 --gamma 1.4:1.4:1.4
 elif [[ $hostname == 'archnuc' ]]; then
   xrandr --output HDMI1 --mode 1920x1080 --left-of DP1 --output DP1 --mode 1920x1080 --rate 144
 fi
