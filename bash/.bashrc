@@ -56,7 +56,14 @@ alias cdhu='cdc HubUser'
 alias cdfc='cdc folclient'
 alias cdfs='cdc folserv'
 alias cdgsa='cdc CLIWeb'
-alias cdic='cdc IronBankApp'
+alias cdia='cdc IronBankApp; cd client'
+alias cdiau='cdc ironbank-auth'
+alias cdib='cdc banker'
+alias cdic='cdc counter'
+alias cdicu='cdc ironbank-collection-utils'
+alias cdie='cdc entitler'
+alias cdil='cdc ironbank-libraries'
+alias cdim='cdc ironbank-metrics'
 alias cdis='cdc ironbank'
 alias cdmd='cdc MyDevices'
 alias cdrn='cdc PlatformAutomation/ansible/roles/apache/files/html/docs/ReleaseNotes/sasa'
@@ -92,9 +99,11 @@ alias pyserver='python -m http.server 3001'
 alias pyserver2='python -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
 alias sa_sync='cp -r ~/Cisco/CLIAnalyzer/build/standalone/staging/ ~/Containers/Current/home/chris/www'
+alias set_class_names='grep -rPl "export class" --include="*component.ts" --include="*.service.ts" | xargs perl -pi -e "BEGIN{undef $/;} s/(export class (\w+) .*)/\1Object.defineProperty(\2, '"'"'name'"'"', {\n\tvalue: '"'"'\2'"'"',\n});\n/smg"'
 alias snw='cdsst; nw'
 alias xlock='away; xscreensaver-command -lock'
 alias xsleep='xlock; sleep 2; systemctl suspend'
+alias ubuntu_vm='qemu-system-x86_64 -vga qxl -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/ubuntu,format=raw'
 alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/windows10,format=raw'
 alias wired_auth='sudo wpa_supplicant -D wired -i enp0s25 -c /etc/wpa_supplicant/wpa_supplicant-enp0s25.conf'
 
@@ -137,6 +146,12 @@ function ffmpegSplice() {
     printf "file 'cut1.mp4'\nfile 'cut2.mp4'" > ffmpeg_concat.txt
     ffmpeg -f concat -i ffmpeg_concat.txt -c copy result.mp4
     rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
+}
+
+dockerNuke() {
+	docker stop $(docker ps -a -q);
+	docker rm $(docker ps -a -q) --force;
+	docker rmi $(docker images -q) --force;
 }
 
 function setJabberStatus() {
