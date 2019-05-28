@@ -1,4 +1,4 @@
-dbName = 'admin';
+dbName = 'ironbank-dev';
 switch (dbName) {
 case 'folsom':
 case 'attica':
