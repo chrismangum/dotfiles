@@ -27,7 +27,7 @@ for i in *; ffmpeg -i $i -c:a flac "$(echo $i | sed 's/m4a$/flac/')"
 -----------------------
 
 -- SYNC MEDIA DRIVES --
-rsync -vr --delete --progress --ignore-existing /media/external2/* /media/external
+rsync -lvr --delete --progress --ignore-existing /media/external2/* /media/external
 -----------------------
 
 -- MANUAL WIFI START --

@@ -1,12 +1,11 @@
-download_rate = 16640
-upload_rate = 1216
-max_uploads_global = 33
+download_rate = 102400
+upload_rate = 6400
+max_uploads_global = 100
 
-directory = ~/torrents
+directory = ~/media/torrents
 session = ~/.session
 
 encryption = allow_incoming,try_outgoing,enable_retry
 
 dht = auto
 dht_port = 6881
-peer_exchange = yes

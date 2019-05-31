@@ -23,7 +23,7 @@ if [[ $hostname == 'archtop' ]]; then
 elif [[ $hostname == 'archbox' ]]; then
   xrandr --output DP-2 --mode 1920x1080 --rate 144 --gamma 1.4:1.4:1.4
 elif [[ $hostname == 'archnuc' ]]; then
-  xrandr --output HDMI1 --mode 1920x1080 --left-of DP1 --output DP1 --mode 1920x1080 --rate 144
+  xrandr --output HDMI1 --mode 1920x1080
 fi
 
 exec i3
