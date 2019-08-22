@@ -66,11 +66,13 @@ alias cdil='cdc ironbank-libraries'
 alias cdim='cdc ironbank-metrics'
 alias cdis='cdc ironbank'
 alias cdmd='cdc MyDevices'
+alias cdms='cdc microservice'
 alias cdrn='cdc PlatformAutomation/ansible/roles/apache/files/html/docs/ReleaseNotes/sasa'
 alias cdsa='cdc SupportAutomation/client'
 alias cdsc='cdc SupportCases'
 alias cdssa='cdc CLIAnalyzer'
 alias cdsst='cdc CLIAnalyzer/build/standalone/staging'
+alias cdui='cdc ui-tutorial'
 alias cisco_vpn='sudo vpnc --no-detach /etc/vpnc/default.conf'
 alias ffmpeg='ffmpeg -hide_banner'
 alias ga='git add'
@@ -113,7 +115,7 @@ function set_accel() {
 	xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5
 }
 function show_accel() {
-	xinput list-props $(get_pointer_id) | grep 295 | cut -d ':' -f 2 | perl -pe 's/^\s*//'
+	xinput list-props $(get_pointer_id) | grep 'libinput Accel Speed (' | cut -d ':' -f 2 | perl -pe 's/^\s*//'
 }
 
 # radio stations

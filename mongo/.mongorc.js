@@ -9,8 +9,14 @@ case 'ironbank-stage':
 case 'performance':
 case 'production':
 case 'stage':
-case 'admin':
+// case 'admin':
 	conn = new Mongo('braavos-db-02.cisco.com');
+	break;
+case 'ironbank-eu':
+case 'ironbank-eu-stage':
+case 'ironbank-eu-perf':
+case 'admin':
+	conn = new Mongo('dragon-db-04.cisco.com');
 	break;
 default:
 	conn = new Mongo('apollo/swtg-qa-mongo-2a.cisco.com,swtg-qa-mongo-2b.cisco.com,swtg-qa-mongo-2c.cisco.com');
