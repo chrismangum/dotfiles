@@ -110,6 +110,7 @@ alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive f
 alias wired_auth='sudo wpa_supplicant -D wired -i enp0s25 -c /etc/wpa_supplicant/wpa_supplicant-enp0s25.conf'
 
 # reduce mouse accel for sc2:
+# alias get_pointer_id="xinput list | grep -Po 'M325\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
 alias get_pointer_id="xinput list | grep -Po '2013\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
 function set_accel() {
 	xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5

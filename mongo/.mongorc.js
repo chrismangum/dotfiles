@@ -10,7 +10,7 @@ case 'performance':
 case 'production':
 case 'stage':
 // case 'admin':
-	conn = new Mongo('braavos-db-02.cisco.com');
+	conn = new Mongo('braavos-db-03.cisco.com');
 	break;
 case 'ironbank-eu':
 case 'ironbank-eu-stage':

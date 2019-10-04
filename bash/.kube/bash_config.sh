@@ -1,39 +1,60 @@
 #k8s
 alias k="kubectl"
-alias kpods="k get pods -o wide"
-alias kservices="k get services"
-# alias kd="k get deployments"
-# alias krc="k get replicationcontroller"
-# alias ks="k get secrets"
+alias kcreate="k create -f"
+alias kdel="k delete"
+alias kdesc="k describe"
+alias kexec="k exec -ti"
+alias kget="k get"
 alias klogs="k logs -f"
-# alias ktail="kubetail"
-# alias kexec="k exec -it"
-# alias kdesc="k describe"
 
-# alias kwatchpods="watch kubectl get pods"
+alias kdep="kget deployments"
+alias kpods="kget pods -o wide"
+alias krc="kget replicationcontroller"
+alias ksec="kget secrets"
+alias ksv="kget services"
+alias kwpods="watch kubectl get pods -o wide"
 
 function kcontext() {
-	local context=$(k config view | grep current-context: | awk 'NF>1{print $NF}')
-	local ns=$(k config view | grep -A 1 "cluster: $context" | awk 'FNR == 2 {print $2}')
+	k config view | grep current-context: | awk 'NF>1{print $NF}'
+}
+
+function knamespace() {
+	k config view | grep -A 1 "cluster: $1" | awk 'FNR == 2 {print $2}'
+}
+
+function kcon() {
+	local context=$(kcontext)
+	local ns=$(knamespace $context)
 	echo "[${context}|${ns}]"
 }
 
-function krestart() {
-	k get pod $1 -o yaml | kubectl replace --force -f -
+function kcl() {
+	if [ -z "$1" ]; then
+		echo "specify a cluster"
+		return 1
+	fi
+	k config use-context $1
+	kcon
 }
 
-function kshell() {
-	k exec -it $1 /bin/ash
+function kns() {
+	if [ -z "$1" ]; then
+		echo "specify a namespace"
+		return 1
+	fi
+	k config set-context $(kcontext) --namespace=$1
+	kcon
 }
 
-function kswitch() {
-	local context=$(k config view | grep current-context: | awk 'NF>1{print $NF}')
-	k config set-context $context --namespace=$1
-	kcontext
+function kash() {
+	kexec $1 /bin/ash
+}
+
+function kbash() {
+	kexec $1 /bin/bash
 }
 
 function kdebug() {
 	k exec $1 -- kill -usr1 1;
 	k port-forward $1 9229:9229;
 }
-

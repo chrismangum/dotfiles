@@ -39,7 +39,7 @@ ethernet _first_ {
 
 cpu_temperature 0 {
     format = "T: %degrees °C"
-    path = "/sys/devices/platform/coretemp.0/hwmon/hwmon2/temp1_input"
+    path = "/sys/devices/platform/coretemp.0/hwmon/hwmon3/temp1_input"
 }
 
 tztime local {
