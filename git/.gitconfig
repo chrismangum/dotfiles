@@ -1,12 +1,14 @@
 [push]
-  default = current
+	default = current
 [color]
-  ui = true
+	ui = true
 [user]
-  name = Chris Mangum
-  email = cmagnum@cisco.com
+	name = Chris Mangum
+	email = cmagnum@cisco.com
 [core]
-  editor = vim
-  excludesfile = ~/.gitignore_global
-  pager = less -+X -+F
-  attributesfile = /home/chris/.gitattributes
+	editor = vim
+	excludesfile = ~/.gitignore_global
+	pager = less -+X -+F
+	attributesfile = /home/chris/.gitattributes
+[pull]
+	rebase = false

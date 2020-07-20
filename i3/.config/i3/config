@@ -183,4 +183,3 @@ exec --no-startup-id compton -CGb
 # autostart programs
 exec --no-startup-id nitrogen --restore
 exec --no-startup-id dropbox
-exec --no-startup-id pidgin

@@ -66,7 +66,7 @@ autocmd BufNewFile,BufRead /tmp/*,COMMIT_EDITMSG setlocal cc=72 tw=72 spell spel
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = 'node_modules\|git\|build\|coverage'
+let g:ctrlp_custom_ignore = 'node_modules\|\.git\|build\|coverage'
 
 " jsx settings
 let g:jsx_ext_required = 0
