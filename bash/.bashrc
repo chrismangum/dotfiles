@@ -101,7 +101,7 @@ alias wired_auth='sudo wpa_supplicant -D wired -i enp0s25 -c /etc/wpa_supplicant
 
 # reduce mouse accel for sc2:
 # alias get_pointer_id="xinput list | grep -Po 'M325\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
-alias get_pointer_id="xinput list | grep -Po '2013\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
+alias get_pointer_id='for i in $(xinput list | grep -Po "Viper Mini\s+id=\d+.+pointer" | grep -Po "(?<==)\d+"); do xinput list-props $i | grep -q "libinput Accel Speed (" && echo $i; done'
 function set_accel() {
 	xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5
 }

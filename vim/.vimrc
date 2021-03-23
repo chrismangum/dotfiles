@@ -21,7 +21,7 @@ filetype plugin indent on
 set autoindent                    " align the new line indent with the previous line
 " set expandtab                     " insert spaces when hitting TABs
 set number
-set relativenumber
+" set relativenumber
 set ignorecase smartcase
 set hlsearch
 set cursorline
