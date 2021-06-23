@@ -47,11 +47,11 @@ function kns() {
 }
 
 function kash() {
-	kexec $1 /bin/ash
+	kexec $1 -- /bin/ash
 }
 
 function kbash() {
-	kexec $1 /bin/bash
+	kexec $1 -- /bin/bash
 }
 
 function kdebug() {
