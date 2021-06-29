@@ -164,3 +164,10 @@ if [[ $uname == 'Darwin' ]]; then
     export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
     export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
+
+[ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+if [[ -e /usr/share/nvm/nvm.sh ]]; then
+    source /usr/share/nvm/nvm.sh
+    source /usr/share/nvm/bash_completion
+    source /usr/share/nvm/install-nvm-exec
+fi
