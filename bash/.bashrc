@@ -18,7 +18,7 @@ if [[ -e /usr/share/bash-completion/completions/pass ]]; then
 fi
 
 # helm charts bash completion
-source ~/scripts/helm.sh
+source /usr/share/bash-completion/completions/helm
 
 # PS1 colors:
 txtcyn='\e[0;36m'
@@ -88,6 +88,7 @@ alias lint='for i in $(gst -s | grep -P '"'"'\.js$'"'"' | awk '"'"'{print $NF}'"
 alias ll='ls -lh'
 alias ls='ls --color=auto'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias pino='pino-pretty -t --messageKey message --ignore loggerName,loggerSource,contextMap'
 alias pyserver='python -m http.server 3001'
 alias pyserver2='python -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
