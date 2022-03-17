@@ -18,7 +18,9 @@ if [[ -e /usr/share/bash-completion/completions/pass ]]; then
 fi
 
 # helm charts bash completion
-source /usr/share/bash-completion/completions/helm
+if [[ -e /usr/share/bash-completion/completions/helm ]]; then
+	source /usr/share/bash-completion/completions/helm
+fi
 
 # PS1 colors:
 txtcyn='\e[0;36m'
@@ -95,7 +97,7 @@ alias rename='perl-rename'
 alias sa_sync='cp -r ~/Cisco/CLIAnalyzer/build/standalone/staging/ ~/Containers/Current/home/chris/www'
 alias set_class_names='grep -rPl "export class" --include="*component.ts" --include="*.service.ts" | xargs perl -pi -e "BEGIN{undef $/;} s/(export class (\w+) .*)/\1Object.defineProperty(\2, '"'"'name'"'"', {\n\tvalue: '"'"'\2'"'"',\n});\n/smg"'
 alias snw='cdsst; nw'
-alias xlock='xscreensaver-command -lock'
+alias xlock='i3lock -c 000000'
 alias xsleep='xlock; sleep 2; systemctl suspend'
 alias ubuntu_vm='qemu-system-x86_64 -vga qxl -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/ubuntu,format=raw'
 alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/windows10,format=raw'

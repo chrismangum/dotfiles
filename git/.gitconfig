@@ -12,3 +12,7 @@
 	attributesfile = /home/chris/.gitattributes
 [pull]
 	rebase = false
+[url "git@www-github3.cisco.com:"]
+	insteadOf = https://www-github3.cisco.com/
+[url "git@github.com:"]
+	insteadOf = https://github.com/
