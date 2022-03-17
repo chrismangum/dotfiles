@@ -6,8 +6,8 @@ local exports = {}
 -- Helpers (called by other functions)
 local function nthArg (index)
 	return function (...)
-		local arg = {...}
-		return arg[index]
+		local args = {...}
+		return args[index]
 	end
 end
 exports.nthArg = nthArg
@@ -72,8 +72,8 @@ exports.reverse = reverse
 
 local function flip (func)
 	return function (...)
-		local arg = {...}
-		return func(table.unpack(reverse(arg)))
+		local args = {...}
+		return func(table.unpack(reverse(args)))
 	end
 end
 exports.flip = flip
@@ -120,6 +120,31 @@ exports.partition = partition
 
 
 -- Lang
+local function isNil (value)
+	return value == nil
+end
+exports.isNil = isNil
+
+local function isObject (value)
+	return type(value) == 'table'
+end
+exports.isObject = isObject
+
+local function isBoolean (value)
+	return type(value) == 'boolean'
+end
+exports.isBoolean = isBoolean
+
+local function isFunction (value)
+	return type(value) == 'function'
+end
+exports.isFunction = isFunction
+
+local function isEmpty (value)
+	return isNil(value) or _.is_null(value)
+end
+exports.isEmpty = isEmpty
+
 local function isNumber (value)
 	return type(value) == 'number'
 end
@@ -133,8 +158,38 @@ exports.isString = isString
 local toString = tostring
 exports.toString = toString
 
+local function isArray (value)
+	if not isObject(value) then
+		return false
+	elseif isEmpty(value) then
+		return true
+	end
+	local _it, k, v = _.iter(value)
+	return isNumber(v)
+end
+exports.isArray = isArray
+
+local function castArray (...)
+	local args = {...}
+	local value = args[1]
+	if isEmpty(args) then
+		return {}
+	elseif isArray(value) then
+		return value
+	else
+		return {value}
+	end
+end
+exports.castArray = castArray
+
 
 -- Math
+local max = _.max
+exports.max = max
+
+local min = _.min
+exports.min = min
+
 local function sum (array)
 	return reduce(array, add, 0)
 end
@@ -158,16 +213,6 @@ local function endsWith (str, target)
 end
 exports.endsWith = endsWith
 
-local function isEmpty (value)
-	return isNil(value) or _.is_null(value)
-end
-exports.isEmpty = isEmpty
-
-local function isNil (value)
-	return value == nil
-end
-exports.isNil = isNil
-
 local function startsWith (str, target)
 	return str:sub(1, size(target)) == target
 end
@@ -186,32 +231,22 @@ end
 exports.constant = constant
 
 local function inspect (value, inner)
-	if type(value) == 'table' then
-		local str = ''
-		local isMap = false
+	if isArray(value) then
+		return '[' .. join(map(value, function (val)
+			return inspect(val, true)
+		end), ', ') .. ']'
+	elseif isObject(value) then
+		local str = '{'
+		local first = true
 		forEach(value, function (key, val)
-			if not isNil(val) then
-				isMap = true
-				if size(str) == 0 then
-					str = '{'
-				else
-					str = str .. ', '
-				end
-				str = str .. key .. ': ' .. inspect(val, true)
+			if first then
+				first = false
 			else
-				if size(str) == 0 then
-					str = '['
-				else
-					str = str .. ', '
-				end
-				str = str .. inspect(key, true)
+				str = str .. ', '
 			end
+			str = str .. key .. ': ' .. inspect(val, true)
 		end)
-		if isMap then
-			return str .. '}'
-		else
-			return str .. ']'
-		end
+		return str .. '}'
 	elseif inner and isString(value) then
 		return '\'' .. value .. '\''
 	else
@@ -219,6 +254,9 @@ local function inspect (value, inner)
 	end
 end
 exports.inspect = inspect
+
+local function noop () end
+exports.noop = noop
 
 local function times (n, iteratee)
 	return map(range(n), iteratee or identity)
