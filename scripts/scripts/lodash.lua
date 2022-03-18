@@ -12,6 +12,25 @@ local function nthArg (index)
 end
 exports.nthArg = nthArg
 
+local size = _.length
+exports.size = size
+
+local function reverse (array)
+	local reversed = {}
+	for i = size(array), 1, -1 do
+		table.insert(reversed, array[i])
+	end
+	return reversed
+end
+exports.reverse = reverse
+
+local function flip (func)
+	return function (...)
+		return func(table.unpack(reverse({...})))
+	end
+end
+exports.flip = flip
+
 local add = _.operator.add
 exports.add = add
 
@@ -20,8 +39,17 @@ local function drop (array, n)
 end
 exports.drop = drop
 
+local every = flip(_.every)
+exports.every = every
+
+local some = flip(_.some)
+exports.some = some
+
 local head = _.head
 exports.head = head
+
+local identity = nthArg(1)
+exports.identity = identity
 
 local function isNil (value)
 	return value == nil
@@ -77,8 +105,23 @@ local function isPlainObject (value)
 end
 exports.isPlainObject = isPlainObject
 
-local identity = nthArg(1)
-exports.identity = identity
+local function indexOf (collection, value)
+	if isArray(collection) then
+		return _.index_of(value, collection)
+	elseif isString(collection) then
+		local start, _ = string.find(collection, value)
+		return start
+	end
+end
+exports.indexOf = indexOf
+
+local function includes (collection, value)
+	if isPlainObject(collection) then
+		return indexOf(values(collection), value) ~= nil
+	end
+	return indexOf(collection, value) ~= nil
+end
+exports.includes = includes
 
 local function map (collection, iteratee)
 	return _.totable(_.map(iteratee or identity, collection))
@@ -100,9 +143,6 @@ end
 local reduce = rearg(_.reduce, {2, 3, 1})
 exports.reduce = reduce
 
-local size = _.length
-exports.size = size
-
 local function flow (funcs)
 	return function (...)
 		return reduce(drop(funcs), function (result, func)
@@ -113,22 +153,6 @@ end
 
 local range = flow({_.range, _.totable})
 exports.range = range
-
-local function reverse (array)
-	local reversed = {}
-	for i = size(array), 1, -1 do
-		table.insert(reversed, array[i])
-	end
-	return reversed
-end
-exports.reverse = reverse
-
-local function flip (func)
-	return function (...)
-		return func(table.unpack(reverse({...})))
-	end
-end
-exports.flip = flip
 
 local function values (object)
 	return map(object, nthArg(2))
@@ -145,16 +169,6 @@ exports.concat = concat
 local dropWhile = flow({flip(_.drop_while), _.totable})
 exports.dropWhile = dropWhile
 
-local function indexOf (collection, value)
-	if isArray(collection) then
-		return _.index_of(value, collection)
-	elseif isString(collection) then
-		local start, _ = string.find(collection, value)
-		return start
-	end
-end
-exports.indexOf = indexOf
-
 local function join (array, separator)
 	return table.concat(array, separator or ',')
 end
@@ -168,20 +182,27 @@ exports.take = take
 local takeWhile = flow({flip(_.take_while), _.totable})
 exports.takeWhile = takeWhile
 
+local function uniq (array)
+	return reduce(array, function (result, value)
+		if not includes(result, value) then
+			table.insert(result, value)
+		end
+		return result
+	end, {})
+end
+exports.uniq = uniq
+
+local function union (...)
+	return uniq(concat(...))
+end
+exports.union = union
+
 
 -- Collection
 local function every (collection, iteratee)
 	return _.every(iteratee or identity, collection)
 end
 exports.every = every
-
-local function includes (collection, value)
-	if isPlainObject(collection) then
-		return indexOf(values(collection), value) ~= nil
-	end
-	return indexOf(collection, value) ~= nil
-end
-exports.includes = includes
 
 local function forEach (collection, iteratee)
 	_.foreach(iteratee or identity, collection)
