@@ -23,6 +23,50 @@ exports.drop = drop
 local head = _.head
 exports.head = head
 
+local function isNil (value)
+	return value == nil
+end
+exports.isNil = isNil
+
+local function isEmpty (value)
+	return isNil(value) or _.is_null(value)
+end
+exports.isEmpty = isEmpty
+
+local function isNumber (value)
+	return type(value) == 'number'
+end
+exports.isNumber = isNumber
+
+local function isObject (value)
+	return type(value) == 'table'
+end
+exports.isObject = isObject
+
+local function isArray (value)
+	if not isObject(value) then
+		return false
+	elseif isEmpty(value) then
+		return true
+	end
+	local gen, param, state = _.iter(value)
+	return isNumber(state)
+end
+exports.isArray = isArray
+
+local function castArray (...)
+	local args = {...}
+	local value = args[1]
+	if isEmpty(args) then
+		return {}
+	elseif isArray(value) then
+		return value
+	else
+		return {value}
+	end
+end
+exports.castArray = castArray
+
 local identity = nthArg(1)
 exports.identity = identity
 
@@ -39,8 +83,7 @@ end
 
 local function rearg (func, indexes)
 	return function (...)
-		local args = {...}
-		return func(table.unpack(map(indexes, propertyOf(args))))
+		return func(table.unpack(map(indexes, propertyOf({...}))))
 	end
 end
 
@@ -72,14 +115,18 @@ exports.reverse = reverse
 
 local function flip (func)
 	return function (...)
-		local args = {...}
-		return func(table.unpack(reverse(args)))
+		return func(table.unpack(reverse({...})))
 	end
 end
 exports.flip = flip
 
 
 -- Array
+local function concat (...)
+	return _.totable(_.chain(table.unpack(map({...}, castArray))))
+end
+exports.concat = concat
+
 local dropWhile = flow({flip(_.drop_while), _.totable})
 exports.dropWhile = dropWhile
 
@@ -120,16 +167,6 @@ exports.partition = partition
 
 
 -- Lang
-local function isNil (value)
-	return value == nil
-end
-exports.isNil = isNil
-
-local function isObject (value)
-	return type(value) == 'table'
-end
-exports.isObject = isObject
-
 local function isBoolean (value)
 	return type(value) == 'boolean'
 end
@@ -140,16 +177,6 @@ local function isFunction (value)
 end
 exports.isFunction = isFunction
 
-local function isEmpty (value)
-	return isNil(value) or _.is_null(value)
-end
-exports.isEmpty = isEmpty
-
-local function isNumber (value)
-	return type(value) == 'number'
-end
-exports.isNumber = isNumber
-
 local function isString (value)
 	return type(value) == 'string'
 end
@@ -158,29 +185,22 @@ exports.isString = isString
 local toString = tostring
 exports.toString = toString
 
-local function isArray (value)
-	if not isObject(value) then
-		return false
-	elseif isEmpty(value) then
-		return true
-	end
-	local _it, k, v = _.iter(value)
-	return isNumber(v)
-end
-exports.isArray = isArray
 
-local function castArray (...)
-	local args = {...}
-	local value = args[1]
-	if isEmpty(args) then
-		return {}
-	elseif isArray(value) then
-		return value
-	else
-		return {value}
-	end
+-- Object
+local function assign (...)
+	return _.tomap(_.chain(...))
 end
-exports.castArray = castArray
+exports.assign = assign
+
+local function keys (object)
+	return map(object)
+end
+exports.keys = keys
+
+local function values (object)
+	return map(object, nthArg(2))
+end
+exports.values = values
 
 
 -- Math
@@ -194,17 +214,6 @@ local function sum (array)
 	return reduce(array, add, 0)
 end
 exports.sum = sum
-
--- Object
-local function keys (object)
-	return map(object)
-end
-exports.keys = keys
-
-local function values (object)
-	return map(object, nthArg(2))
-end
-exports.values = values
 
 
 -- String
