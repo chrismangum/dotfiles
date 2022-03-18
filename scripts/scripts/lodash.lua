@@ -34,19 +34,11 @@ exports.flip = flip
 local add = _.operator.add
 exports.add = add
 
-local function drop (array, n)
-	return _.totable(_.drop(n or 1, array))
-end
-exports.drop = drop
-
 local every = flip(_.every)
 exports.every = every
 
 local some = flip(_.some)
 exports.some = some
-
-local head = _.head
-exports.head = head
 
 local identity = nthArg(1)
 exports.identity = identity
@@ -86,6 +78,21 @@ local function isArray (value)
 	return isNumber(state)
 end
 exports.isArray = isArray
+
+local function drop (array, n)
+	if isArray(array) then
+		return _.totable(_.drop(n or 1, array))
+	end
+	return {}
+end
+exports.drop = drop
+
+local head = function (array)
+	if isArray(array) then
+		return array[1]
+	end
+end
+exports.head = head
 
 local function castArray (...)
 	local args = {...}
@@ -154,6 +161,19 @@ end
 local range = flow({_.range, _.totable})
 exports.range = range
 
+local function ary (func, n)
+	return rearg(func, range(n))
+end
+exports.ary = ary
+
+local function unary (func)
+	return ary(func, 1)
+end
+exports.unary = unary
+;
+local tail = unary(drop)
+exports.tail = tail
+
 local function values (object)
 	return map(object, nthArg(2))
 end
@@ -169,19 +189,6 @@ exports.concat = concat
 local dropWhile = flow({flip(_.drop_while), _.totable})
 exports.dropWhile = dropWhile
 
-local function join (array, separator)
-	return table.concat(array, separator or ',')
-end
-exports.join = join
-
-local function take (array, n)
-	return _.totable(_.take(n or 1, array))
-end
-exports.take = take
-
-local takeWhile = flow({flip(_.take_while), _.totable})
-exports.takeWhile = takeWhile
-
 local function uniq (array)
 	return reduce(array, function (result, value)
 		if not includes(result, value) then
@@ -191,6 +198,46 @@ local function uniq (array)
 	end, {})
 end
 exports.uniq = uniq
+
+local function intersection (...)
+	local arrays = {...}
+	local tailArrays = tail(arrays)
+	return reduce(uniq(head(arrays)), function (result, value)
+		if every(tailArrays, function (array) return includes(array, value) end) then
+			table.insert(result, value)
+		end
+		return result
+	end, {})
+end
+exports.intersection = intersection
+
+local function join (array, separator)
+	return table.concat(array, separator or ',')
+end
+exports.join = join
+
+local function last (array)
+	if isArray(array) then
+		return array[size(array)]
+	end
+end
+exports.last = last
+
+local function take (array, n)
+	if isArray(array) then
+		return _.totable(_.take(n or 1, array))
+	end
+	return {}
+end
+exports.take = take
+
+local function takeRight (array, n)
+	return take(reverse(array), n)
+end
+exports.takeRight = takeRight
+
+local takeWhile = flow({flip(_.take_while), _.totable})
+exports.takeWhile = takeWhile
 
 local function union (...)
 	return uniq(concat(...))
@@ -270,11 +317,6 @@ exports.startsWith = startsWith
 
 
 -- Util
-local function ary (func, n)
-	return rearg(func, range(n))
-end
-exports.ary = ary
-
 local function constant (value)
 	return function () return value end
 end
@@ -312,11 +354,6 @@ local function times (n, iteratee)
 	return map(range(n), iteratee or identity)
 end
 exports.times = times
-
-local function unary (func)
-	return ary(func, 1)
-end
-exports.unary = unary
 
 
 -- Testing Area
