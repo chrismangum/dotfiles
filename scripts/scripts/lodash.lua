@@ -43,6 +43,11 @@ local function isObject (value)
 end
 exports.isObject = isObject
 
+local function isString (value)
+	return type(value) == 'string'
+end
+exports.isString = isString
+
 local function isArray (value)
 	if not isObject(value) then
 		return false
@@ -66,6 +71,11 @@ local function castArray (...)
 	end
 end
 exports.castArray = castArray
+
+local function isPlainObject (value)
+	return isObject(value) and not isArray(value)
+end
+exports.isPlainObject = isPlainObject
 
 local identity = nthArg(1)
 exports.identity = identity
@@ -120,6 +130,11 @@ local function flip (func)
 end
 exports.flip = flip
 
+local function values (object)
+	return map(object, nthArg(2))
+end
+exports.values = values
+
 
 -- Array
 local function concat (...)
@@ -130,7 +145,14 @@ exports.concat = concat
 local dropWhile = flow({flip(_.drop_while), _.totable})
 exports.dropWhile = dropWhile
 
-local indexOf = flip(_.index_of)
+local function indexOf (collection, value)
+	if isArray(collection) then
+		return _.index_of(value, collection)
+	elseif isString(collection) then
+		local start, _ = string.find(collection, value)
+		return start
+	end
+end
 exports.indexOf = indexOf
 
 local function join (array, separator)
@@ -152,6 +174,14 @@ local function every (collection, iteratee)
 	return _.every(iteratee or identity, collection)
 end
 exports.every = every
+
+local function includes (collection, value)
+	if isPlainObject(collection) then
+		return indexOf(values(collection), value) ~= nil
+	end
+	return indexOf(collection, value) ~= nil
+end
+exports.includes = includes
 
 local function forEach (collection, iteratee)
 	_.foreach(iteratee or identity, collection)
@@ -177,11 +207,6 @@ local function isFunction (value)
 end
 exports.isFunction = isFunction
 
-local function isString (value)
-	return type(value) == 'string'
-end
-exports.isString = isString
-
 local toString = tostring
 exports.toString = toString
 
@@ -196,11 +221,6 @@ local function keys (object)
 	return map(object)
 end
 exports.keys = keys
-
-local function values (object)
-	return map(object, nthArg(2))
-end
-exports.values = values
 
 
 -- Math
