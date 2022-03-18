@@ -135,6 +135,13 @@ local function map (collection, iteratee)
 end
 exports.map = map
 
+local function negate (func)
+	return function (...)
+		return not func(...)
+	end
+end
+exports.negate = negate
+
 local function propertyOf (object)
 	return function (index)
 		return object[index]
@@ -250,6 +257,14 @@ local function every (collection, iteratee)
 	return _.every(iteratee or identity, collection)
 end
 exports.every = every
+
+local filter = flow({flip(_.filter), _.totable})
+exports.filter = filter
+
+local function reject (collection, predicate)
+	return filter(collection, negate(predicate))
+end
+exports.reject = reject
 
 local function forEach (collection, iteratee)
 	_.foreach(iteratee or identity, collection)
