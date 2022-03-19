@@ -142,9 +142,34 @@ local function negate (func)
 end
 exports.negate = negate
 
+local function random (...)
+	local args = {...}
+	local lower, upper
+	local float = args[3] or false
+	if size(args) == 1 then
+		lower = 0
+		upper = args[1]
+	else
+		lower = args[1] or 0
+		upper = args[2] or 1
+	end
+	if float then
+		return math.random(lower, upper - 1) + math.random()
+	end
+	return math.random(lower, upper)
+end
+exports.random = random
+
+local function property (key)
+	return function (object)
+		return object[key]
+	end
+end
+exports.property = property
+
 local function propertyOf (object)
-	return function (index)
-		return object[index]
+	return function (key)
+		return object[key]
 	end
 end
 
@@ -168,6 +193,11 @@ end
 local range = flow({_.range, _.totable})
 exports.range = range
 
+local function times (n, iteratee)
+	return map(range(n), iteratee or identity)
+end
+exports.times = times
+
 local function ary (func, n)
 	return rearg(func, range(n))
 end
@@ -177,7 +207,7 @@ local function unary (func)
 	return ary(func, 1)
 end
 exports.unary = unary
-;
+
 local tail = unary(drop)
 exports.tail = tail
 
@@ -185,6 +215,42 @@ local function values (object)
 	return map(object, nthArg(2))
 end
 exports.values = values
+
+local function zip (...)
+	local arrays = {...}
+	return times(size(head(arrays)), function (index)
+		return map(arrays, property(index))
+	end)
+end
+exports.zip = zip
+
+local function zipObject (keys, values)
+	return reduce(zip(keys, values), function (result, pair)
+		result[pair[1]] = pair[2]
+		return result
+	end, {})
+end
+exports.zipObject = zipObject
+
+local function mapKeys (object, iteratee)
+	return zipObject(map(object, iteratee or identity), values(object))
+end
+exports.mapKeys = mapKeys
+
+local function mapValues (object, iteratee)
+	return zipObject(keys(object), map(object, iteratee or nthArg(2)))
+end
+exports.mapValues = mapValues
+
+local function clone (value)
+	if isArray(value) then
+		return map(value)
+	elseif isObject(value) then
+		return mapKeys(value)
+	end
+	return value
+end
+exports.clone = clone
 
 
 -- Array
@@ -251,6 +317,17 @@ local function union (...)
 end
 exports.union = union
 
+local function without (array, ...)
+	local exclude = {...}
+	return reduce(array, function (result, value)
+		if not includes(exclude, value) then
+			table.insert(result, value)
+		end
+		return result
+	end, {})
+end
+exports.without = without
+
 
 -- Collection
 local function every (collection, iteratee)
@@ -277,6 +354,34 @@ local function partition (collection, iteratee)
 	return map({ yes, no }, _.totable);
 end
 exports.partition = partition
+
+local function sample (collection, pop)
+	if isPlainObject(collection) then
+		collection = values(collection)
+	end
+	if isArray(collection) then
+		if (pop) then
+			return table.remove(collection, random(1, size(collection)))
+		end
+		return collection[random(1, size(collection))]
+	end
+end
+exports.sample = sample
+
+local function sampleSize (collection, n)
+	if isPlainObject(collection) then
+		collection = values(collection)
+	else
+		collection = clone(collection)
+	end
+	local length = size(collection)
+	n = n or 1
+	if n > length then
+		n = length
+	end
+	return times(n, function () return sample(collection, true) end)
+end
+exports.sampleSize = sampleSize
 
 
 -- Lang
@@ -313,6 +418,7 @@ exports.max = max
 local min = _.min
 exports.min = min
 
+
 local function sum (array)
 	return reduce(array, add, 0)
 end
@@ -329,6 +435,12 @@ local function startsWith (str, target)
 	return str:sub(1, size(target)) == target
 end
 exports.startsWith = startsWith
+
+local toLower = string.lower
+exports.toLower = toLower
+
+local toUpper = string.upper
+exports.toUpper = toUpper
 
 
 -- Util
@@ -364,11 +476,6 @@ exports.inspect = inspect
 
 local function noop () end
 exports.noop = noop
-
-local function times (n, iteratee)
-	return map(range(n), iteratee or identity)
-end
-exports.times = times
 
 
 -- Testing Area
