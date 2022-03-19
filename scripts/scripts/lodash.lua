@@ -216,6 +216,14 @@ local function values (object)
 end
 exports.values = values
 
+local function fromPairs (_pairs)
+	return reduce(_pairs, function (result, pair)
+		result[pair[1]] = pair[2]
+		return result
+	end, {})
+end
+exports.fromPairs = fromPairs
+
 local function zip (...)
 	local arrays = {...}
 	return times(size(head(arrays)), function (index)
@@ -225,10 +233,7 @@ end
 exports.zip = zip
 
 local function zipObject (keys, values)
-	return reduce(zip(keys, values), function (result, pair)
-		result[pair[1]] = pair[2]
-		return result
-	end, {})
+	return fromPairs(zip(keys, values))
 end
 exports.zipObject = zipObject
 
@@ -251,6 +256,20 @@ local function clone (value)
 	return value
 end
 exports.clone = clone
+
+local overArgs = function (func, transforms)
+	transforms = castArray(transforms)
+	return function (...)
+		local args = {...}
+		return func(table.unpack(times(size(args), function (index)
+			if transforms[index] then
+				return transforms[index](args[index])
+			end
+			return args[index]
+		end)))
+	end
+end
+exports.overArgs = overArgs
 
 
 -- Array
@@ -382,6 +401,21 @@ local function sampleSize (collection, n)
 	return times(n, function () return sample(collection, true) end)
 end
 exports.sampleSize = sampleSize
+
+local function sortBy (collection, iteratee)
+	if isPlainObject(collection) then
+		collection = values(collection)
+	else
+		collection = clone(collection)
+	end
+	if isString(iteratee) then
+		local key = iteratee
+		iteratee = overArgs(_.operator.lt, {property(key), property(key)})
+	end
+	table.sort(collection, iteratee or _.operator.lt)
+	return collection
+end
+exports.sortBy = sortBy
 
 
 -- Lang
