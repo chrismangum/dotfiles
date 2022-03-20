@@ -57,11 +57,28 @@ function _.last (array)
 end
 
 function _.reverse (array)
-	local reversed = {}
-	for i = _.size(array), 1, -1 do
-		table.insert(reversed, array[i])
+	if not _.isEmpty(array) then
+		return _.map(_.range(_.size(array), 1), _.propertyOf(array))
 	end
-	return reversed
+	return array
+end
+
+function _.slice (array, start, stop)
+	local endIndex = _.size(array) + 1
+	local start = start or 1
+	if start < 0 then
+		start = endIndex + start
+	end
+	local stop = stop or endIndex
+	if stop < 0 then
+		stop = endIndex + stop
+	elseif stop > endIndex then
+		stop = endIndex
+	end
+	if stop <= start then
+		return {}
+	end
+	return _.map(_.range(start, stop - 1), _.propertyOf(array))
 end
 
 function _.take (array, n)
