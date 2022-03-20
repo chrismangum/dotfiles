@@ -7,8 +7,17 @@ function _.concat (...)
 end
 
 function _.drop (array, n)
-	if _.isArray(array) then
-		return fun.totable(fun.drop(n or 1, array))
+	n = n or 1
+	if _.isArray(array) and n > 0 then
+		return _.slice(array, n + 1)
+	end
+	return {}
+end
+
+function _.dropRight (array, n)
+	n = n or 1
+	if _.isArray(array) and n > 0 then
+		return _.slice(array, 1, -n)
 	end
 	return {}
 end
@@ -82,14 +91,19 @@ function _.slice (array, start, stop)
 end
 
 function _.take (array, n)
-	if _.isArray(array) then
-		return fun.totable(fun.take(n or 1, array))
+	n = n or 1
+	if _.isArray(array) and n > 0 then
+		return _.slice(array, 1, n + 1)
 	end
 	return {}
 end
 
 function _.takeRight (array, n)
-	return _.take(_.reverse(array), n)
+	n = n or 1
+	if _.isArray(array) and n > 0 then
+		return _.slice(array, -n)
+	end
+	return {}
 end
 
 function _.union (...)
@@ -411,6 +425,10 @@ function _.propertyOf (object)
 	end
 end
 
+function _.range (start, stop, step)
+	return fun.totable(fun.range(start or 0, stop, step))
+end
+
 function _.times (n, iteratee)
 	return _.map(_.range(n), iteratee or _.identity)
 end
@@ -423,7 +441,6 @@ _.identity = _.nthArg(1)
 _.lt = fun.operator.lt
 _.max = fun.max
 _.min = fun.min
-_.range = _.flow({fun.range, fun.totable})
 _.reduce = _.rearg(fun.reduce, {2, 3, 1})
 _.size = fun.length
 _.some = _.flip(fun.some)
