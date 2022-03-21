@@ -446,6 +446,10 @@ function _.has (object, path)
 	return not _.isNil(_.get(object, path))
 end
 
+function _.invert (object)
+	return _.zipObject(_.map(_.values(object), _.toString), _.keys(object))
+end
+
 function _.invoke (object, path, ...)
 	if _.isFunction(_.get(object, path)) then
 		return object[path](...)
