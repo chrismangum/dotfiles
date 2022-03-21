@@ -94,6 +94,14 @@ function _.last (array)
 	end
 end
 
+function _.nth (array, n)
+	if n < 0 then
+		local endIndex = _.size(array) + 1
+		n = endIndex + n
+	end
+	return fun.nth(n or 1, array)
+end
+
 function _.reverse (array)
 	if not _.isEmpty(array) then
 		return _.map(_.range(_.size(array), 1), _.propertyOf(array))
