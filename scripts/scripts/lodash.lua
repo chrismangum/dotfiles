@@ -2,6 +2,12 @@ local fun = require('fun')
 local _ = {}
 
 -- Array
+function _.chunk (array, size)
+	return _.map(_.range(1, _.size(array), size), function (n)
+		return _.slice(array, n, n + size)
+	end)
+end
+
 function _.concat (...)
 	return fun.totable(fun.chain(table.unpack(_.map({...}, _.castArray))))
 end
