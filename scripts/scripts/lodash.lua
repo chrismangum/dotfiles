@@ -32,6 +32,15 @@ function _.dropRight (array, n)
 	return {}
 end
 
+function _.flatten (array)
+	return _.reduce(array, function (result, value)
+		if _.isArray(value) then
+			return _.concat(result, _.flatten(value))
+		end
+		return _.concat(result, value)
+	end, {})
+end
+
 function _.fromPairs (_pairs)
 	return _.reduce(_pairs, function (result, pair)
 		result[pair[1]] = pair[2]
@@ -155,6 +164,10 @@ function _.every (collection, iteratee)
 	return fun.every(iteratee or _.identity, collection)
 end
 
+function _.flatMap(collection, iteratee)
+	return _.flatten(_.map(collection, iteratee))
+end
+
 function _.forEach (collection, iteratee)
 	fun.foreach(iteratee or _.identity, collection)
 	return collection
@@ -257,6 +270,22 @@ function _.overArgs (func, transforms)
 			end
 			return args[index]
 		end)))
+	end
+end
+
+function _.partial (func, ...)
+	local partials = {...}
+	return function (...)
+		local args = {...}
+		return func(table.unpack(_.concat(partials, args)))
+	end
+end
+
+function _.partialRight (func, ...)
+	local partials = {...}
+	return function (...)
+		local args = {...}
+		return func(table.unpack(_.concat(args, partials)))
 	end
 end
 
@@ -426,13 +455,11 @@ end
 
 function _.inspect (value, inner)
 	if _.isArray(value) then
-		return '[' .. _.join(_.map(value, function (val)
-			return _.inspect(val, true)
-		end), ', ') .. ']'
+		return '[' .. _.join(_.map(value, _.partialRight(_.inspect, true)), ', ') .. ']'
 	elseif _.isObject(value) then
 		return '{' .. _.join(_.map(_.toPairs(_.mapValues(value, function (key, val)
 			return _.inspect(val, true)
-		end)), function (val) return _.join(val, ': ') end), ', ') .. '}'
+		end)), _.partialRight(_.join, ': ')), ', ') .. '}'
 	elseif inner and _.isString(value) then
 		return '\'' .. value .. '\''
 	else
