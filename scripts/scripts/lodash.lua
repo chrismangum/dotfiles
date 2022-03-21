@@ -156,6 +156,12 @@ function _.uniq (array)
 	end, {})
 end
 
+function _.unzip (arrays)
+	return _.times(_.size(_.head(arrays)), function (index)
+		return _.map(arrays, _.property(index))
+	end)
+end
+
 function _.without (array, ...)
 	local exclude = {...}
 	return _.reduce(array, function (result, value)
