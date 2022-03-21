@@ -6,6 +6,16 @@ function _.concat (...)
 	return fun.totable(fun.chain(table.unpack(_.map({...}, _.castArray))))
 end
 
+function _.difference (array, ...)
+	local values = {...}
+	return _.reduce(array, function (result, value)
+		if _.every(values, function (array) return not _.includes(array, value) end) then
+			table.insert(result, value)
+		end
+		return result
+	end, {})
+end
+
 function _.drop (array, n)
 	n = n or 1
 	if _.isArray(array) and n > 0 then
@@ -155,6 +165,16 @@ function _.includes (collection, value)
 		collection = _.values(collection)
 	end
 	return _.indexOf(collection, value) ~= nil
+end
+
+function _.invokeMap (collection, path, ...)
+	if _.isPlainObject(collection) then
+		collection = _.values(collection)
+	end
+	local args = {...}
+	return _.map(collection, function (val)
+		return _.invoke(val, path, table.unpack(args))
+	end)
 end
 
 function _.map (collection, iteratee)
@@ -346,12 +366,29 @@ function _.keys (object)
 	return _.map(object)
 end
 
+function _.has (object, path)
+	return object and not _.isNil(object[path])
+end
+
+function _.invoke (object, path, ...)
+	if _.has(object, path) and _.isFunction(object[path]) then
+		return object[path](...)
+	end
+end
+
 function _.mapKeys (object, iteratee)
 	return _.zipObject(_.map(object, iteratee or _.identity), _.values(object))
 end
 
 function _.mapValues (object, iteratee)
 	return _.zipObject(_.keys(object), _.map(object, iteratee or _.nthArg(2)))
+end
+
+function _.toPairs (object)
+	if _.isPlainObject(object) then
+		return _.zip(_.keys(object), _.values(object))
+	end
+	return {}
 end
 
 function _.values (object)
@@ -386,17 +423,9 @@ function _.inspect (value, inner)
 			return _.inspect(val, true)
 		end), ', ') .. ']'
 	elseif _.isObject(value) then
-		local str = '{'
-		local first = true
-		_.forEach(value, function (key, val)
-			if first then
-				first = false
-			else
-				str = str .. ', '
-			end
-			str = str .. key .. ': ' .. _.inspect(val, true)
-		end)
-		return str .. '}'
+		return '{' .. _.join(_.map(_.toPairs(_.mapValues(value, function (key, val)
+			return _.inspect(val, true)
+		end)), function (val) return _.join(val, ': ') end), ', ') .. '}'
 	elseif inner and _.isString(value) then
 		return '\'' .. value .. '\''
 	else
