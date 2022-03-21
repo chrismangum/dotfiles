@@ -424,6 +424,26 @@ function _.mapValues (object, iteratee)
 	return _.zipObject(_.keys(object), _.map(object, iteratee or _.nthArg(2)))
 end
 
+function _.omit (object, ...)
+	local paths = {...}
+	if _.isArray(_.head(paths)) then
+		paths = _.head(paths)
+	end
+	return _.fromPairs(_.map(_.difference(_.keys(object), paths), function (key)
+		return {key, object[key]}
+	end))
+end
+
+function _.pick (object, ...)
+	local paths = {...}
+	if _.isArray(_.head(paths)) then
+		paths = _.head(paths)
+	end
+	return _.fromPairs(_.map(_.intersection(_.keys(object), paths), function (key)
+		return {key, object[key]}
+	end))
+end
+
 function _.toPairs (object)
 	if _.isPlainObject(object) then
 		return _.zip(_.keys(object), _.values(object))
