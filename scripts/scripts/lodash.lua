@@ -366,12 +366,19 @@ function _.keys (object)
 	return _.map(object)
 end
 
+function _.get (object, path, default)
+	if object and not _.isNil(object[path]) then
+		return object[path]
+	end
+	return default
+end
+
 function _.has (object, path)
-	return object and not _.isNil(object[path])
+	return not _.isNil(_.get(object, path))
 end
 
 function _.invoke (object, path, ...)
-	if _.has(object, path) and _.isFunction(object[path]) then
+	if _.isFunction(_.get(object, path)) then
 		return object[path](...)
 	end
 end
@@ -442,15 +449,15 @@ function _.nthArg (index)
 	end
 end
 
-function _.property (key)
+function _.property (path)
 	return function (object)
-		return object[key]
+		return _.get(object, path)
 	end
 end
 
 function _.propertyOf (object)
-	return function (key)
-		return object[key]
+	return function (path)
+		return _.get(object, path)
 	end
 end
 
