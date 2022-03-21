@@ -168,6 +168,20 @@ function _.every (collection, iteratee)
 	return fun.every(iteratee or _.identity, collection)
 end
 
+function _.filter (collection, predicate)
+	return fun.totable(fun.filter(predicate or _.identity, collection))
+end
+
+function _.find (collection, predicate)
+	if _.isPlainObject(collection) then
+		collection = _.values(collection)
+	end
+	local val
+	if _.some(collection, function (v) val = v; return predicate(v) end) then
+		return val
+	end
+end
+
 function _.flatMap(collection, iteratee)
 	return _.flatten(_.map(collection, iteratee))
 end
@@ -204,7 +218,7 @@ function _.partition (collection, iteratee)
 end
 
 function _.reject (collection, predicate)
-	return _.filter(collection, _.negate(predicate))
+	return _.filter(collection, _.negate(predicate or _.identity))
 end
 
 function _.sample (collection, pop)
@@ -521,9 +535,10 @@ function _.times (n, iteratee)
 end
 
 _.add = fun.operator.add
+_.defaults = _.flip(_.assign)
 _.dropWhile = _.flow({_.flip(fun.drop_while), fun.totable})
 _.every = _.flip(fun.every)
-_.filter = _.flow({_.flip(fun.filter), fun.totable})
+_.compact = _.unary(_.filter)
 _.identity = _.nthArg(1)
 _.lt = fun.operator.lt
 _.max = fun.max
