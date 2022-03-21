@@ -175,10 +175,14 @@ function _.every (collection, iteratee)
 end
 
 function _.filter (collection, predicate)
+	if _.isPlainObject(collection) then
+		collection = _.values(collection)
+	end
 	return fun.totable(fun.filter(predicate or _.identity, collection))
 end
 
 function _.find (collection, predicate)
+	predicate = predicate or _.identity
 	if _.isPlainObject(collection) then
 		collection = _.values(collection)
 	end
@@ -186,6 +190,10 @@ function _.find (collection, predicate)
 	if _.some(collection, function (v) val = v; return predicate(v) end) then
 		return val
 	end
+end
+
+function _.findLast (collection, predicate)
+	return _.find(_.reverse(collection), predicate)
 end
 
 function _.flatMap(collection, iteratee)
@@ -225,6 +233,10 @@ end
 
 function _.reject (collection, predicate)
 	return _.filter(collection, _.negate(predicate or _.identity))
+end
+
+function _.some (collection, predicate)
+	return fun.some(predicate or _.identity, collection)
 end
 
 function _.sample (collection, pop)
@@ -321,6 +333,10 @@ end
 
 function _.unary (func)
 	return _.ary(func, 1)
+end
+
+function _.wrap (func, wrapper)
+	return _.partial(wrapper, func)
 end
 
 -- Lang
@@ -464,6 +480,15 @@ function _.pick (object, ...)
 	end))
 end
 
+function _.pickBy (object, predicate)
+	predicate = predicate and _.wrap(predicate, function (func, key)
+		return func(key, object[key])
+	end) or _.propertyOf(object)
+	return _.fromPairs(_.map(_.filter(_.keys(object), predicate), function (key)
+		return {key, object[key]}
+	end))
+end
+
 function _.toPairs (object)
 	if _.isPlainObject(object) then
 		return _.zip(_.keys(object), _.values(object))
@@ -541,17 +566,16 @@ function _.times (n, iteratee)
 end
 
 _.add = fun.operator.add
+_.compact = _.unary(_.filter)
 _.defaults = _.flip(_.assign)
 _.dropWhile = _.flow({_.flip(fun.drop_while), fun.totable})
-_.every = _.flip(fun.every)
-_.compact = _.unary(_.filter)
 _.identity = _.nthArg(1)
+_.initial = _.unary(_.dropRight)
 _.lt = fun.operator.lt
 _.max = fun.max
 _.min = fun.min
 _.reduce = _.rearg(fun.reduce, {2, 3, 1})
 _.size = fun.length
-_.some = _.flip(fun.some)
 _.tail = _.unary(_.drop)
 _.takeWhile = _.flow({_.flip(fun.take_while), fun.totable})
 _.toLower = string.lower
