@@ -33,9 +33,13 @@ function _.dropRight (array, n)
 end
 
 function _.flatten (array)
+	return _.reduce(array, _.concat, {})
+end
+
+function _.flattenDeep (array)
 	return _.reduce(array, function (result, value)
 		if _.isArray(value) then
-			return _.concat(result, _.flatten(value))
+			return _.concat(result, _.flattenDeep(value))
 		end
 		return _.concat(result, value)
 	end, {})
@@ -88,7 +92,7 @@ function _.reverse (array)
 	if not _.isEmpty(array) then
 		return _.map(_.range(_.size(array), 1), _.propertyOf(array))
 	end
-	return array
+	return {}
 end
 
 function _.slice (array, start, stop)
