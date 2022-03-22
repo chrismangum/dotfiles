@@ -540,6 +540,19 @@ function _.endsWith (str, target)
 	return target == '' or str:sub(-_.size(target)) == target
 end
 
+function _.split (str, sep)
+	if not sep or not _.isString(sep) then
+		return str
+	elseif sep == '' then
+		return _.map(str)
+	end
+	local array = {}
+	for s in str:gmatch('[^' .. sep .. ']+') do
+		table.insert(array, s)
+	end
+	return array
+end
+
 function _.startsWith (str, target)
 	return str:sub(1, _.size(target)) == target
 end
@@ -619,6 +632,7 @@ _.lt = fun.operator.lt
 _.max = fun.max
 _.min = fun.min
 _.reduce = _.rearg(fun.reduce, {2, 3, 1})
+_.rep = string.rep
 _.size = fun.length
 _.tail = _.unary(_.drop)
 _.takeWhile = _.flow({_.flip(fun.take_while), fun.totable})
