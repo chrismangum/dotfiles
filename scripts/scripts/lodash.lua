@@ -545,6 +545,15 @@ function _.startsWith (str, target)
 end
 
 -- Util
+function _.attempt (func, ...)
+	local results = {pcall(func, ...)}
+	if _.head(results) then
+		return table.unpack(_.concat(false, _.tail(results)))
+	else
+		return _.last(results)
+	end
+end
+
 function _.constant (value)
 	return function () return value end
 end
