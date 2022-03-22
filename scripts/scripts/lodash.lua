@@ -249,10 +249,6 @@ function _.reject (collection, predicate)
 	return _.filter(collection, _.negate(predicate or _.identity))
 end
 
-function _.some (collection, predicate)
-	return fun.some(predicate or _.identity, collection)
-end
-
 function _.sample (collection, pop)
 	if _.isPlainObject(collection) then
 		collection = _.values(collection)
@@ -277,6 +273,14 @@ function _.sampleSize (collection, n)
 		n = length
 	end
 	return _.times(n, function () return _.sample(collection, true) end)
+end
+
+function _.shuffle (collection)
+	return _.sampleSize(collection, _.size(collection))
+end
+
+function _.some (collection, predicate)
+	return fun.some(predicate or _.identity, collection)
 end
 
 function _.sortBy (collection, iteratee)
@@ -371,6 +375,19 @@ function _.clone (value)
 		return _.map(value)
 	elseif _.isObject(value) then
 		return _.mapKeys(value)
+	end
+	return value
+end
+
+function _.cloneDeep (value)
+	if _.isArray(value) then
+		return _.map(value, function (v)
+			return _.isObject(v) and _.cloneDeep(v) or v
+		end)
+	elseif _.isObject(value) then
+		return _.mapValues(value, function (k, v)
+			return _.isObject(v) and _.cloneDeep(v) or v
+		end)
 	end
 	return value
 end
