@@ -17,19 +17,13 @@ if [[ -e /usr/share/bash-completion/completions/pass ]]; then
     source /usr/share/bash-completion/completions/pass
 fi
 
-# helm charts bash completion
-if [[ -e /usr/share/bash-completion/completions/helm ]]; then
-	source /usr/share/bash-completion/completions/helm
-fi
-
 # PS1 colors:
 txtcyn='\e[0;36m'
 bldblu='\e[1;34m'
 txtrst='\e[0m'
 
-export CHROME_BIN=$(which chromium)
 export EDITOR=vim
-export GREP_COLOR='1;32'
+export GREP_COLOR='mt=1;32'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export LESS="$LESS -R -Q"
@@ -45,14 +39,13 @@ else
     cisco_dir=$HOME/Cisco
 fi
 
-alias apollo_mongo='mongo --nodb'
-alias arcnewfol="arc diff --reviewers '#fol' --create"
-alias arcnewfeb="arc diff --reviewers '#feb' --create"
-alias arcnewcli="arc diff --reviewers '#apollo' --create"
-alias arcpre='arc diff --preview'
-alias arcupd='arc diff --update'
-alias away='setJabberStatus away'
-alias avail='setJabberStatus available'
+function mongoCreds() {
+	local env=$1
+	local field=$2
+	echo -n "$(cat /etc/mongorc.json | jq '.'$env'.'$field)"
+}
+
+alias apollo_mongo="mongosh 'mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/ironbank-dev?replicaSet=apollo' --username $(mongoCreds apollo username) --password $(mongoCreds apollo password)"
 alias cdac='cdc api-console'
 alias cdia='cdc ironbank-auth'
 alias cdiau='cdc ironbank-audit-utils'
@@ -65,9 +58,10 @@ alias cdim='cdc migrator'
 alias cdis='cdc ironbank'
 alias cdssa='cdc CLIAnalyzer'
 alias cdsst='cdc CLIAnalyzer/build/standalone/staging'
-alias cdui='cdc IronBankApp; cd client'
+alias cdui='cdc IronBankApp/src/app'
 alias cisco_vpn='sudo vpnc --no-detach /etc/vpnc/default.conf'
 alias ffmpeg='ffmpeg -hide_banner'
+alias fly='fly -t swtg'
 alias ga='git add'
 alias gaa='git add -A'
 alias gap='git add -p'
@@ -83,10 +77,9 @@ alias glg='gl --stat'
 alias glp='gl -p'
 alias gp='git push'
 alias gpl='git pull'
-alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage'
 alias gst='git status'
+alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage'
 alias l='ls -lah'
-alias lint='for i in $(gst -s | grep -P '"'"'\.js$'"'"' | awk '"'"'{print $NF}'"'"'); do jshint $i; done'
 alias ll='ls -lh'
 alias ls='ls --color=auto'
 alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
@@ -101,10 +94,9 @@ alias xlock='i3lock -c 000000'
 alias xsleep='xlock; sleep 2; systemctl suspend'
 alias ubuntu_vm='qemu-system-x86_64 -vga qxl -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/ubuntu,format=raw'
 alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/windows10,format=raw'
-alias wired_auth='sudo wpa_supplicant -D wired -i enp0s25 -c /etc/wpa_supplicant/wpa_supplicant-enp0s25.conf'
 
 # reduce mouse accel for sc2:
-# alias get_pointer_id="xinput list | grep -Po 'M325\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
+# alias get_pointer_id="xinput list | grep -Po 'G502\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
 alias get_pointer_id='for i in $(xinput list | grep -Po "Viper Mini\s+id=\d+.+pointer" | grep -Po "(?<==)\d+"); do xinput list-props $i | grep -q "libinput Accel Speed (" && echo $i; done'
 function set_accel() {
 	xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5
@@ -149,10 +141,6 @@ dockerNuke() {
 	docker stop $(docker ps -a -q);
 	docker rm $(docker ps -a -q) --force;
 	docker rmi $(docker images -q) --force;
-}
-
-function setJabberStatus() {
-    purple-remote setstatus?status=$1
 }
 
 function tmpv() {
