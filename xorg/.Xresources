@@ -4,6 +4,7 @@ URxvt.saveLines: 5000
 URxvt.scrollBar: false
 URxvt.scrollTtyKeypress: true
 URxvt.scrollTtyOutput: false
+URxvt.letterSpace: -1
 
 ! Smyck Color Scheme
 URxvt.background: #1B1B1B
