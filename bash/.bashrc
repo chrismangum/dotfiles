@@ -45,6 +45,18 @@ function mongoCreds() {
 	echo -n "$(cat /etc/mongorc.json | jq '.'$env'.'$field)"
 }
 
+function awsMongoCreds() {
+	cat "/home/chris/Cisco/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_MAIN_USER | split(":") | .['"$2]"
+}
+
+function awsMongoDomain() {
+	cat "/home/chris/Cisco/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_DOMAIN'
+}
+
+function awsMongo() {
+	awsMongoCreds $1 1; mongosh "mongodb+srv://$(awsMongoDomain $1)/cp-ironbank" --username $(awsMongoCreds $1 0)
+}
+
 alias apollo_mongo="mongosh 'mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/ironbank-dev?replicaSet=apollo' --username $(mongoCreds apollo username) --password $(mongoCreds apollo password)"
 alias cdac='cdc api-console'
 alias cdia='cdc ironbank-auth'
@@ -95,8 +107,21 @@ alias xsleep='xlock; sleep 2; systemctl suspend'
 alias ubuntu_vm='qemu-system-x86_64 -vga qxl -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/ubuntu,format=raw'
 alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/windows10,format=raw'
 
+# atlas clusters:
+alias lorath_mongo="awsMongo ironbank-useast1-lorath"
+alias dev1_mongo="awsMongo cluster01_usw2_cx-nprd-dev"
+alias dev2_mongo="awsMongo cluster02_usw2_cx-nprd-dev"
+alias test_mongo="awsMongo cluster01_usw2_cx-nprd-test"
+alias perf_us_mongo="awsMongo cluster01_usw2_cx-nprd-performance"
+alias perf_eu_mongo="awsMongo cluster01_euc1_cx-nprd-performance"
+alias perf_aus_mongo="awsMongo cluster01_aps2_cx-nprd-performance"
+alias stage_mongo="awsMongo cluster01_usw2_cx-nprd-staging"
+alias prod_us_mongo="awsMongo cluster01_usw2_cx-prd-cxc"
+alias prod_eu_mongo="awsMongo cluster01_euc1_cx-prd-cxc"
+alias prod_aus_mongo="awsMongo cluster01_aps2_cx-prd-cxc"
+
 # reduce mouse accel for sc2:
-# alias get_pointer_id="xinput list | grep -Po 'G502\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
+# alias get_pointer_id="xinput list | grep -Po 'Logitech M325\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
 alias get_pointer_id='for i in $(xinput list | grep -Po "Viper Mini\s+id=\d+.+pointer" | grep -Po "(?<==)\d+"); do xinput list-props $i | grep -q "libinput Accel Speed (" && echo $i; done'
 function set_accel() {
 	xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5
