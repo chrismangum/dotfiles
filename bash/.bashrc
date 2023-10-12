@@ -17,6 +17,11 @@ if [[ -e /usr/share/bash-completion/completions/pass ]]; then
     source /usr/share/bash-completion/completions/pass
 fi
 
+# artifactory
+if [[ -e ~/www/sg1_artifactory/token.sh ]]; then
+    source ~/www/sg1_artifactory/token.sh
+fi
+
 # PS1 colors:
 txtcyn='\e[0;36m'
 bldblu='\e[1;34m'
@@ -54,7 +59,8 @@ function awsMongoDomain() {
 }
 
 function awsMongo() {
-	awsMongoCreds $1 1; mongosh "mongodb+srv://$(awsMongoDomain $1)/cp-ironbank" --username $(awsMongoCreds $1 0)
+	database=${2:-cp-ironbank}
+	awsMongoCreds $1 1; mongosh "mongodb+srv://$(awsMongoDomain $1)/$database" --username $(awsMongoCreds $1 0)
 }
 
 alias apollo_mongo="mongosh 'mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/ironbank-dev?replicaSet=apollo' --username $(mongoCreds apollo username) --password $(mongoCreds apollo password)"
@@ -108,6 +114,7 @@ alias ubuntu_vm='qemu-system-x86_64 -vga qxl -enable-kvm -m 6G -cpu host -smp 4 
 alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/windows10,format=raw'
 
 # atlas clusters:
+alias taco_mongo="awsMongo ib-use1-taco-prd"
 alias lorath_mongo="awsMongo ironbank-useast1-lorath"
 alias dev1_mongo="awsMongo cluster01_usw2_cx-nprd-dev"
 alias dev2_mongo="awsMongo cluster02_usw2_cx-nprd-dev"

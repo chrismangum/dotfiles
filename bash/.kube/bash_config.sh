@@ -15,11 +15,11 @@ alias ksv="kget services"
 alias kwpods="watch kubectl get pods -o wide"
 
 function kcontext() {
-	k config view | grep current-context: | awk 'NF>1{print $NF}'
+	kubectl config view | grep current-context: | awk 'NF>1{print $NF}'
 }
 
 function knamespace() {
-	k config view | grep -A 1 "cluster: $1" | awk 'FNR == 2 {print $2}'
+	kubectl config view | grep -A 1 "cluster: $1" | awk 'FNR == 2 {print $2}'
 }
 
 function kcon() {
@@ -33,7 +33,7 @@ function kcl() {
 		echo "specify a cluster"
 		return 1
 	fi
-	k config use-context $1
+	kubectl config use-context $1
 	kcon
 }
 
@@ -42,7 +42,7 @@ function kns() {
 		echo "specify a namespace"
 		return 1
 	fi
-	k config set-context $(kcontext) --namespace=$1
+	kubectl config set-context $(kcontext) --namespace=$1
 	kcon
 }
 
@@ -55,6 +55,6 @@ function kbash() {
 }
 
 function kdebug() {
-	k exec $1 -- kill -usr1 1;
-	k port-forward $1 9229:9229;
+	kubectl exec $1 -- kill -usr1 1;
+	kubectl port-forward $1 9229:9229;
 }
