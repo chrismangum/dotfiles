@@ -76,7 +76,8 @@ alias cdim='cdc migrator'
 alias cdis='cdc ironbank'
 alias cdssa='cdc CLIAnalyzer'
 alias cdsst='cdc CLIAnalyzer/build/standalone/staging'
-alias cdui='cdc IronBankApp/src/app'
+alias cdui='cdc IronBankApp'
+alias cduia='cdc IronBankApp/src/app'
 alias cisco_vpn='sudo vpnc --no-detach /etc/vpnc/default.conf'
 alias ffmpeg='ffmpeg -hide_banner'
 alias fly='fly -t swtg'
@@ -138,10 +139,9 @@ function show_accel() {
 }
 
 # radio stations
-alias wcpe='mpv http://audio-mp3.ibiblio.org:8000/wcpe.mp3'
-alias wncu='mpv http://playerservices.streamtheworld.com/api/livestream-redirect/WNCUFM.mp3'
-alias wsha='mpv http://live.wshafm.org/WSHA'
-alias wunc='mpv http://mediaserver.wuncfm.unc.edu:8000/wunc128.m3u'
+alias wcpe='mpv http://audio-mp3.ibiblio.org:8000/wcpe.mp3 --volume=50'
+alias wncu='mpv https://wncu.streamguys1.com/live --volume=50'
+alias wunc='mpv https://edg-iad-wunc-ice.streamguys1.com/wunc-128-mp3.m3u --volume=50'
 
 # safety nets:
 alias chgrp='chgrp --preserve-root'
