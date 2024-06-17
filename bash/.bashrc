@@ -47,7 +47,7 @@ fi
 function mongoCreds() {
 	local env=$1
 	local field=$2
-	echo -n "$(cat /etc/mongorc.json | jq '.'$env'.'$field)"
+	echo -n "$(cat /etc/mongorc.json | jq '.'['"'$env'"']'.'$field)"
 }
 
 function awsMongoCreds() {
@@ -63,8 +63,13 @@ function awsMongo() {
 	awsMongoCreds $1 1; mongosh "mongodb+srv://$(awsMongoDomain $1)/$database" --username $(awsMongoCreds $1 0)
 }
 
-alias apollo_mongo="mongosh 'mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/ironbank-dev?replicaSet=apollo' --username $(mongoCreds apollo username) --password $(mongoCreds apollo password)"
+function apollo_mongo() {
+	local ns=${1:-ironbank-dev}
+	mongosh "mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/$ns?replicaSet=apollo" --username $(mongoCreds $ns username) --password $(mongoCreds $ns password)
+}
+
 alias cdac='cdc api-console'
+alias cdds='cdc cx-diagnostics-service'
 alias cdia='cdc ironbank-auth'
 alias cdiau='cdc ironbank-audit-utils'
 alias cdib='cdc banker'
@@ -76,6 +81,8 @@ alias cdim='cdc migrator'
 alias cdis='cdc ironbank'
 alias cdssa='cdc CLIAnalyzer'
 alias cdsst='cdc CLIAnalyzer/build/standalone/staging'
+alias cdts='cdc tac-forms-service'
+alias cdtu='cdc tac-forms-ui'
 alias cdui='cdc IronBankApp'
 alias cduia='cdc IronBankApp/src/app'
 alias cisco_vpn='sudo vpnc --no-detach /etc/vpnc/default.conf'
@@ -116,14 +123,10 @@ alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive f
 
 # atlas clusters:
 alias taco_mongo="awsMongo ib-use1-taco-prd"
-alias lorath_mongo="awsMongo ironbank-useast1-lorath"
-alias dev1_mongo="awsMongo cluster01_usw2_cx-nprd-dev"
-alias dev2_mongo="awsMongo cluster02_usw2_cx-nprd-dev"
-alias test_mongo="awsMongo cluster01_usw2_cx-nprd-test"
+alias dev_mongo="awsMongo common_commercial_usw2_cx-nprd-dev"
 alias perf_us_mongo="awsMongo cluster01_usw2_cx-nprd-performance"
 alias perf_eu_mongo="awsMongo cluster01_euc1_cx-nprd-performance"
 alias perf_aus_mongo="awsMongo cluster01_aps2_cx-nprd-performance"
-alias stage_mongo="awsMongo cluster01_usw2_cx-nprd-staging"
 alias prod_us_mongo="awsMongo cluster01_usw2_cx-prd-cxc"
 alias prod_eu_mongo="awsMongo cluster01_euc1_cx-prd-cxc"
 alias prod_aus_mongo="awsMongo cluster01_aps2_cx-prd-cxc"
