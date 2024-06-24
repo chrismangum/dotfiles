@@ -68,7 +68,6 @@ function apollo_mongo() {
 	mongosh "mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/$ns?replicaSet=apollo" --username $(mongoCreds $ns username) --password $(mongoCreds $ns password)
 }
 
-alias cdac='cdc api-console'
 alias cdds='cdc cx-diagnostics-service'
 alias cdia='cdc ironbank-auth'
 alias cdiau='cdc ironbank-audit-utils'
@@ -100,14 +99,13 @@ alias glg='gl --stat'
 alias glp='gl -p'
 alias gp='git push'
 alias gpl='git pull'
-alias gst='git status'
 alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage'
+alias gst='git status'
 alias l='ls -lah'
 alias ll='ls -lh'
 alias ls='ls --color=auto'
 alias pino='pino-pretty -t --messageKey message --ignore loggerName,loggerSource,contextMap'
 alias pyserver='python -m http.server 3001'
-alias pyserver2='python -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
 alias xlock='loginctl lock-session'
 alias xsleep='systemctl suspend'
@@ -182,9 +180,6 @@ if [[ $uname == 'Darwin' ]]; then
     export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
-[ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
-if [[ -e /usr/share/nvm/nvm.sh ]]; then
-    source /usr/share/nvm/nvm.sh
-    source /usr/share/nvm/bash_completion
-    source /usr/share/nvm/install-nvm-exec
-fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
