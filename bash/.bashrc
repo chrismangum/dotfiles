@@ -75,17 +75,14 @@ alias cdiau='cdc ironbank-audit-utils'
 alias cdib='cdc banker'
 alias cdic='cdc counter'
 alias cdicu='cdc ironbank-collection-utils'
-alias cdie='cdc entitler'
 alias cdil='cdc ironbank-libraries'
 alias cdim='cdc migrator'
 alias cdis='cdc ironbank'
 alias cdssa='cdc CLIAnalyzer'
-alias cdsst='cdc CLIAnalyzer/build/standalone/staging'
 alias cdts='cdc tac-forms-service'
 alias cdtu='cdc tac-forms-ui'
 alias cdui='cdc IronBankApp'
 alias cduia='cdc IronBankApp/src/app'
-alias cisco_vpn='sudo vpnc --no-detach /etc/vpnc/default.conf'
 alias ffmpeg='ffmpeg -hide_banner'
 alias fly='fly -t swtg'
 alias ga='git add'
@@ -108,22 +105,16 @@ alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --ex
 alias l='ls -lah'
 alias ll='ls -lh'
 alias ls='ls --color=auto'
-alias myip='dig +short myip.opendns.com @resolver1.opendns.com'
 alias pino='pino-pretty -t --messageKey message --ignore loggerName,loggerSource,contextMap'
 alias pyserver='python -m http.server 3001'
 alias pyserver2='python -m SimpleHTTPServer 3001'
 alias rename='perl-rename'
-alias sa_sync='cp -r ~/Cisco/CLIAnalyzer/build/standalone/staging/ ~/Containers/Current/home/chris/www'
-alias set_class_names='grep -rPl "export class" --include="*component.ts" --include="*.service.ts" | xargs perl -pi -e "BEGIN{undef $/;} s/(export class (\w+) .*)/\1Object.defineProperty(\2, '"'"'name'"'"', {\n\tvalue: '"'"'\2'"'"',\n});\n/smg"'
-alias snw='cdsst; nw'
-alias xlock='i3lock -c 000000'
-alias xsleep='xlock; sleep 2; systemctl suspend'
-alias ubuntu_vm='qemu-system-x86_64 -vga qxl -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/ubuntu,format=raw'
-alias windows_vm='qemu-system-x86_64 -enable-kvm -m 6G -cpu host -smp 4 -drive file=/home/chris/qemu_vms/windows10,format=raw'
+alias xlock='loginctl lock-session'
+alias xsleep='systemctl suspend'
 
 # atlas clusters:
 alias taco_mongo="awsMongo ib-use1-taco-prd"
-alias dev_mongo="awsMongo common_commercial_usw2_cx-nprd-dev"
+alias dev_mongo="awsMongo cluster01_usw2_cx-nprd-dev"
 alias perf_us_mongo="awsMongo cluster01_usw2_cx-nprd-performance"
 alias perf_eu_mongo="awsMongo cluster01_euc1_cx-nprd-performance"
 alias perf_aus_mongo="awsMongo cluster01_aps2_cx-nprd-performance"
@@ -172,7 +163,7 @@ function ffmpegSplice() {
     rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
 }
 
-dockerNuke() {
+function dockerNuke() {
 	docker stop $(docker ps -a -q);
 	docker rm $(docker ps -a -q) --force;
 	docker rmi $(docker images -q) --force;

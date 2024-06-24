@@ -2,23 +2,16 @@
 
 set -e
 
-mkdir -pv ~/.config/systemd/user \
-  ~/.local/share/xorg \
+mkdir -pv ~/.config/systemd/user
 
 #copy and add systemd user services
-if [[ -x systemctl ]]; then
+if command -v systemctl &> /dev/null; then
     cp -v systemd/.config/systemd/user/* ~/.config/systemd/user
     for i in ~/.config/systemd/user/*.service; do systemctl --user enable $(basename $i); done;
 fi
 
 #create symlinks
-stow -v alsa bash cups fonts git gtk i3 mintty mongo mpv mutt redshift rtorrent scripts tmux \
-  urlview vim xorg
-
-#install fonts
-if [[ -x fc-cache ]]; then
-  fc-cache -vf $HOME/.fonts
-fi
+stow -v bash git scripts tmux vim
 
 #install vim colors
 if [[ ! -d ~/.vim/colors ]]; then

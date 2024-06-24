@@ -4,8 +4,8 @@ Documentation=man:tmux(1)
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/tmux start
-ExecStop=/usr/bin/tmux kill-server
+ExecStart=/bin/tmux start
+ExecStop=/bin/tmux kill-server
 Environment=DISPLAY=:0
 
 [Install]
