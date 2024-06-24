@@ -28,7 +28,7 @@ bldblu='\e[1;34m'
 txtrst='\e[0m'
 
 export EDITOR=vim
-export GREP_COLOR='mt=1;32'
+export GREP_COLORS='ms=01;29'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
 export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export LESS="$LESS -R -Q"
