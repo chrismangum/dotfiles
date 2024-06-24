@@ -11,7 +11,7 @@ if command -v systemctl &> /dev/null; then
 fi
 
 #create symlinks
-stow -v bash git scripts tmux vim
+stow -v bash git gnupg scripts tmux vim
 
 #install vim colors
 if [[ ! -d ~/.vim/colors ]]; then

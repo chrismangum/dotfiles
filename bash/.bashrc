@@ -68,6 +68,7 @@ function apollo_mongo() {
 	mongosh "mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/$ns?replicaSet=apollo" --username $(mongoCreds $ns username) --password $(mongoCreds $ns password)
 }
 
+alias cal='ncal -C'
 alias cdds='cdc cx-diagnostics-service'
 alias cdia='cdc ironbank-auth'
 alias cdiau='cdc ironbank-audit-utils'
