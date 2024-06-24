@@ -10,8 +10,10 @@ if command -v systemctl &> /dev/null; then
     for i in ~/.config/systemd/user/*.service; do systemctl --user enable $(basename $i); done;
 fi
 
+mkdir -pv ~/.config/duo-sso
+
 #create symlinks
-stow -v bash git gnupg scripts tmux vim
+stow -v bash duo-sso git gnupg scripts tmux vim
 
 #install vim colors
 if [[ ! -d ~/.vim/colors ]]; then
