@@ -7,19 +7,19 @@ eval $(keychain -q --eval)
 
 # ubuntu:
 if [[ -e /usr/lib/git-core/git-sh-prompt ]]; then
-    source /usr/lib/git-core/git-sh-prompt
+  source /usr/lib/git-core/git-sh-prompt
 else
-    source ~/scripts/git-prompt.sh
+  source ~/scripts/git-prompt.sh
 fi
 
 # pass bash completion:
 if [[ -e /usr/share/bash-completion/completions/pass ]]; then
-    source /usr/share/bash-completion/completions/pass
+  source /usr/share/bash-completion/completions/pass
 fi
 
 # artifactory
 if [[ -e ~/www/sg1_artifactory/token.sh ]]; then
-    source ~/www/sg1_artifactory/token.sh
+  source ~/www/sg1_artifactory/token.sh
 fi
 
 # PS1 colors:
@@ -33,38 +33,43 @@ export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]
 export LESS="$LESS -R -Q"
 
 if [[ $TERM != linux && $TERM != *-256color ]]; then
-    export TERM=$TERM-256color
+  export TERM=$TERM-256color
 fi
 
 # wsl:
 if [[ -e /proc/version ]] && grep -q Microsoft /proc/version; then
-    cisco_dir=/mnt/c/Users/chris/Cisco
+  cisco_dir=/mnt/c/Users/chris/Cisco
 else
-    cisco_dir=$HOME/Cisco
+  cisco_dir=$HOME/Cisco
 fi
 
 function mongoCreds() {
-	local env=$1
-	local field=$2
-	echo -n "$(cat /etc/mongorc.json | jq '.'['"'$env'"']'.'$field)"
+  local env=$1
+  local field=$2
+  echo -n "$(cat /etc/mongorc.json | jq '.'['"'$env'"']'.'$field)"
 }
 
 function awsMongoCreds() {
-	cat "/home/chris/Cisco/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_MAIN_USER | split(":") | .['"$2]"
+  cat "/home/chris/Cisco/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_MAIN_USER | split(":") | .['"$2]"
 }
 
 function awsMongoDomain() {
-	cat "/home/chris/Cisco/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_DOMAIN'
+  cat "/home/chris/Cisco/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_DOMAIN'
 }
 
 function awsMongo() {
-	database=${2:-cp-ironbank}
-	awsMongoCreds $1 1; mongosh "mongodb+srv://$(awsMongoDomain $1)/$database" --username $(awsMongoCreds $1 0)
+  database=${2:-cp-ironbank}
+  awsMongoCreds $1 1; mongosh "mongodb+srv://$(awsMongoDomain $1)/$database" --username $(awsMongoCreds $1 0)
 }
 
 function apollo_mongo() {
-	local ns=${1:-ironbank-dev}
-	mongosh "mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/$ns?replicaSet=apollo" --username $(mongoCreds $ns username) --password $(mongoCreds $ns password)
+  local ns=${1:-ironbank-dev}
+  mongosh "mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/$ns?replicaSet=apollo" --username $(mongoCreds $ns username) --password $(mongoCreds $ns password)
+}
+
+function rtplab_mongo() {
+  local ns=${1:-tac-forms-dev}
+  mongosh "mongodb://rtplab-mongo-1a.cisco.com:27017,rtplab-mongo-1b.cisco.com:27017,rtplab-mongo-1c.cisco.com:27017,rtplab-mongo-1d.cisco.com:27017,rtplab-mongo-1e.cisco.com:27017/$ns?replicaSet=rs0" --username $(mongoCreds $ns username) --password $(mongoCreds $ns password)
 }
 
 alias cal='ncal -C'
@@ -125,10 +130,10 @@ alias prod_aus_mongo="awsMongo cluster01_aps2_cx-prd-cxc"
 # alias get_pointer_id="xinput list | grep -Po 'Logitech M325\s+id=\d+.+pointer' | grep -Po '(?<==)\d+'"
 alias get_pointer_id='for i in $(xinput list | grep -Po "Viper Mini\s+id=\d+.+pointer" | grep -Po "(?<==)\d+"); do xinput list-props $i | grep -q "libinput Accel Speed (" && echo $i; done'
 function set_accel() {
-	xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5
+  xinput --set-prop $(get_pointer_id) 'libinput Accel Speed' -0.5
 }
 function show_accel() {
-	xinput list-props $(get_pointer_id) | grep 'libinput Accel Speed (' | cut -d ':' -f 2 | perl -pe 's/^\s*//'
+  xinput list-props $(get_pointer_id) | grep 'libinput Accel Speed (' | cut -d ':' -f 2 | perl -pe 's/^\s*//'
 }
 
 # radio stations
@@ -151,25 +156,25 @@ export PROMPT_COMMAND='history -a'
 source ~/.kube/bash_config.sh
 
 function cdc() {
-    cd $cisco_dir/$1
+  cd $cisco_dir/$1
 }
 
 function ffmpegSplice() {
-    ffmpeg -i $1 -ss 0 -c copy -t $2 cut1.mp4
-    ffmpeg -i $1 -ss $3 -c copy cut2.mp4
-    printf "file 'cut1.mp4'\nfile 'cut2.mp4'" > ffmpeg_concat.txt
-    ffmpeg -f concat -i ffmpeg_concat.txt -c copy result.mp4
-    rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
+  ffmpeg -i $1 -ss 0 -c copy -t $2 cut1.mp4
+  ffmpeg -i $1 -ss $3 -c copy cut2.mp4
+  printf "file 'cut1.mp4'\nfile 'cut2.mp4'" > ffmpeg_concat.txt
+  ffmpeg -f concat -i ffmpeg_concat.txt -c copy result.mp4
+  rm cut1.mp4 cut2.mp4 ffmpeg_concat.txt
 }
 
 function dockerNuke() {
-	docker stop $(docker ps -a -q);
-	docker rm $(docker ps -a -q) --force;
-	docker rmi $(docker images -q) --force;
+  docker stop $(docker ps -a -q);
+  docker rm $(docker ps -a -q) --force;
+  docker rmi $(docker images -q) --force;
 }
 
 function tmpv() {
-    mpv https://twitch.tv/$1
+  mpv https://twitch.tv/$1
 }
 
 # PATH:
@@ -177,8 +182,8 @@ export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
 
 # OS X: gnu coreutils paths:
 if [[ $uname == 'Darwin' ]]; then
-    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 
 export NVM_DIR="$HOME/.nvm"
