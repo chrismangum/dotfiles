@@ -2,11 +2,11 @@ uname=$(uname)
 # If not running interactively, don't do anything
 [[ $uname == 'Linux' && $- != *i* ]] && return
 
-# arch:
-if [[ -e /usr/share/git/completion/git-prompt.sh ]]; then
-    source /usr/share/git/completion/git-prompt.sh
+# start ssh-agent
+eval $(keychain -q --eval)
+
 # ubuntu:
-elif [[ -e /usr/lib/git-core/git-sh-prompt ]]; then
+if [[ -e /usr/lib/git-core/git-sh-prompt ]]; then
     source /usr/lib/git-core/git-sh-prompt
 else
     source ~/scripts/git-prompt.sh
@@ -30,7 +30,6 @@ txtrst='\e[0m'
 export EDITOR=vim
 export GREP_COLORS='ms=01;29'
 export PS1="\[$txtcyn\][\w]\$(__git_ps1 '[\[$bldblu\]%s\[$txtcyn\]]')\[$txtrst\]$ "
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
 export LESS="$LESS -R -Q"
 
 if [[ $TERM != linux && $TERM != *-256color ]]; then
@@ -110,7 +109,7 @@ alias pino='pino-pretty -t --messageKey message --ignore loggerName,loggerSource
 alias pyserver='python -m http.server 3001'
 alias rename='perl-rename'
 alias xlock='loginctl lock-session'
-alias xsleep='systemctl suspend'
+alias xsleep='xlock; sleep 2; systemctl suspend'
 
 # atlas clusters:
 alias taco_mongo="awsMongo ib-use1-taco-prd"

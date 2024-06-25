@@ -2,14 +2,6 @@
 
 set -e
 
-mkdir -pv ~/.config/systemd/user
-
-#copy and add systemd user services
-if command -v systemctl &> /dev/null; then
-    cp -v systemd/.config/systemd/user/* ~/.config/systemd/user
-    for i in ~/.config/systemd/user/*.service; do systemctl --user enable $(basename $i); done;
-fi
-
 mkdir -pv ~/.config/duo-sso
 
 #create symlinks
