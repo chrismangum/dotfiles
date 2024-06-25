@@ -111,10 +111,9 @@ alias l='ls -lah'
 alias ll='ls -lh'
 alias ls='ls --color=auto'
 alias pino='pino-pretty -t --messageKey message --ignore loggerName,loggerSource,contextMap'
-alias pyserver='python -m http.server 3001'
-alias rename='perl-rename'
-alias xlock='loginctl lock-session'
-alias xsleep='xlock; sleep 2; systemctl suspend'
+alias pyserver='python3 -m http.server 3001'
+alias xlock='gtklock'
+alias xsleep='systemctl suspend'
 
 # atlas clusters:
 alias taco_mongo="awsMongo ib-use1-taco-prd"
