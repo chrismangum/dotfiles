@@ -112,8 +112,8 @@ alias ll='ls -lh'
 alias ls='ls --color=auto'
 alias pino='pino-pretty -t --messageKey message --ignore loggerName,loggerSource,contextMap'
 alias pyserver='python3 -m http.server 3001'
-alias xlock='gtklock'
-alias xsleep='systemctl suspend'
+alias xlock='gtklock -d'
+alias xsleep='xlock; sleep 2; systemctl suspend'
 
 # atlas clusters:
 alias taco_mongo="awsMongo ib-use1-taco-prd"
@@ -179,10 +179,9 @@ function tmpv() {
 # PATH:
 export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
 
-# OS X: gnu coreutils paths:
-if [[ $uname == 'Darwin' ]]; then
-  export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-  export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+# add snap binaries to path
+if [[ -d /snap/bin ]]; then
+  export PATH="$PATH:/snap/bin"
 fi
 
 export NVM_DIR="$HOME/.nvm"
