@@ -5,7 +5,7 @@ set -e
 mkdir -pv ~/.config/duo-sso
 
 #create symlinks
-stow -v bash duo-sso git gnupg scripts tmux vim
+stow -v bash duo-sso git gnupg redshift scripts tmux vim
 
 #install vim colors
 if [[ ! -d ~/.vim/colors ]]; then
