@@ -46,7 +46,7 @@ fi
 function mongoCreds() {
   local env=$1
   local field=$2
-  echo -n "$(cat /etc/mongorc.json | jq '.'['"'$env'"']'.'$field)"
+  echo -n "$(cat ~/www/dotfiles/mongosh/mongorc.json | jq '.'['"'$env'"']'.'$field)"
 }
 
 function awsMongoCreds() {
