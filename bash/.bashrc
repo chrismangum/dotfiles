@@ -18,8 +18,8 @@ if [[ -e /usr/share/bash-completion/completions/pass ]]; then
 fi
 
 # artifactory
-if [[ -e ~/www/sg1_artifactory/token.sh ]]; then
-  source ~/www/sg1_artifactory/token.sh
+if [[ -e ~/.npmrc ]]; then
+  export ARTIFACTORY_AUTH_TOKEN=$(cat ~/.npmrc | grep artifactory.*authToken | cut -d = -f 2)
 fi
 
 # PS1 colors:
@@ -73,20 +73,20 @@ function rtplab_mongo() {
 }
 
 alias cal='ncal -C'
-alias cdds='cdc cx-diagnostics-service'
-alias cdia='cdc ironbank-auth'
-alias cdiau='cdc ironbank-audit-utils'
-alias cdib='cdc banker'
-alias cdic='cdc counter'
-alias cdicu='cdc ironbank-collection-utils'
-alias cdil='cdc ironbank-libraries'
-alias cdim='cdc migrator'
-alias cdis='cdc ironbank'
-alias cdssa='cdc CLIAnalyzer'
-alias cdts='cdc tac-forms-service'
-alias cdtu='cdc tac-forms-ui'
-alias cdui='cdc IronBankApp'
-alias cduia='cdc IronBankApp/src/app'
+alias cdfs='cdc ic-engines/fis/go/fis-api'
+alias cdia='cdc ironbank/auth'
+alias cdiau='cdc ironbank/audit-utils'
+alias cdib='cdc ironbank/banker'
+alias cdic='cdc ironbank/counter'
+alias cdicu='cdc ironbank/collection-utils'
+alias cdil='cdc ironbank/libraries'
+alias cdim='cdc ironbank/migrator'
+alias cdis='cdc ironbank/ironbank'
+alias cdssa='cdc cli-analyzer'
+alias cdts='cdc tac-forms/service'
+alias cdtu='cdc tac-forms/ui'
+alias cdui='cdc ironbank/ui'
+alias cduia='cdc ironbank/ui/src/app'
 alias docker='podman'
 alias ffmpeg='ffmpeg -hide_banner'
 alias fly='fly -t swtg'
