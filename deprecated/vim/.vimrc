@@ -20,17 +20,17 @@ filetype plugin indent on
 set autoindent                    " align the new line indent with the previous line
 set expandtab                     " insert spaces when hitting TABs
 set number
-set relativenumber
+" set relativenumber
 set ignorecase smartcase
 set hlsearch
 set cursorline
 set incsearch
 set visualbell noerrorbells
 set ruler
-" set list listchars=tab:»·,trail:· " show extra space characters
+set list listchars=tab:»·,trail:· " show extra space characters
 set nofoldenable
 set shiftround                    " round indent to multiple of 'shiftwidth'
-set shiftwidth=2                  " operation >> indents 4 columns; << unindents 4 columns
+set shiftwidth=2 smarttab         " operation >> indents 4 columns; << unindents 4 columns
 set softtabstop=2                 " insert/delete 4 spaces when hitting a TAB/BACKSPACE
 set tabstop=2                     " a hard TAB displays as 4 columns
 set wildmenu                      " enable bash style tab completion
@@ -65,7 +65,7 @@ autocmd BufNewFile,BufRead /tmp/*,COMMIT_EDITMSG setlocal cc=72 tw=72 spell spel
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_working_path_mode = 0
-let g:ctrlp_custom_ignore = 'node_modules\|\.git\|dist\|coverage'
+let g:ctrlp_custom_ignore = 'node_modules\|\.git\|dist\|coverage\|build\|target'
 
 " jsx settings
 let g:jsx_ext_required = 0

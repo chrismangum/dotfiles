@@ -5,17 +5,18 @@ set -e
 mkdir -pv ~/.config/duo-sso
 
 #create symlinks
-stow -v bash duo-sso git gnupg redshift scripts tmux vim
+stow -v bash duo-sso git gnupg scripts tmux nvim
 
-#install vim colors
-if [[ ! -d ~/.vim/colors ]]; then
-  mkdir -p ~/.vim/colors
-  curl -s -o ~/.vim/colors/smyck.vim https://raw.githubusercontent.com/hukl/Smyck-Color-Scheme/master/smyck.vim
+#install nvim colors
+if [[ ! -d ~/.config/nvim/colors ]]; then
+  mkdir -p ~/.config/nvim/colors
+  curl -s -o ~/.config/nvim/colors/smyck.vim https://raw.githubusercontent.com/hukl/Smyck-Color-Scheme/master/smyck.vim
 fi
 
-#install vim plugins
-if [[ ! -d ~/.vim/bundle ]]; then
-  mkdir -p ~/.vim/bundle
-  git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-  vim +PluginInstall +qall
+#install nvim plugins
+if [[ ! -d ~/.local/share/nvim/site/autoload ]]; then
+  mkdir -p ~/.local/share/nvim/site/autoload
+  curl -s -o ~/.local/share/nvim/site/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  mkdir -p ~/.local/share/nvim/site/plugged
+  nvim +PlugInstall +qall
 fi
