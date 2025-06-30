@@ -30,6 +30,8 @@ highlight StatusLine   ctermbg=235 ctermfg=2
 highlight StatusLineNC ctermbg=235 ctermfg=240
 highlight TabLineFill  ctermbg=2   ctermfg=16
 
+autocmd VimResume,BufEnter * checktime
+
 let g:ctrlp_custom_ignore = {
   \ 'dir':  'node_modules\|\.git\|dist\|coverage\|build\|target',
   \ }
