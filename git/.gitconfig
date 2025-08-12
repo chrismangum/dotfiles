@@ -6,7 +6,7 @@
 	name = Chris Mangum
 	email = cmagnum@cisco.com
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = ~/.gitignore_global
 	pager = less -+X -+F -x1,5
 	attributesfile = /home/chris/.gitattributes

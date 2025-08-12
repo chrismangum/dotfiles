@@ -95,7 +95,6 @@ alias cdts='cdc tac-forms/service'
 alias cdtu='cdc tac-forms/ui'
 alias cdui='cdc ironbank/ui'
 alias cduia='cdc ironbank/ui/src/app'
-alias docker='podman'
 alias ffmpeg='ffmpeg -hide_banner'
 alias fly='fly -t swtg'
 alias ga='git add'
@@ -179,6 +178,10 @@ function dockerNuke() {
   docker stop $(docker ps -a -q);
   docker rm $(docker ps -a -q) --force;
   docker rmi $(docker images -q) --force;
+}
+
+function trim() {
+  convert $1 -crop +1+1 $1
 }
 
 function tmpv() {

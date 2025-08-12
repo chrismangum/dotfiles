@@ -5,6 +5,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'kien/ctrlp.vim'
+Plug 'github/copilot.vim'
 " Syntax
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
