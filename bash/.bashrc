@@ -50,11 +50,11 @@ function mongoCreds() {
 }
 
 function awsMongoCreds() {
-  cat "/home/chris/Cisco/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_MAIN_USER | split(":") | .['"$2]"
+  cat "/home/chris/Cisco/ironbank/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_MAIN_USER | split(":") | .['"$2]"
 }
 
 function awsMongoDomain() {
-  cat "/home/chris/Cisco/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_DOMAIN'
+  cat "/home/chris/Cisco/ironbank/terraform/secrets/$1/ironbank_secrets_mapping.json" | jq -r '.REPLACE_MONGO_DOMAIN'
 }
 
 function awsMongo() {
@@ -73,24 +73,30 @@ function rtplab_mongo() {
 }
 
 alias cal='ncal -C'
-alias cdcs='cdc ic-engines/cold-service'
-alias cdcu='cdc ic-engines/cold-ui'
+alias cdcs='cdc cold/cold-auth'
+alias cdcs='cdc cold/cold-service'
+alias cdcu='cdc cold/cold-ui'
+alias cdfa='cdc fes/fes-app'
 alias cdfg='cdc ic-engines/fis/go'
 alias cdfj='cdc ic-engines/fis/java'
+alias cdfl='cdc fes/fes-libraries'
+alias cdfm='cdc fes/fes-migrator'
+alias cdfs='cdc fes/feature-entitlement-service'
 alias cdia='cdc ironbank/auth'
 alias cdiau='cdc ironbank/audit-utils'
 alias cdib='cdc ironbank/banker'
 alias cdic='cdc ironbank/counter'
-alias cdice='cdc ic-engines'
 alias cdicu='cdc ironbank/collection-utils'
 alias cdil='cdc ironbank/libraries'
 alias cdim='cdc ironbank/migrator'
 alias cdis='cdc ironbank/ironbank'
+alias cdpc='cdc patent_cohort/SWETeamSix'
 alias cdqa='cdc quicker/quicker-apis'
 alias cdqb='cdc quicker/quicker_backlog_ui'
 alias cdqc='cdc quicker/quicker_csone_ui'
-alias cdsm='cdc ic-engines/cold-sync-mgr'
-alias cdssa='cdc cli-analyzer/cli-analyzer'
+alias cdsl='cdc slic/bdb-slic'
+alias cdsm='cdc cold/cold-sync-mgr'
+alias cdssa='cdc cway/cli-analyzer'
 alias cdts='cdc tac-forms/service'
 alias cdtu='cdc tac-forms/ui'
 alias cdui='cdc ironbank/ui'
@@ -112,7 +118,7 @@ alias glg='gl --stat'
 alias glp='gl -p'
 alias gp='git push'
 alias gpl='git pull'
-alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage'
+alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage --exclude-dir=.venv'
 alias gst='git status'
 alias l='ls -lah'
 alias ll='ls -lh'
@@ -195,6 +201,31 @@ export PATH=/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/sbin:/usr/sbin
 if [[ -d /snap/bin ]]; then
   export PATH="$PATH:/snap/bin"
 fi
+
+# add manually installed go binaries to path
+if [[ -d /usr/local/go/bin ]]; then
+  export PATH="/usr/local/go/bin:$PATH"
+fi
+if [[ -d "$HOME/go/bin" ]]; then
+  export PATH="$HOME/go/bin:$PATH"
+fi
+
+if [[ -d "$HOME/.local/bin" ]]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+if [[ -d "$HOME/.krew/bin" ]]; then
+  export PATH="$HOME/.krew/bin:$PATH"
+fi
+
+# opencode
+if [[ -d "$HOME/.opencode/bin" ]]; then
+  export PATH="$HOME/.opencode/bin:$PATH"
+fi
+
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - bash)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

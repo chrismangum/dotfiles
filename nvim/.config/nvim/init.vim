@@ -5,11 +5,17 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'kien/ctrlp.vim'
-Plug 'github/copilot.vim'
 " Syntax
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
+" Colorschemes
+Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+Plug 'folke/tokyonight.nvim', { 'as': 'tokyonight' }
+Plug 'rebelot/kanagawa.nvim', { 'as': 'kanagawa' }
 call plug#end()
+
+" Disable Mouse
+set mouse=
 
 set cc=79
 set cursorline
@@ -18,18 +24,16 @@ set ignorecase smartcase
 set number
 set t_Co=256
 
-" Indentation
+" 2 Spaces Indentation
 set expandtab
 set shiftwidth=2
 
+" Tab Indentation
+" set tabstop=4
+" set shiftwidth=4
+
 " Colors
 colorscheme smyck
-highlight ColorColumn  ctermbg=16
-highlight CursorLine   ctermbg=236 cterm=NONE
-highlight CursorLineNr ctermbg=236 ctermfg=240
-highlight StatusLine   ctermbg=235 ctermfg=2
-highlight StatusLineNC ctermbg=235 ctermfg=240
-highlight TabLineFill  ctermbg=2   ctermfg=16
 
 autocmd VimResume,BufEnter * checktime
 
