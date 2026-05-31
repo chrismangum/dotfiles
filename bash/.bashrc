@@ -64,7 +64,7 @@ function awsMongo() {
 
 function apollo_mongo() {
   local ns=${1:-ironbank-dev}
-  mongosh "mongodb://swtg-qa-mongo-2a.cisco.com:27017,swtg-qa-mongo-2b.cisco.com:27017,swtg-qa-mongo-2c.cisco.com:27017/$ns?replicaSet=apollo" --username $(mongoCreds $ns username) --password $(mongoCreds $ns password)
+  mongosh "mongodb://rtplab-mongo-1a,rtplab-mongo-1b,rtplab-mongo-1c,rtplab-mongo-1d,rtplab-mongo-1e/$ns?replicaSet=rs0" --username $(mongoCreds $ns username) --password $(mongoCreds $ns password)
 }
 
 function rtplab_mongo() {
@@ -94,8 +94,10 @@ alias cdpc='cdc patent_cohort/SWETeamSix'
 alias cdqa='cdc quicker/quicker-apis'
 alias cdqb='cdc quicker/quicker_backlog_ui'
 alias cdqc='cdc quicker/quicker_csone_ui'
+alias cdsi='cdc cold/cold-slic-importer'
 alias cdsl='cdc slic/bdb-slic'
 alias cdsm='cdc cold/cold-sync-mgr'
+alias cdsv='cdc cold/cold-slic-validator'
 alias cdssa='cdc cway/cli-analyzer'
 alias cdts='cdc tac-forms/service'
 alias cdtu='cdc tac-forms/ui'
@@ -118,7 +120,7 @@ alias glg='gl --stat'
 alias glp='gl -p'
 alias gp='git push'
 alias gpl='git pull'
-alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage --exclude-dir=.venv'
+alias grep='grep --color=auto --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=bower_components --exclude-dir=vendor --exclude-dir=dist --exclude-dir=build --exclude-dir=coverage --exclude-dir=.venv --exclude-dir=sdk'
 alias gst='git status'
 alias l='ls -lah'
 alias ll='ls -lh'

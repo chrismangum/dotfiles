@@ -1,7 +1,14 @@
 {
-  "url": "https://cloudsso.cisco.com",
-  "partner_spid": "https://signin.aws.amazon.com/saml",
-  "aws_urn": "https://signin.aws.amazon.com/saml",
-  "session_duration_seconds": 3600,
-  "preferred_factor": "push"
+  "profiles": {
+    "cx-platform-admin": {
+      "aws_account_id": "905418369215",
+      "aws_role_name": "AWS-CXP-PlatformEng-Admin",
+      "session_duration_seconds": 28800
+    },
+    "sg1-prod-ecr": {
+      "aws_account_id": "273286168920",
+      "aws_role_name": "AWS-CXCloud-SG1-Engineering-prod-ReadOnly",
+      "session_duration_seconds": 3600
+    }
+  }
 }
